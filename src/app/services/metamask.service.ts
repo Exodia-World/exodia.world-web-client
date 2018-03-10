@@ -4,22 +4,22 @@ import { ElectronService } from './electron.service';
 @Injectable()
 export class MetamaskService {
 
-  constructor(electronService: ElectronService) {
+  constructor(private electronService: ElectronService) {
   }
 
-  openPopup() {
+  openPopup(): void {
     this.electronService.send('open-metamask-popup');
   }
 
-  closePopup() {
+  closePopup(): void {
     this.electronService.send('close-metamask-popup');
   }
 
-  openNotification() {
+  openNotification(): void {
     this.electronService.send('open-metamask-notification');
   }
 
-  closeNotification() {
+  closeNotification(): void {
     this.electronService.send('close-metamask-notification');
   }
 }
