@@ -6,11 +6,11 @@ declare let chrome: any;
 export class ElectronService {
   private ipcRenderer: any = chrome.ipcRenderer;
 
-  send(message: string): void {
-    this.ipcRenderer.send(message);
+  isRunning(): boolean {
+    return !!this.ipcRenderer;
   }
 
-  static isRunning(): boolean {
-    return !!chrome.ipcRenderer;
+  send(message: string): void {
+    this.ipcRenderer.send(message);
   }
 }
