@@ -5,26 +5,16 @@
   </h1>
 </div>
 <h2>Here are some buttons to help you start: </h2>
-<ul>
-  <li>
-    <div>
-      <label>Recipient</label><input type="text" pInputText [(ngModel)]="recipientAddress"/>
-    </div>
-    <div>
-      <label>Amount</label><p-spinner size="30" [(ngModel)]="etherAmount"></p-spinner>
-    </div>
-    <p-button label="Send Ether" (onClick)="onSendEther()"></p-button>
-  </li>
-  <li>
-    <p-button label="Open Metamask Popup" (onClick)="onOpenMetamaskPopup()"></p-button>
-  </li>
-  <li>
-    <p-button label="Close Metamask Popup" (onClick)="onCloseMetamaskPopup()"></p-button>
-  </li>
-  <li>
-    <p-button label="Open Metamask Notification" (onClick)="onOpenMetamaskNotification()"></p-button>
-  </li>
-  <li>
-    <p-button label="Close Metamask Notification" (onClick)="onCloseMetamaskNotification()"></p-button>
-  </li>
-</ul>
+<div class="ui-g ui-fluid">
+  <div class="ui-g-2">
+    <label>Recipient</label><input type="text" pInputText [(ngModel)]="recipientAddress"/>
+    <label>Amount</label><p-spinner size="30" [(ngModel)]="etherAmount"></p-spinner>
+    <p-button style="margin-top: 1em" label="Send Ether" (onClick)="onSendEther()"></p-button>
+  </div>
+  <div class="ui-g-3">
+    <p-button class="ui-g-12" label="Open Metamask Popup" (onClick)="onOpenMetamaskPopup()"></p-button>
+    <p-button class="ui-g-12" label="Close Metamask Popup" (onClick)="onCloseMetamaskPopup()"></p-button>
+    <p-button class="ui-g-12" label="Open Metamask Notification" (onClick)="onOpenMetamaskNotification()"></p-button>
+    <p-button class="ui-g-12" label="Close Metamask Notification" (onClick)="onCloseMetamaskNotification()"></p-button>
+  </div>
+</div>
