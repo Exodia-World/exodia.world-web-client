@@ -9,40 +9,40 @@ import { ContractsService } from './services/contracts.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Exodia.World';
+  title: string = 'Exodia.World';
   recipientAddress: string;
   etherAmount: number = 0;
 
   constructor(
-    electronService: ElectronService,
-    metamaskService: MetamaskService,
-    contractsService: ContractsService
+    private electronService: ElectronService,
+    private metamaskService: MetamaskService,
+    private contractsService: ContractsService
   ) {
   }
 
-  onSendEther() {
+  onSendEther(): void {
     this.contractsService.sendEther(this.recipientAddress, this.etherAmount);
   }
 
-  onOpenMetamaskPopup() {
+  onOpenMetamaskPopup(): void {
     if (this.electronService.isRunning()) {
       this.metamaskService.openPopup();
     }
   }
 
-  onCloseMetamaskPopup() {
+  onCloseMetamaskPopup(): void {
     if (this.electronService.isRunning()) {
       this.metamaskService.closePopup();
     }
   }
 
-  onOpenMetamaskNotification() {
+  onOpenMetamaskNotification(): void {
     if (this.electronService.isRunning()) {
       this.metamaskService.openNotification();
     }
   }
 
-  onCloseMetamaskNotification() {
+  onCloseMetamaskNotification(): void {
     if (this.electronService.isRunning()) {
       this.metamaskService.closeNotification();
     }
