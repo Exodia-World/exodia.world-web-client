@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ElectronService } from './services/electron.service';
 import { MetamaskService } from './services/metamask.service';
-import { ContractsService } from './services/contracts.service';
+import { WalletService } from './services/wallet.service';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +16,12 @@ export class AppComponent {
   constructor(
     private electronService: ElectronService,
     private metamaskService: MetamaskService,
-    private contractsService: ContractsService
+    private walletService: WalletService
   ) {
   }
 
   onSendEther(): void {
-    this.contractsService.sendEther(this.recipientAddress, this.etherAmount);
+    this.walletService.sendEther(this.recipientAddress, this.etherAmount);
   }
 
   onOpenMetamaskPopup(): void {

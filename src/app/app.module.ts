@@ -8,7 +8,8 @@ import { SpinnerModule } from 'primeng/spinner';
 // Import shared services.
 import { ElectronService } from './services/electron.service';
 import { MetamaskService } from './services/metamask.service';
-import { ContractsService } from './services/contracts.service';
+import { Web3Service } from './services/web3.service';
+import { WalletService } from './services/wallet.service';
 
 import { AppComponent } from './app.component';
 
@@ -26,7 +27,8 @@ import { AppComponent } from './app.component';
   providers: [
     ElectronService,
     MetamaskService,
-    ContractsService
+    Web3Service,
+    WalletService
   ],
   bootstrap: [AppComponent]
 })
