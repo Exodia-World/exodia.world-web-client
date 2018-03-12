@@ -6,8 +6,7 @@ import { Outcome, OutcomeType } from '../models/outcome.model';
 declare let require: any;
 declare let window: any;
 
-// const tokenAbi = require('./tokenContract.json');
-const env: any = require('../../../env.json');
+const eth: any = require('../../../eth.json');
 
 @Injectable()
 export class Web3Service {
@@ -18,7 +17,7 @@ export class Web3Service {
     if (typeof window.web3 !== 'undefined') {
       this.web3 = new Web3(window.web3.currentProvider);
     } else {
-      this.web3 = new Web3(new Web3.providers.HttpProvider(env.TEST_RPC_PROVIDER));
+      this.web3 = new Web3(new Web3.providers.HttpProvider(eth.TEST_RPC_PROVIDER));
     }
 
     setInterval(() => {
@@ -34,6 +33,18 @@ export class Web3Service {
 
   getInstance(): any {
     return this.web3;
+  }
+
+  getContract(ABI: any, address: string): any {
+    return this.web3.eth.contract(ABI).at(address);
+  }
+
+  getDefaultAccount(): string {
+    return this.web3.eth.defaultAccount;
+  }
+
+  fromWei(value: any): any {
+    return this.web3.fromWei(value);
   }
 
   private async getCurrentAccount(): Promise<Outcome> {
