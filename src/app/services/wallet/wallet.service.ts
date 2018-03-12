@@ -4,7 +4,7 @@ import { MetamaskService } from "../metamask.service";
 import { BigNumber } from "bignumber.js";
 import { Outcome, OutcomeType } from "../../models/outcome.model";
 
-const exoTokenABI = require('../../contract/EXOToken.json');
+const exoTokenABI = require('../../contracts/EXOToken.json');
 const exoTokenAddress = '';
 
 @Injectable()
