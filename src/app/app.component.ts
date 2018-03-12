@@ -21,7 +21,7 @@ export class AppComponent {
   }
 
   onSendEther(): void {
-    this.walletService.sendEther(this.recipientAddress, this.etherAmount);
+    // this.walletService.sendEther(this.recipientAddress, this.etherAmount);
   }
 
   onOpenMetamaskPopup(): void {

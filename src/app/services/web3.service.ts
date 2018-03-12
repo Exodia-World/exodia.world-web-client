@@ -13,6 +13,9 @@ export class Web3Service {
   private web3: any;
 
   constructor(private metamaskService: MetamaskService) {
+  }
+
+  init() {
     // Setup Web3 provider.
     if (typeof window.web3 !== 'undefined') {
       this.web3 = new Web3(window.web3.currentProvider);
@@ -20,6 +23,7 @@ export class Web3Service {
       this.web3 = new Web3(new Web3.providers.HttpProvider(eth.TEST_RPC_PROVIDER));
     }
 
+    // Get current account every second.
     setInterval(() => {
       this.getCurrentAccount()
         .then(result => {

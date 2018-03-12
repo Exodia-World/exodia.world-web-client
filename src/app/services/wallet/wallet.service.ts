@@ -1,17 +1,19 @@
 import { Injectable } from "@angular/core";
 import { Web3Service } from "../web3.service";
-import { MetamaskService } from "../metamask.service";
 import { BigNumber } from "bignumber.js";
 import { Outcome, OutcomeType } from "../../models/outcome.model";
 
-const exoTokenABI = require('../../contracts/EXOToken.json');
+const exoTokenABI = require('../../contracts/EXOToken.json').abi;
 const exoTokenAddress = '';
 
 @Injectable()
 export class WalletService {
   private exoToken: any;
 
-  constructor(private web3Service: Web3Service, private metamaskService: MetamaskService) {
+  constructor(private web3Service: Web3Service) {
+  }
+
+  init() {
     this.exoToken = this.web3Service.getContract(exoTokenABI, exoTokenAddress);
   }
 
@@ -27,5 +29,9 @@ export class WalletService {
         resolve(new Outcome(OutcomeType.Success, this.web3Service.fromWei(result)));
       });
     });
+  }
+
+  getToken() {
+    return this.exoToken;
   }
 }
