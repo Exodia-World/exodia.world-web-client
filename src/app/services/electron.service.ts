@@ -4,7 +4,7 @@ declare let chrome: any;
 
 @Injectable()
 export class ElectronService {
-  private ipcRenderer: any = chrome.ipcRenderer;
+  private ipcRenderer: any = chrome ? chrome.ipcRenderer : null;
 
   isRunning(): boolean {
     return !!this.ipcRenderer;

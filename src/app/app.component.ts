@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ElectronService } from './services/electron.service';
 import { MetamaskService } from './services/metamask.service';
-import { WalletService } from './services/wallet.service';
+import { WalletService } from './services/wallet/wallet.service';
 
 @Component({
   selector: 'app-root',
