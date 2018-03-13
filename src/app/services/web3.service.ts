@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { MetamaskService } from './metamask.service';
 import { Outcome, OutcomeType } from '../models/outcome.model';
 
-declare let require: any;
-declare let window: any;
-
+declare const window: any;
 const eth: any = require('../../../eth.json');
 
 @Injectable()
@@ -13,9 +11,6 @@ export class Web3Service {
   private web3: any;
 
   constructor(private metamaskService: MetamaskService) {
-  }
-
-  init() {
     // Setup Web3 provider.
     if (typeof window.web3 !== 'undefined') {
       this.web3 = new Web3(window.web3.currentProvider);
@@ -57,7 +52,11 @@ export class Web3Service {
         if (err) {
           reject(new Outcome(OutcomeType.Fail, err));
         }
-        resolve(new Outcome(OutcomeType.Success, accounts[0]));
+        if (accounts) {
+          resolve(new Outcome(OutcomeType.Success, accounts[0]));
+        } else {
+          reject(new Outcome(OutcomeType.Fail, {message: 'accounts is undefined'}));
+        }
       });
     });
   }

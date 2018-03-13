@@ -11,9 +11,6 @@ export class WalletService {
   private exoToken: any;
 
   constructor(private web3Service: Web3Service) {
-  }
-
-  init() {
     this.exoToken = this.web3Service.getContract(exoTokenABI, exoTokenAddress);
   }
 
