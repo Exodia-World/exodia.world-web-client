@@ -4,7 +4,7 @@ import { MetamaskService } from './metamask.service';
 import { Outcome, OutcomeType } from '../models/outcome.model';
 
 declare const window: any;
-const eth: any = require('../../../eth.json');
+const eth: any = require('../../eth.json');
 
 @Injectable()
 export class Web3Service {
@@ -42,12 +42,20 @@ export class Web3Service {
     return this.web3.eth.defaultAccount;
   }
 
-  fromWei(value: any): any {
-    return this.web3.fromWei(value);
+  fromWei(value: any, unit: string): any {
+    return this.web3.fromWei(value, unit);
+  }
+
+  toWei(value: any, unit: string): any {
+    return this.web3.toWei(value, unit);
+  }
+
+  getTransactionReceipt(hashString: string, callback: any): any {
+    return this.web3.eth.getTransactionReceipt(hashString, callback);
   }
 
   private async getCurrentAccount(): Promise<Outcome> {
-    return new Promise<Outcome>((resolve, reject) =>{
+    return new Promise<Outcome>((resolve, reject) => {
       this.web3.eth.getAccounts((err, accounts) => {
         if (err) {
           reject(new Outcome(OutcomeType.Fail, err));
@@ -55,7 +63,7 @@ export class Web3Service {
         if (accounts) {
           resolve(new Outcome(OutcomeType.Success, accounts[0]));
         } else {
-          reject(new Outcome(OutcomeType.Fail, {message: 'accounts is undefined'}));
+          reject(new Outcome(OutcomeType.Fail, { message: 'accounts is undefined' }));
         }
       });
     });

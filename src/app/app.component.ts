@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ElectronService } from './services/electron.service';
-import { MetamaskService } from './services/metamask.service';
-import { WalletService } from './services/wallet/wallet.service';
+import { ElectronService } from '../services/electron.service';
+import { MetamaskService } from '../services/metamask.service';
+import { WalletService } from '../services/wallet/wallet.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +9,9 @@ import { WalletService } from './services/wallet/wallet.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title: string = 'Exodia.World';
+  title = 'Exodia.World';
   recipientAddress: string;
-  etherAmount: number = 0;
+  etherAmount = 0;
 
   constructor(
     private electronService: ElectronService,

@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { SpinnerModule } from 'primeng/spinner';
-import { ElectronService } from './services/electron.service';
-import { MetamaskService } from './services/metamask.service';
-import { Web3Service } from './services/web3.service';
-import { WalletService } from './services/wallet/wallet.service';
-import { ElectronServiceMock, MetamaskServiceMock, Web3ServiceMock, WalletServiceMock } from './mocks';
+import { ElectronService } from '../services/electron.service';
+import { MetamaskService } from '../services/metamask.service';
+import { Web3Service } from '../services/web3.service';
+import { WalletService } from '../services/wallet/wallet.service';
+import { ElectronServiceMock, MetamaskServiceMock, Web3ServiceMock, WalletServiceMock } from '../mocks';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {

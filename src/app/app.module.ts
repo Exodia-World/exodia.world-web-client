@@ -6,10 +6,10 @@ import { ButtonModule } from 'primeng/button';
 import { SpinnerModule } from 'primeng/spinner';
 
 // Import shared services.
-import { ElectronService } from './services/electron.service';
-import { MetamaskService } from './services/metamask.service';
-import { Web3Service } from './services/web3.service';
-import { WalletService } from './services/wallet/wallet.service';
+import { ElectronService } from '../services/electron.service';
+import { MetamaskService } from '../services/metamask.service';
+import { Web3Service } from '../services/web3.service';
+import { WalletService } from '../services/wallet/wallet.service';
 
 import { AppComponent } from './app.component';
 
