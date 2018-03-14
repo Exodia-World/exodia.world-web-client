@@ -17,17 +17,6 @@ export class Web3Service {
     } else {
       this.web3 = new Web3(new Web3.providers.HttpProvider(eth.TEST_RPC_PROVIDER));
     }
-
-    // Get current account every second.
-    setInterval(() => {
-      this.getCurrentAccount()
-        .then(result => {
-          this.web3.eth.defaultAccount = result.getData();
-        })
-        .catch(err => {
-          console.error(err.getMessage());
-        });
-    }, 1000);
   }
 
   getInstance(): any {
@@ -42,6 +31,10 @@ export class Web3Service {
     return this.web3.eth.defaultAccount;
   }
 
+  setDefaultAccount(address: string): void {
+    this.web3.eth.defaultAccount = address;
+  }
+
   fromWei(value: any, unit: string): any {
     return this.web3.fromWei(value, unit);
   }
@@ -54,16 +47,16 @@ export class Web3Service {
     return this.web3.eth.getTransactionReceipt(hashString, callback);
   }
 
-  private async getCurrentAccount(): Promise<Outcome> {
+  getAccounts(): Promise<Outcome> {
     return new Promise<Outcome>((resolve, reject) => {
       this.web3.eth.getAccounts((err, accounts) => {
         if (err) {
           reject(new Outcome(OutcomeType.Fail, err));
         }
         if (accounts) {
-          resolve(new Outcome(OutcomeType.Success, accounts[0]));
+          resolve(new Outcome(OutcomeType.Success, accounts));
         } else {
-          reject(new Outcome(OutcomeType.Fail, { message: 'accounts is undefined' }));
+          reject(new Outcome(OutcomeType.Fail, null, 'accounts is undefined'));
         }
       });
     });

@@ -48,4 +48,19 @@ export class WalletService {
       });
     });
   }
+
+  depositStake(value: number, unit: string): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      const valueInWei = this.web3Service.toWei(value, unit);
+      this.exoToken.depositStake(value, transactionHash => {
+        this.web3Service.getTransactionReceipt(transactionHash, receipt => {
+          if (parseInt(receipt.status, 16) === 1) {
+            resolve(new Outcome(OutcomeType.Success, receipt));
+          } else {
+            reject(new Outcome(OutcomeType.Fail, receipt, 'failed to deposit stake'));
+          }
+        });
+      });
+    });
+  }
 }
