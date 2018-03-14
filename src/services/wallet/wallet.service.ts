@@ -37,30 +37,27 @@ export class WalletService {
   transfer(to: string, value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.transfer(to, value, transactionHash => {
-        this.web3Service.getTransactionReceipt(transactionHash, receipt => {
-          if (parseInt(receipt.status, 16) === 1) {
-            resolve(new Outcome(OutcomeType.Success, receipt));
-          } else {
-            reject(new Outcome(OutcomeType.Fail, receipt, 'failed to transfer tokens'));
-          }
-        });
-      });
+      this.exoToken.transfer(to, value, this.web3Service.checkTransactionStatus(resolve, reject));
     });
   }
 
   depositStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.depositStake(value, transactionHash => {
-        this.web3Service.getTransactionReceipt(transactionHash, receipt => {
-          if (parseInt(receipt.status, 16) === 1) {
-            resolve(new Outcome(OutcomeType.Success, receipt));
-          } else {
-            reject(new Outcome(OutcomeType.Fail, receipt, 'failed to deposit stake'));
-          }
-        });
-      });
+      this.exoToken.depositStake(value, this.web3Service.checkTransactionStatus(resolve, reject));
+    });
+  }
+
+  withdrawStake(value: number, unit: string): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      const valueInWei = this.web3Service.toWei(value, unit);
+      this.exoToken.withdrawStake(value, this.web3Service.checkTransactionStatus(resolve, reject));
+    });
+  }
+
+  updateStakeBalance(): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      this.exoToken.updateStakeBalance(this.web3Service.checkTransactionStatus(resolve, reject));
     });
   }
 }

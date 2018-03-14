@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { WalletService } from './wallet.service';
 import { Web3ServiceMock } from '../../mocks';
-import { OutcomeType } from '../../models/outcome.model';
+import { OutcomeType, Outcome } from '../../models/outcome.model';
 
 describe('WalletService', () => {
   let web3ServiceSpy: any;
@@ -14,7 +14,8 @@ describe('WalletService', () => {
       'getDefaultAccount',
       'fromWei',
       'toWei',
-      'getTransactionReceipt'
+      'getTransactionReceipt',
+      'checkTransactionStatus'
     ]);
     web3ServiceSpy.getContract.and.returnValue({
       balanceOf: {
@@ -45,6 +46,20 @@ describe('WalletService', () => {
             callback('OK');
           }
         }
+      ),
+      withdrawStake: jasmine.createSpy('withdrawStake').and.callFake(
+        (value: number, callback: (result) => void) => {
+          if (value <= 0) {
+            callback('ERROR');
+          } else {
+            callback('OK');
+          }
+        }
+      ),
+      updateStakeBalance: jasmine.createSpy('updateStakeBalance').and.callFake(
+        (callback: (result) => void) => {
+          callback('OK');
+        }
       )
     });
     web3ServiceSpy.getDefaultAccount.and.callFake(() => '0x8888');
@@ -54,6 +69,19 @@ describe('WalletService', () => {
       (hash: string, callback: (result: any) => void) => {
         const status = hash === 'OK' ? '0x1' : '0x0';
         callback({ status });
+      }
+    );
+    web3ServiceSpy.checkTransactionStatus.and.callFake(
+      (resolve, reject) => {
+        return (hash: string) => {
+          web3ServiceSpy.getTransactionReceipt(hash, receipt => {
+            if (parseInt(receipt, 16) === 1) {
+              resolve(new Outcome(OutcomeType.Success, receipt));
+            } else {
+              reject(new Outcome(OutcomeType.Fail, receipt));
+            }
+          });
+        };
       }
     );
 
@@ -80,7 +108,6 @@ describe('WalletService', () => {
       expect(web3ServiceSpy.fromWei).not.toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Fail);
       expect(outcome.getData().message).toEqual('ERROR');
-      expect(outcome.getMessage()).toEqual('failed to get balance');
       done();
     });
   });
@@ -99,6 +126,7 @@ describe('WalletService', () => {
     walletService.transfer('0xOK', 1, 'ether').then(outcome => {
       expect(web3ServiceSpy.toWei).toHaveBeenCalled();
       expect(walletService.getToken().transfer).toHaveBeenCalled();
+      expect(web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
       expect(web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Success);
       expect(outcome.getData().status).toEqual('0x1');
@@ -110,10 +138,10 @@ describe('WalletService', () => {
     walletService.transfer('0xERROR', 1, 'ether').catch(outcome => {
       expect(web3ServiceSpy.toWei).toHaveBeenCalled();
       expect(walletService.getToken().transfer).toHaveBeenCalled();
+      expect(web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
       expect(web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Fail);
       expect(outcome.getData().status).toEqual('0x0');
-      expect(outcome.getMessage()).toEqual('failed to transfer tokens');
       done();
     });
   });
@@ -122,6 +150,7 @@ describe('WalletService', () => {
     walletService.depositStake(1, 'ether').then(outcome => {
       expect(web3ServiceSpy.toWei).toHaveBeenCalled();
       expect(walletService.getToken().depositStake).toHaveBeenCalled();
+      expect(web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
       expect(web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Success);
       expect(outcome.getData().status).toEqual('0x1');
@@ -133,10 +162,45 @@ describe('WalletService', () => {
     walletService.depositStake(-1, 'ether').catch(outcome => {
       expect(web3ServiceSpy.toWei).toHaveBeenCalled();
       expect(walletService.getToken().depositStake).toHaveBeenCalled();
+      expect(web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
       expect(web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Fail);
       expect(outcome.getData().status).toEqual('0x0');
-      expect(outcome.getMessage()).toEqual('failed to deposit stake');
+      done();
+    });
+  });
+
+  it('should withdraw stake', (done) => {
+    walletService.withdrawStake(1, 'ether').then(outcome => {
+      expect(web3ServiceSpy.toWei).toHaveBeenCalled();
+      expect(walletService.getToken().withdrawStake).toHaveBeenCalled();
+      expect(web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
+      expect(web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Success);
+      expect(outcome.getData().status).toEqual('0x1');
+      done();
+    });
+  });
+
+  it('should return error if withdraw stake failed', (done) => {
+    walletService.withdrawStake(-1, 'ether').catch(outcome => {
+      expect(web3ServiceSpy.toWei).toHaveBeenCalled();
+      expect(walletService.getToken().withdrawStake).toHaveBeenCalled();
+      expect(web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
+      expect(web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Fail);
+      expect(outcome.getData().status).toEqual('0x0');
+      done();
+    });
+  });
+
+  it('should update stake balance', (done) => {
+    walletService.updateStakeBalance().then(outcome => {
+      expect(walletService.getToken().updateStakeBalance).toHaveBeenCalled();
+      expect(web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
+      expect(web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Success);
+      expect(outcome.getData().status).toEqual('0x1');
       done();
     });
   });

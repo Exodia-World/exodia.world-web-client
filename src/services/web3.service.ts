@@ -61,4 +61,20 @@ export class Web3Service {
       });
     });
   }
+
+  checkTransactionStatus(
+    resolve: (outcome: Outcome) => void,
+    reject: (outcome: Outcome) => void
+  ): (transactionHash: string) => void
+  {
+    return (transactionHash: string): void {
+      this.web3.eth.getTransactionReceipt(transactionHash, receipt => {
+        if (parseInt(receipt.status, 16) === 1) {
+          resolve(new Outcome(OutcomeType.Success, receipt));
+        } else {
+          reject(new Outcome(OutcomeType.Fail, receipt));
+        }
+      });
+    };
+  }
 }
