@@ -131,12 +131,42 @@ describe('WalletService', () => {
     });
   });
 
+  it('should return error if update stake balance failed', (done) => {
+    EXOTokenSpy.updateStakeBalance.and.callFake(
+      (callback: (result) => void) => {
+        callback('ERROR');
+      }
+    );
+    walletService.updateStakeBalance().catch(outcome => {
+      expect(walletService.getToken().updateStakeBalance).toHaveBeenCalled();
+      expect(Web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
+      expect(Web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Fail);
+      expect(outcome.getData().status).toEqual('0x0');
+      done();
+    });
+  });
+
   it('should calculate interest', (done) => {
     walletService.calculateInterest('ether').then(outcome => {
       expect(walletService.getToken().calculateInterest.call).toHaveBeenCalled();
       expect(Web3ServiceSpy.fromWei).toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Success);
       expect(outcome.getData()).toEqual(5);
+      done();
+    });
+  });
+
+  it('should return error if calculate interest failed', (done) => {
+    EXOTokenSpy.calculateInterest.call.and.callFake(
+      (callback: (err, result) => void) => {
+        callback({message: 'ERROR'}, null);
+      }
+    );
+    walletService.calculateInterest('ether').catch(outcome => {
+      expect(walletService.getToken().calculateInterest.call).toHaveBeenCalled();
+      expect(Web3ServiceSpy.fromWei).not.toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Fail);
       done();
     });
   });
