@@ -67,7 +67,7 @@ export class Web3Service {
     reject: (outcome: Outcome) => void
   ): (transactionHash: string) => void
   {
-    return (transactionHash: string): void {
+    return (transactionHash: string) => {
       this.web3.eth.getTransactionReceipt(transactionHash, receipt => {
         if (parseInt(receipt.status, 16) === 1) {
           resolve(new Outcome(OutcomeType.Success, receipt));
