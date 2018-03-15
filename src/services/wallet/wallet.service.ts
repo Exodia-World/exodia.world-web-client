@@ -24,11 +24,11 @@ export class WalletService {
 
   getBalance(address: string, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
-      this.exoToken.balanceOf.call(address, (err, result) => {
+      this.exoToken.balanceOf.call(address, (err, balance) => {
         if (err) {
-          reject(new Outcome(OutcomeType.Fail, err, 'failed to get balance'));
+          reject(new Outcome(OutcomeType.Fail, err));
         } else {
-          resolve(new Outcome(OutcomeType.Success, this.web3Service.fromWei(result, unit)));
+          resolve(new Outcome(OutcomeType.Success, this.web3Service.fromWei(balance, unit)));
         }
       });
     });
@@ -58,6 +58,18 @@ export class WalletService {
   updateStakeBalance(): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       this.exoToken.updateStakeBalance(this.web3Service.checkTransactionStatus(resolve, reject));
+    });
+  }
+
+  calculateInterest(unit: string): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      this.exoToken.calculateInterest.call((err, interest) => {
+        if (err) {
+          reject(new Outcome(OutcomeType.Fail, err));
+        } else {
+          resolve(new Outcome(OutcomeType.Success, this.web3Service.fromWei(interest, unit)));
+        }
+      });
     });
   }
 }
