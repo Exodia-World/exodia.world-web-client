@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { WalletService } from './wallet.service';
 import { OutcomeType, Outcome } from '../../models/outcome.model';
-import { spyOnEXOToken, spyOnWeb3Service } from '../../mocks';
+import { spyOnEXOToken, spyOnWeb3Service } from '../../global.mock';
 
 describe('WalletService', () => {
   let EXOTokenSpy: any;

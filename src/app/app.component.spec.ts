@@ -8,7 +8,7 @@ import { ElectronService } from '../services/electron.service';
 import { MetamaskService } from '../services/metamask.service';
 import { Web3Service } from '../services/web3.service';
 import { WalletService } from '../services/wallet/wallet.service';
-import { ElectronServiceMock, MetamaskServiceMock, Web3ServiceMock, WalletServiceMock } from '../mocks';
+import { ElectronServiceMock, MetamaskServiceMock, Web3ServiceMock, WalletServiceMock } from '../global.mock';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
