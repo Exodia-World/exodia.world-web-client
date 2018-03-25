@@ -15,7 +15,8 @@ export class Web3Service {
     if (typeof window.web3 !== 'undefined') {
       this.web3 = new Web3(window.web3.currentProvider);
     } else {
-      this.web3 = new Web3(new Web3.providers.HttpProvider(eth.TEST_RPC_PROVIDER));
+      const provider = eth.ENV === 'dev' ? eth.TEST_RPC_PROVIDER : eth.HTTP_PROVIDER;
+      this.web3 = new Web3(new Web3.providers.HttpProvider(provider));
     }
   }
 
