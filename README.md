@@ -8,6 +8,14 @@ A decentralized digital gaming marketplace and platform that enables game studio
 
 A web client for Exodia.World's marketplace, digital wallet, crowdfunding, etc. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.7.
 
+## Post-Install
+
+After you have run `npm install` to install all necessary packages, copy `sample.eth.json` into `eth.json`. Change the environment values as appropriate. We have three types of environment:
+
+- **dev**: default development environment (http://localhost:8545)
+- **staging**: testnet environment (https://rinkeby.infura.io/API_KEY)
+- **prod**: mainnet environment (https://mainnet.infura.io/API_KEY)
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
