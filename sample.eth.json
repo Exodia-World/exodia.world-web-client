@@ -3,7 +3,7 @@
   "TEST_RPC_PROVIDER": "http://localhost:8545",
   "WS_PROVIDER": "infuraAddress",
   "BLOCK_EXPLORER_URL": "https://rinkeby.etherscan.io/address/",
-  "ENV": "staging",
+  "ENV": "dev",
   "NETWORK_ID": "4",
   "NETWORK_NAME": "rinkeby"
 }
