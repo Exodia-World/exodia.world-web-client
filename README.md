@@ -38,4 +38,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Note on Desktop Client
 
-exodia.world-web-client is wrapped by [exodia.world-desktop-client](https://bitbucket.org/exodia-world/exodia.world-desktop-client) so that we may build the same code for both web and desktop users.
+exodia.world-web-client is wrapped by [exodia.world-desktop-client](https://github.com/Exodia-World/exodia.world-desktop-client) so that we may build the same code for both web and desktop users.
