@@ -1,23 +1,32 @@
 import * as Web3 from 'web3';
 import { Injectable } from '@angular/core';
+import { WindowService } from './window.service';
 import { MetamaskService } from './metamask.service';
 import { Outcome, OutcomeType } from '../models/outcome.model';
-
-declare const window: any;
-const eth: any = require('../../eth.json');
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class Web3Service {
   private web3: any;
+  private isWeb3Injected = false;
 
-  constructor(private metamaskService: MetamaskService) {
+  constructor(
+    private windowService: WindowService,
+    private metamaskService: MetamaskService
+  ) {
+    const window = this.windowService.get();
+
     // Setup Web3 provider.
     if (typeof window.web3 !== 'undefined') {
       this.web3 = new Web3(window.web3.currentProvider);
+      this.isWeb3Injected = true;
     } else {
-      const provider = eth.ENV === 'dev' ? eth.TEST_RPC_PROVIDER : eth.HTTP_PROVIDER;
-      this.web3 = new Web3(new Web3.providers.HttpProvider(provider));
+      this.web3 = new Web3(new Web3.providers.HttpProvider(environment.httpProvider));
     }
+  }
+
+  canSignTransactions(): boolean {
+    return this.isWeb3Injected;
   }
 
   getInstance(): any {

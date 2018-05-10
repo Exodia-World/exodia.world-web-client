@@ -8,18 +8,18 @@ export class MetamaskService {
   }
 
   openPopup(): void {
-    this.electronService.send('open-metamask-popup');
+    this.electronService.call('send', 'open-metamask-popup');
   }
 
   closePopup(): void {
-    this.electronService.send('close-metamask-popup');
+    this.electronService.call('send', 'close-metamask-popup');
   }
 
   openNotification(): void {
-    this.electronService.send('open-metamask-notification');
+    this.electronService.call('send', 'open-metamask-notification');
   }
 
   closeNotification(): void {
-    this.electronService.send('close-metamask-notification');
+    this.electronService.call('send', 'close-metamask-notification');
   }
 }

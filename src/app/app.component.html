@@ -1,20 +1,10 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
+<div *ngIf="showAppWarning" class="app-warning">
+  <p class="app-warning__message">
+    Please install an Ethereum wallet browser extension (e.g., Metamask)
+    or a DApp browser (e.g., Mist) to use Exodia.World.
+  </p>
 </div>
-<h2>Here are some buttons to help you start: </h2>
-<div class="ui-g ui-fluid">
-  <div class="ui-g-2">
-    <label>Recipient</label><input type="text" pInputText [(ngModel)]="recipientAddress"/>
-    <label>Amount</label><p-spinner size="30" [(ngModel)]="etherAmount"></p-spinner>
-    <p-button style="margin-top: 1em" label="Send Ether" (onClick)="onSendEther()"></p-button>
-  </div>
-  <div class="ui-g-3">
-    <p-button class="ui-g-12" label="Open Metamask Popup" (onClick)="onOpenMetamaskPopup()"></p-button>
-    <p-button class="ui-g-12" label="Close Metamask Popup" (onClick)="onCloseMetamaskPopup()"></p-button>
-    <p-button class="ui-g-12" label="Open Metamask Notification" (onClick)="onOpenMetamaskNotification()"></p-button>
-    <p-button class="ui-g-12" label="Close Metamask Notification" (onClick)="onCloseMetamaskNotification()"></p-button>
-  </div>
+
+<div *ngIf="! showAppWarning">
+  <app-wallet></app-wallet>
 </div>

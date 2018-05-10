@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Web3Service } from '../web3.service';
-import { BigNumber } from 'bignumber.js';
+import { Web3Service } from '../../services/web3.service';
 import { Outcome, OutcomeType } from '../../models/outcome.model';
 
 const exoTokenABI = require('../../contracts/EXOToken.json').abi;

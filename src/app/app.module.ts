@@ -1,16 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { SpinnerModule } from 'primeng/spinner';
+import { WalletModule } from './wallet/wallet.module';
 
-// Import shared services.
-import { ElectronService } from '../services/electron.service';
-import { MetamaskService } from '../services/metamask.service';
-import { Web3Service } from '../services/web3.service';
-import { WalletService } from '../services/wallet/wallet.service';
-
+import { Web3Service } from './services/web3.service';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -19,16 +12,11 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    InputTextModule,
-    ButtonModule,
-    SpinnerModule
+    BrowserAnimationsModule,
+    WalletModule
   ],
   providers: [
-    ElectronService,
-    MetamaskService,
-    Web3Service,
-    WalletService
+    Web3Service
   ],
   bootstrap: [AppComponent]
 })

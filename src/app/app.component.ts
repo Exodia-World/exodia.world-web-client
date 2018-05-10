@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { ElectronService } from '../services/electron.service';
-import { MetamaskService } from '../services/metamask.service';
-import { WalletService } from '../services/wallet/wallet.service';
+import { Web3Service } from './services/web3.service';
 
 @Component({
   selector: 'app-root',
@@ -10,41 +8,9 @@ import { WalletService } from '../services/wallet/wallet.service';
 })
 export class AppComponent {
   title = 'Exodia.World';
-  recipientAddress: string;
-  etherAmount = 0;
+  showAppWarning = false;
 
-  constructor(
-    private electronService: ElectronService,
-    private metamaskService: MetamaskService,
-    private walletService: WalletService
-  ) {
-  }
-
-  onSendEther(): void {
-    // this.walletService.sendEther(this.recipientAddress, this.etherAmount);
-  }
-
-  onOpenMetamaskPopup(): void {
-    if (this.electronService.isRunning()) {
-      this.metamaskService.openPopup();
-    }
-  }
-
-  onCloseMetamaskPopup(): void {
-    if (this.electronService.isRunning()) {
-      this.metamaskService.closePopup();
-    }
-  }
-
-  onOpenMetamaskNotification(): void {
-    if (this.electronService.isRunning()) {
-      this.metamaskService.openNotification();
-    }
-  }
-
-  onCloseMetamaskNotification(): void {
-    if (this.electronService.isRunning()) {
-      this.metamaskService.closeNotification();
-    }
+  constructor(private web3Service: Web3Service) {
+    this.showAppWarning = ! this.web3Service.canSignTransactions();
   }
 }
