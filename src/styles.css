@@ -9,7 +9,6 @@ body {
 h1, h2, h3, h4, button, label {
   font-family: 'Exo 2', sans-serif;
   text-transform: uppercase;
-  margin: 0;
 }
 
 h1, h2, h3 {
@@ -23,17 +22,12 @@ h4 {
 
 p {
   font-family: 'Montserrat', sans-serif;
-  margin: 0;
 }
 
-.ui-widget.ui-button.btn--ice {
+.ui-widget.ui-button.btn--ice, .ui-widget.ui-button.btn--ice:enabled:hover,
+.ui-widget.ui-button.btn--ice:focus {
   color: #1b93c7;
   background-color: transparent;
   border: none;
-}
-
-.ui-widget.ui-button.btn--ice:enabled:hover, .ui-widget.ui-button.btn--ice:focus {
-  color: #1b93c7;
-  background: none;
-  border: none;
+  outline: none;
 }
