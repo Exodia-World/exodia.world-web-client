@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 // Import shared services.
 import { WindowService } from './services/window.service';
@@ -12,7 +13,8 @@ import { Web3Service } from './services/web3.service';
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    ButtonModule
   ],
   providers: [
     WindowService,
@@ -23,7 +25,8 @@ import { Web3Service } from './services/web3.service';
   ],
   exports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    ButtonModule
   ]
 })
 export class SharedModule { }

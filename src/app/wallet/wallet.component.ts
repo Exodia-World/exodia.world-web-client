@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from './shared/wallet.service';
+import { WalletPanelState } from './shared/wallet.model';
 
 @Component({
   selector: 'app-wallet',
@@ -7,8 +8,7 @@ import { WalletService } from './shared/wallet.service';
   styleUrls: ['./wallet.component.css']
 })
 export class WalletComponent implements OnInit {
-  showWallet = true;
-  isFullScreen = false;
+  panelState = WalletPanelState.Normal;
 
   constructor(private walletService: WalletService) {
   }
@@ -16,8 +16,20 @@ export class WalletComponent implements OnInit {
   ngOnInit() {
   }
 
-  onShowWallet() {
-    this.showWallet = true;
-    this.isFullScreen = false;
+  isMinimized() {
+    return this.panelState === WalletPanelState.Minimized;
+  }
+
+  isMaximized() {
+    return this.panelState === WalletPanelState.Maximized;
+  }
+
+  maximizeWallet() {
+    this.panelState = WalletPanelState.Maximized;
+  }
+
+  toggleWallet() {
+    this.panelState = this.panelState === WalletPanelState.Normal ?
+      WalletPanelState.Minimized : WalletPanelState.Normal;
   }
 }

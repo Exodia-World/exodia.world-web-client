@@ -1,5 +1,42 @@
-.wallet__show-btn {
-  margin-top: 5px;
-  margin-right: 5px;
-  float: right;
+.main-screen {
+  background-color: #f7912d;
+  position: absolute;
+  top: 0;
+  right: 25%;
+  bottom: 0;
+  left: 0;
+}
+
+.main-screen--wallet-minimized {
+  right: 0;
+}
+
+.main-screen--wallet-maximized {
+  right: 100%;
+}
+
+.wallet__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.wallet {
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 75%;
+
+  -moz-transition: right .5s ease, left .5s ease;
+  transition: right .5s ease, left .5s ease;
+}
+
+.wallet--minimized {
+  left: 100%;
+}
+
+.wallet--maximized {
+  left: 0;
 }

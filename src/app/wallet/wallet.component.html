@@ -1,4 +1,16 @@
-<button pButton type="button" class="wallet__show-btn" (click)="onShowWallet()">Wallet</button>
-<p-sidebar [(visible)]="showWallet" position="right" [fullScreen]="isFullScreen" [modal]="false">
-  Wallet
-</p-sidebar>
+<section class="main-screen" [ngClass]="{
+    'main-screen--wallet-minimized': isMinimized(),
+    'main-screen--wallet-maximized': isMaximized()
+  }">
+</section>
+<section class="wallet" [ngClass]="{
+    'wallet--minimized': isMinimized(),
+    'wallet--maximized': isMaximized()
+  }">
+  <button *ngIf="! isMaximized()" pButton type="button" class="btn--ice wallet__maximize"
+          icon="fa-expand" (click)="maximizeWallet()"></button>
+  <button pButton type="button" class="btn--ice wallet__toggle"
+          [icon]="isMinimized() ? 'fa-money' :
+            (isMaximized() ? 'fa-window-restore' : 'fa-window-minimize')"
+          (click)="toggleWallet()"></button>
+</section>
