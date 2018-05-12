@@ -3,7 +3,7 @@ import { Web3Service } from '../../services/web3.service';
 import { Outcome, OutcomeType } from '../../models/outcome.model';
 
 const exoTokenABI = require('../../contracts/EXOToken.json').abi;
-const exoTokenAddress = '';
+const exoTokenAddress = '0x13974e705CBBcC8FEF113EAD43cB8161888e6B64';
 
 @Injectable()
 export class WalletService {
@@ -25,7 +25,7 @@ export class WalletService {
     return new Promise((resolve, reject) => {
       this.exoToken.balanceOf.call(address, (err, balance) => {
         if (err) {
-          reject(new Outcome(OutcomeType.Fail, err));
+          reject(new Outcome(OutcomeType.Failure, err));
         } else {
           resolve(new Outcome(OutcomeType.Success, this.web3Service.fromWei(balance, unit)));
         }
@@ -64,7 +64,7 @@ export class WalletService {
     return new Promise((resolve, reject) => {
       this.exoToken.calculateInterest.call((err, interest) => {
         if (err) {
-          reject(new Outcome(OutcomeType.Fail, err));
+          reject(new Outcome(OutcomeType.Failure, err));
         } else {
           resolve(new Outcome(OutcomeType.Success, this.web3Service.fromWei(interest, unit)));
         }

@@ -9,6 +9,7 @@ import { WalletPanelState } from './shared/wallet.model';
 })
 export class WalletComponent implements OnInit {
   panelState = WalletPanelState.Normal;
+  balance = 0;
 
   constructor(private walletService: WalletService) {
   }
@@ -31,5 +32,16 @@ export class WalletComponent implements OnInit {
   toggleWallet() {
     this.panelState = this.panelState === WalletPanelState.Normal ?
       WalletPanelState.Minimized : WalletPanelState.Normal;
+  }
+
+  updateBalance() {
+    this.walletService.getBalanceOfDefaultAccount('ether')
+      .then(success => {
+        this.balance = success.getData();
+        console.log(this.balance);
+      })
+      .catch(failure => {
+        console.log(failure);
+      });
   }
 }

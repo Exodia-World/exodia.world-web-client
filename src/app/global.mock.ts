@@ -95,7 +95,7 @@ export function spyOnWeb3Service(contractSpy: any): any {
           if (parseInt(receipt.status, 16) === 1) {
             resolve(new Outcome(OutcomeType.Success, receipt));
           } else {
-            reject(new Outcome(OutcomeType.Fail, receipt));
+            reject(new Outcome(OutcomeType.Failure, receipt));
           }
         });
       };

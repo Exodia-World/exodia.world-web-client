@@ -1,6 +1,6 @@
 export enum OutcomeType {
   Success,
-  Fail
+  Failure
 }
 
 export class Outcome {

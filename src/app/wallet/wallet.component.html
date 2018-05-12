@@ -13,4 +13,13 @@
           [icon]="isMinimized() ? 'fa-money' :
             (isMaximized() ? 'fa-window-restore' : 'fa-window-minimize')"
           (click)="toggleWallet()"></button>
+  <header class="balance">
+    <h4 class="balance__title">Balance</h4>
+    <button pButton type="button" class="btn--ice balance__refresh"
+            icon="fa-refresh" (click)="updateBalance()"></button>
+    <p class="balance__content">
+      <strong class="balance__value">{{balance.toString()}}</strong>
+      <label class="balance__unit">EXO</label>
+    </p>
+  </header>
 </section>

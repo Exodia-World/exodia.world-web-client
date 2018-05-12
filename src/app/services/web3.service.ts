@@ -61,12 +61,12 @@ export class Web3Service {
     return new Promise<Outcome>((resolve, reject) => {
       this.web3.eth.getAccounts((err, accounts) => {
         if (err) {
-          reject(new Outcome(OutcomeType.Fail, err));
+          reject(new Outcome(OutcomeType.Failure, err));
         }
         if (accounts) {
           resolve(new Outcome(OutcomeType.Success, accounts));
         } else {
-          reject(new Outcome(OutcomeType.Fail, null, 'accounts is undefined'));
+          reject(new Outcome(OutcomeType.Failure, null, 'accounts is undefined'));
         }
       });
     });
@@ -82,7 +82,7 @@ export class Web3Service {
         if (parseInt(receipt.status, 16) === 1) {
           resolve(new Outcome(OutcomeType.Success, receipt));
         } else {
-          reject(new Outcome(OutcomeType.Fail, receipt));
+          reject(new Outcome(OutcomeType.Failure, receipt));
         }
       });
     };

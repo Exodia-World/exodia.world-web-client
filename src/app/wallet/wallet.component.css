@@ -2,17 +2,34 @@
   background-color: #f7912d;
   position: absolute;
   top: 0;
-  right: 25%;
+  right: 20%;
   bottom: 0;
   left: 0;
 }
-
 .main-screen--wallet-minimized {
   right: 0;
 }
-
 .main-screen--wallet-maximized {
   right: 100%;
+}
+
+
+.wallet {
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 80%;
+
+  -moz-transition: right .5s ease, left .5s ease;
+  transition: right .5s ease, left .5s ease;
+}
+.wallet--minimized {
+  left: 100%;
+}
+.wallet--maximized {
+  left: 0;
 }
 
 .wallet__toggle {
@@ -21,22 +38,36 @@
   right: 0;
 }
 
-.wallet {
-  background-color: #fff;
+
+.balance {
+  padding: 1em;
+}
+
+.balance__title {
+  font-size: .8rem;
+  display: inline;
+}
+
+.balance__refresh {
+  font-size: .7em;
+}
+
+.balance__content {
+  min-height: 40px;
+  position: relative;
+}
+
+.balance__value {
+  font-size: 2rem;
   position: absolute;
-  top: 0;
+  right: 55%;
+  left: 45%;
+  bottom: 0;
+}
+
+.balance__unit {
+  font-size: 1.3rem;
+  position: absolute;
   right: 0;
   bottom: 0;
-  left: 75%;
-
-  -moz-transition: right .5s ease, left .5s ease;
-  transition: right .5s ease, left .5s ease;
-}
-
-.wallet--minimized {
-  left: 100%;
-}
-
-.wallet--maximized {
-  left: 0;
 }

@@ -32,7 +32,7 @@ describe('WalletService', () => {
     walletService.getBalance('0xERROR', 'ether').catch(outcome => {
       expect(walletService.getToken().balanceOf.call).toHaveBeenCalled();
       expect(Web3ServiceSpy.fromWei).not.toHaveBeenCalled();
-      expect(outcome.getType()).toEqual(OutcomeType.Fail);
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
       expect(outcome.getData().message).toEqual('ERROR');
       done();
     });
@@ -66,7 +66,7 @@ describe('WalletService', () => {
       expect(walletService.getToken().transfer).toHaveBeenCalled();
       expect(Web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
       expect(Web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
-      expect(outcome.getType()).toEqual(OutcomeType.Fail);
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
       expect(outcome.getData().status).toEqual('0x0');
       done();
     });
@@ -90,7 +90,7 @@ describe('WalletService', () => {
       expect(walletService.getToken().depositStake).toHaveBeenCalled();
       expect(Web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
       expect(Web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
-      expect(outcome.getType()).toEqual(OutcomeType.Fail);
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
       expect(outcome.getData().status).toEqual('0x0');
       done();
     });
@@ -114,7 +114,7 @@ describe('WalletService', () => {
       expect(walletService.getToken().withdrawStake).toHaveBeenCalled();
       expect(Web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
       expect(Web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
-      expect(outcome.getType()).toEqual(OutcomeType.Fail);
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
       expect(outcome.getData().status).toEqual('0x0');
       done();
     });
@@ -141,7 +141,7 @@ describe('WalletService', () => {
       expect(walletService.getToken().updateStakeBalance).toHaveBeenCalled();
       expect(Web3ServiceSpy.checkTransactionStatus).toHaveBeenCalled();
       expect(Web3ServiceSpy.getTransactionReceipt).toHaveBeenCalled();
-      expect(outcome.getType()).toEqual(OutcomeType.Fail);
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
       expect(outcome.getData().status).toEqual('0x0');
       done();
     });
@@ -166,7 +166,7 @@ describe('WalletService', () => {
     walletService.calculateInterest('ether').catch(outcome => {
       expect(walletService.getToken().calculateInterest.call).toHaveBeenCalled();
       expect(Web3ServiceSpy.fromWei).not.toHaveBeenCalled();
-      expect(outcome.getType()).toEqual(OutcomeType.Fail);
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
       done();
     });
   });
