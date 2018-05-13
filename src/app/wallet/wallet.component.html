@@ -7,16 +7,20 @@
     'wallet--minimized': isMinimized(),
     'wallet--maximized': isMaximized()
   }">
-  <button *ngIf="! isMaximized()" pButton type="button" class="btn--ice wallet__maximize"
-          icon="fa-expand" (click)="maximizeWallet()"></button>
-  <button pButton type="button" class="btn--ice wallet__toggle"
-          [icon]="isMinimized() ? 'fa-money' :
-            (isMaximized() ? 'fa-window-restore' : 'fa-window-minimize')"
-          (click)="toggleWallet()"></button>
+  <button *ngIf="! isMaximized()" mat-icon-button color="accent"
+          class="wallet__maximize" (click)="maximizeWallet()">
+    <mat-icon>arrow_left</mat-icon>
+  </button>
+  <button mat-icon-button color="accent" class="wallet__toggle" (click)="toggleWallet()">
+    <mat-icon *ngIf="isMinimized()">account_balance_wallet</mat-icon>
+    <mat-icon *ngIf="isMaximized()">arrow_right</mat-icon>
+    <mat-icon *ngIf="! isMinimized() && ! isMaximized()">minimize</mat-icon>
+  </button>
   <header class="balance">
-    <h4 class="balance__title">Balance</h4>
-    <button pButton type="button" class="btn--ice balance__refresh"
-            icon="fa-refresh" (click)="updateBalance()"></button>
+    <!-- <h4 class="balance__title">Balance</h4> -->
+    <button mat-icon-button class="balance__refresh" (click)="updateBalance()">
+      <mat-icon>refresh</mat-icon>
+    </button>
     <div matTooltip="" matTooltipPosition="before" #balanceComm="matTooltip"></div>
     <p class="balance__content">
       <strong class="balance__value">{{balance.toString()}}</strong>

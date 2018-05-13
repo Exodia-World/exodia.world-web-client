@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Import shared services.
@@ -16,7 +17,8 @@ import { OutcomeService } from './services/outcome.service';
   imports: [
     CommonModule,
     FormsModule,
-    ButtonModule,
+    MatButtonModule,
+    MatIconModule,
     MatTooltipModule
   ],
   providers: [
@@ -30,7 +32,8 @@ import { OutcomeService } from './services/outcome.service';
   exports: [
     CommonModule,
     FormsModule,
-    ButtonModule,
+    MatButtonModule,
+    MatIconModule,
     MatTooltipModule
   ]
 })

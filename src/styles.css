@@ -1,7 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
 html {
   font-size: 10px;
 }
@@ -33,13 +31,16 @@ p {
   font-family: 'Montserrat', sans-serif;
 }
 
-.ui-widget.ui-button.btn--ice, .ui-widget.ui-button.btn--ice:enabled:hover,
-.ui-widget.ui-button.btn--ice:focus {
+/* .btn--ice, .btn--ice:enabled:hover, .btn--ice:focus {
   color: #1b93c7;
   background-color: transparent;
   border: none;
   outline: none;
-}
+} */
+
+/* .material-icons {
+  font-size: 1.8em;
+} */
 
 .mat-tooltip {
   font-size: 1.25em;

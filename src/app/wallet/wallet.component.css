@@ -43,13 +43,12 @@
   padding: 1em;
 }
 
-.balance__title {
+/* .balance__title {
   font-size: 1.28em;
   display: inline;
-}
+} */
 
 .balance__refresh {
-  font-size: 1.12em;
 }
 
 .balance__content {
