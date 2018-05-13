@@ -1,8 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html {
+  font-size: 10px;
+}
+
 body {
   font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
   color: #414b4b;
 }
 
@@ -20,6 +25,10 @@ h4 {
   font-weight: 300;
 }
 
+button, label {
+  font-size: 1.6em;
+}
+
 p {
   font-family: 'Montserrat', sans-serif;
 }
@@ -30,4 +39,8 @@ p {
   background-color: transparent;
   border: none;
   outline: none;
+}
+
+.mat-tooltip {
+  font-size: 1.25em;
 }

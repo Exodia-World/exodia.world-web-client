@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { WalletService } from './shared/wallet.service';
 import { WalletPanelState } from './shared/wallet.model';
 
@@ -7,14 +7,17 @@ import { WalletPanelState } from './shared/wallet.model';
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.css']
 })
-export class WalletComponent implements OnInit {
+export class WalletComponent implements AfterViewInit {
+  @ViewChild('balanceComm') balanceComm: any;
+
   panelState = WalletPanelState.Normal;
   balance = 0;
 
   constructor(private walletService: WalletService) {
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    console.log(this.balanceComm);
   }
 
   isMinimized() {
@@ -38,10 +41,10 @@ export class WalletComponent implements OnInit {
     this.walletService.getBalanceOfDefaultAccount('ether')
       .then(success => {
         this.balance = success.getData();
-        console.log(this.balance);
       })
       .catch(failure => {
-        console.log(failure);
+        this.balanceComm.message = failure.getMessage();
+        this.balanceComm.show();
       });
   }
 }

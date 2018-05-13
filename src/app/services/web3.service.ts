@@ -1,9 +1,10 @@
 import * as Web3 from 'web3';
+import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { WindowService } from './window.service';
 import { MetamaskService } from './metamask.service';
-import { Outcome, OutcomeType } from '../models/outcome.model';
-import { environment } from '../../environments/environment';
+import { OutcomeService } from './outcome.service';
+import { Outcome } from '../models/outcome.model';
 
 @Injectable()
 export class Web3Service {
@@ -12,7 +13,8 @@ export class Web3Service {
 
   constructor(
     private windowService: WindowService,
-    private metamaskService: MetamaskService
+    private metamaskService: MetamaskService,
+    private outcomeService: OutcomeService
   ) {
     const window = this.windowService.get();
 
@@ -38,7 +40,8 @@ export class Web3Service {
   }
 
   getDefaultAccount(): string {
-    return this.web3.eth.defaultAccount;
+    return this.web3.eth.defaultAccount ?
+      this.web3.eth.defaultAccount : this.web3.eth.accounts[0];
   }
 
   setDefaultAccount(address: string): void {
@@ -61,12 +64,12 @@ export class Web3Service {
     return new Promise<Outcome>((resolve, reject) => {
       this.web3.eth.getAccounts((err, accounts) => {
         if (err) {
-          reject(new Outcome(OutcomeType.Failure, err));
+          reject(this.outcomeService.fail('GetAccountsFailed', err));
         }
         if (accounts) {
-          resolve(new Outcome(OutcomeType.Success, accounts));
+          resolve(this.outcomeService.succeed(accounts));
         } else {
-          reject(new Outcome(OutcomeType.Failure, null, 'accounts is undefined'));
+          reject(this.outcomeService.fail('NoAccountsFound'));
         }
       });
     });
@@ -74,15 +77,16 @@ export class Web3Service {
 
   checkTransactionStatus(
     resolve: (outcome: Outcome) => void,
-    reject: (outcome: Outcome) => void
+    reject: (outcome: Outcome) => void,
+    errName: string
   ): (transactionHash: string) => void
   {
     return (transactionHash: string) => {
       this.web3.eth.getTransactionReceipt(transactionHash, receipt => {
         if (parseInt(receipt.status, 16) === 1) {
-          resolve(new Outcome(OutcomeType.Success, receipt));
+          resolve(this.outcomeService.succeed(receipt));
         } else {
-          reject(new Outcome(OutcomeType.Failure, receipt));
+          reject(this.outcomeService.fail(errName, receipt));
         }
       });
     };

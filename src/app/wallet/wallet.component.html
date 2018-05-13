@@ -17,6 +17,7 @@
     <h4 class="balance__title">Balance</h4>
     <button pButton type="button" class="btn--ice balance__refresh"
             icon="fa-refresh" (click)="updateBalance()"></button>
+    <div matTooltip="" matTooltipPosition="before" #balanceComm="matTooltip"></div>
     <p class="balance__content">
       <strong class="balance__value">{{balance.toString()}}</strong>
       <label class="balance__unit">EXO</label>

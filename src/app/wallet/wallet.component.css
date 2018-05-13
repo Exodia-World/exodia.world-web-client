@@ -44,23 +44,23 @@
 }
 
 .balance__title {
-  font-size: .8rem;
+  font-size: 1.28em;
   display: inline;
 }
 
 .balance__refresh {
-  font-size: .7em;
+  font-size: 1.12em;
 }
 
 .balance__content {
   margin: 0;
-  min-height: 40px;
+  min-height: 4em;
   position: relative;
   overflow: hidden;
 }
 
 .balance__value {
-  font-size: 2rem;
+  font-size: 3em;
   position: absolute;
   right: 55%;
   left: 45%;
@@ -68,7 +68,7 @@
 }
 
 .balance__unit {
-  font-size: 1.3rem;
+  font-size: 2em;
   position: absolute;
   right: 0;
   bottom: 0;
