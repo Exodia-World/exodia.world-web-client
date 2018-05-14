@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared.module';
+import { SharedModule } from '../modules/shared.module';
+import { ToExponentialPipeModule } from '../pipes/to-exponential.module';
 import { WalletService } from './shared/wallet.service';
 import { WalletComponent } from './wallet.component';
 
@@ -8,7 +9,8 @@ import { WalletComponent } from './wallet.component';
     WalletComponent
   ],
   imports: [
-    SharedModule
+    SharedModule,
+    ToExponentialPipeModule
   ],
   providers: [
     WalletService
