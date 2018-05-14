@@ -1,22 +1,25 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
-import { ElectronService } from './services/electron.service';
+import { WalletModule } from './wallet/wallet.module';
 import { Web3Service } from './services/web3.service';
-import { ElectronServiceMock, Web3ServiceMock } from './global.mock';
+import { spyOnEXOToken, spyOnWeb3Service } from './global.mock';
 
 describe('AppComponent', () => {
+  let Web3ServiceSpy: any;
+
   beforeEach(async(() => {
+    Web3ServiceSpy = spyOnWeb3Service(spyOnEXOToken());
+
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
       imports: [
-        FormsModule
+        WalletModule
       ],
       providers: [
-        {provide: ElectronService, useValue: ElectronServiceMock},
-        {provide: Web3Service, useValue: Web3ServiceMock}
+        {provide: Web3Service, useValue: Web3ServiceSpy}
       ]
     }).compileComponents();
   }));
@@ -31,5 +34,21 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('Exodia.World');
+  }));
+
+  it('should NOT show app warning if web3 can sign transactions', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(Web3ServiceSpy.canSignTransactions).toHaveBeenCalled();
+    expect(app.showAppWarning).toBe(false);
+  }));
+
+  it('should show app warning if web3 cannot sign transactions', async(() => {
+    Web3ServiceSpy.canSignTransactions.and.returnValue(false);
+
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(Web3ServiceSpy.canSignTransactions).toHaveBeenCalled();
+    expect(app.showAppWarning).toBe(true);
   }));
 });
