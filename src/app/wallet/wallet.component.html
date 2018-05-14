@@ -24,7 +24,7 @@
     <div id="balance__refresh" matTooltip matTooltipPosition="before" #comm="matTooltip"></div>
     <div class="balance__content">
       <div class="balance__value">
-        {{isMaximized() ? (balance | number:'1.0-3') : (balance | toExponential)}}
+        {{isMaximized() ? (balance | number:'1.0-9') : (balance | longNumber:'1.0-6')}}
       </div>
       <div class="balance__unit">EXO</div>
     </div>
