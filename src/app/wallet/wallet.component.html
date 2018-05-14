@@ -18,9 +18,11 @@
     <button pButton type="button" class="btn--ice balance__refresh"
             icon="fa-refresh" (click)="updateBalance()"></button>
     <div matTooltip="" matTooltipPosition="before" #balanceComm="matTooltip"></div>
-    <p class="balance__content">
-      <strong class="balance__value">{{balance.toString()}}</strong>
-      <label class="balance__unit">EXO</label>
-    </p>
+    <div class="balance__content">
+      <div class="balance__value">
+        {{isMaximized() ? (balance | number:'1.0-3') : (balance | toExponential)}}
+      </div>
+      <div class="balance__unit">EXO</div>
+    </div>
   </header>
 </section>

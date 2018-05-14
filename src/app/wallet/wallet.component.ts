@@ -40,7 +40,7 @@ export class WalletComponent implements AfterViewInit {
   updateBalance() {
     this.walletService.getBalanceOfDefaultAccount('ether')
       .then(success => {
-        this.balance = success.getData();
+        this.balance = success.getData().toNumber();
       })
       .catch(failure => {
         this.balanceComm.message = failure.getMessage();

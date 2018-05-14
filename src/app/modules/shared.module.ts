@@ -5,12 +5,12 @@ import { ButtonModule } from 'primeng/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Import shared services.
-import { WindowService } from './services/window.service';
-import { ChromeService } from './services/chrome.service';
-import { ElectronService } from './services/electron.service';
-import { MetamaskService } from './services/metamask.service';
-import { Web3Service } from './services/web3.service';
-import { OutcomeService } from './services/outcome.service';
+import { WindowService } from '../services/window.service';
+import { ChromeService } from '../services/chrome.service';
+import { ElectronService } from '../services/electron.service';
+import { MetamaskService } from '../services/metamask.service';
+import { Web3Service } from '../services/web3.service';
+import { OutcomeService } from '../services/outcome.service';
 
 @NgModule({
   imports: [
