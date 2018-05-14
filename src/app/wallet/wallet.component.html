@@ -21,7 +21,7 @@
     <button mat-icon-button class="balance__refresh" (click)="updateBalance()">
       <mat-icon>refresh</mat-icon>
     </button>
-    <div matTooltip="" matTooltipPosition="before" #balanceComm="matTooltip"></div>
+    <div id="balance__refresh" matTooltipPosition="before" #comm="matTooltip"></div>
     <p class="balance__content">
       <strong class="balance__value">{{balance.toString()}}</strong>
       <label class="balance__unit">EXO</label>

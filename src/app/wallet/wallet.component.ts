@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { CommunicatorComponent } from '../components/communicator.component';
 import { WalletService } from './shared/wallet.service';
 import { WalletPanelState } from './shared/wallet.model';
 
@@ -7,17 +8,15 @@ import { WalletPanelState } from './shared/wallet.model';
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.css']
 })
-export class WalletComponent implements AfterViewInit {
-  @ViewChild('balanceComm') balanceComm: any;
-
+export class WalletComponent extends CommunicatorComponent implements AfterViewInit {
   panelState = WalletPanelState.Normal;
   balance = 0;
 
   constructor(private walletService: WalletService) {
+    super();
   }
 
   ngAfterViewInit() {
-    console.log(this.balanceComm);
   }
 
   isMinimized() {
@@ -43,8 +42,7 @@ export class WalletComponent implements AfterViewInit {
         this.balance = success.getData();
       })
       .catch(failure => {
-        this.balanceComm.message = failure.getMessage();
-        this.balanceComm.show();
+        this.communicate('balance__refresh', failure.getMessage());
       });
   }
 }
