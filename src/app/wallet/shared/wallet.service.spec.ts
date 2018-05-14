@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { WalletService } from './wallet.service';
 import { OutcomeType, Outcome } from '../../models/outcome.model';
 import { spyOnEXOToken, spyOnWeb3Service, spyOnOutcomeService } from '../../global.mock';
