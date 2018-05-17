@@ -1,5 +1,3 @@
-
-
 .main-screen {
   background-color: #f7912d;
   position: absolute;
@@ -46,12 +44,8 @@
 }
 
 .balance__title {
-  font-size: 1.28em;
+  font-size: 1.4em;
   display: inline;
-}
-
-.balance__refresh {
-  font-size: 1.12em;
 }
 
 .balance__content {

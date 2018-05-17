@@ -1,16 +1,12 @@
 import { Outcome, OutcomeType } from './models/outcome.model';
 
-export class ElectronServiceMock {
-}
+export class ElectronServiceMock { }
 
-export class MetamaskServiceMock {
-}
+export class MetamaskServiceMock { }
 
-export class Web3ServiceMock {
-}
+export class Web3ServiceMock { }
 
-export class WalletServiceMock {
-}
+export class WalletServiceMock { }
 
 export function spyOnEXOToken(): any {
   const EXOTokenSpy = {
@@ -70,6 +66,7 @@ export function spyOnEXOToken(): any {
 
 export function spyOnWeb3Service(contractSpy: any): any {
   const Web3ServiceSpy = jasmine.createSpyObj('Web3Service', [
+    'canSignTransactions',
     'getInstance',
     'getContract',
     'getDefaultAccount',
@@ -78,6 +75,7 @@ export function spyOnWeb3Service(contractSpy: any): any {
     'getTransactionReceipt',
     'checkTransactionStatus'
   ]);
+  Web3ServiceSpy.canSignTransactions.and.returnValue(true);
   Web3ServiceSpy.getContract.and.returnValue(contractSpy);
   Web3ServiceSpy.getDefaultAccount.and.callFake(() => '0x8888');
   Web3ServiceSpy.fromWei.and.callFake((value: number) => value);
@@ -102,4 +100,21 @@ export function spyOnWeb3Service(contractSpy: any): any {
     }
   );
   return Web3ServiceSpy;
+}
+
+export function spyOnOutcomeService(): any {
+  const OutcomeServiceSpy = jasmine.createSpyObj('OutcomeService', [
+    'succeed',
+    'fail',
+    'getErrMsg'
+  ]);
+
+  OutcomeServiceSpy.succeed.and.callFake(
+    (data: any = null, msg: string = ''): Outcome => new Outcome(OutcomeType.Success, data, msg)
+  );
+  OutcomeServiceSpy.fail.and.callFake(
+    (errName: string, data: any = null): Outcome => new Outcome(OutcomeType.Failure, data, '')
+  );
+  OutcomeServiceSpy.getErrMsg.and.callFake((errName: string) => '');
+  return OutcomeServiceSpy;
 }

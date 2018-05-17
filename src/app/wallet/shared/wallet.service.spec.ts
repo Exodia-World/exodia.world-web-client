@@ -1,17 +1,19 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { WalletService } from './wallet.service';
 import { OutcomeType, Outcome } from '../../models/outcome.model';
-import { spyOnEXOToken, spyOnWeb3Service } from '../../global.mock';
+import { spyOnEXOToken, spyOnWeb3Service, spyOnOutcomeService } from '../../global.mock';
 
 describe('WalletService', () => {
   let EXOTokenSpy: any;
   let Web3ServiceSpy: any;
+  let OutcomeServiceSpy: any;
   let walletService: WalletService;
 
   beforeEach(() => {
     EXOTokenSpy = spyOnEXOToken();
     Web3ServiceSpy = spyOnWeb3Service(EXOTokenSpy);
-    walletService = new WalletService(Web3ServiceSpy);
+    OutcomeServiceSpy = spyOnOutcomeService();
+    walletService = new WalletService(Web3ServiceSpy, OutcomeServiceSpy);
   });
 
   it('should initialize EXO token', () => {
