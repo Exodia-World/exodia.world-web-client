@@ -6,7 +6,6 @@ html {
 
 body {
   font-family: 'Open Sans', sans-serif;
-  color: #414b4b;
 }
 
 h1, h2, h3, h4, button, label {
@@ -30,17 +29,6 @@ button, label {
 p {
   font-family: 'Montserrat', sans-serif;
 }
-
-/* .btn--ice, .btn--ice:enabled:hover, .btn--ice:focus {
-  color: #1b93c7;
-  background-color: transparent;
-  border: none;
-  outline: none;
-} */
-
-/* .material-icons {
-  font-size: 1.8em;
-} */
 
 .mat-tooltip {
   font-size: 1.25em;

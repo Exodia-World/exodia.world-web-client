@@ -1,41 +1,18 @@
 .main-screen {
-  background-color: #f7912d;
-  position: absolute;
-  top: 0;
-  right: 20%;
-  bottom: 0;
-  left: 0;
-}
-.main-screen--wallet-minimized {
-  right: 0;
-}
-.main-screen--wallet-maximized {
-  right: 100%;
+  height: 100vh;
 }
 
 
 .wallet {
-  background-color: #fff;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 80%;
-
-  -moz-transition: right .5s ease, left .5s ease;
-  transition: right .5s ease, left .5s ease;
-}
-.wallet--minimized {
-  left: 100%;
+  width: 230px;
+  box-shadow: -5px 0px 16px #ccc7;
 }
 .wallet--maximized {
-  left: 0;
+  width: 100vw;
 }
 
 .wallet__toggle {
-  position: absolute;
-  top: 0;
-  right: 0;
+  float: right;
 }
 
 
@@ -62,14 +39,14 @@
   text-align: right;
   font-weight: bold;
   overflow: hidden;
-  display:table-cell;
+  display: table-cell;
   width: 70%;
 }
 
 .balance__unit {
   font-size: 2em;
-  display:table-cell;
+  display: table-cell;
   vertical-align: middle;
-  text-align:center;
+  text-align: center;
   width: 30%;
 }

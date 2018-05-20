@@ -9,8 +9,8 @@ import { WalletPanelState } from './shared/wallet.model';
   styleUrls: ['./wallet.component.css']
 })
 export class WalletComponent extends CommunicatorComponent implements AfterViewInit {
-  panelState = WalletPanelState.Normal;
-  balance = 0;
+  isMaximized = false;
+  balance = 0.0;
 
   constructor(private walletService: WalletService) {
     super();
@@ -19,21 +19,8 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
   ngAfterViewInit() {
   }
 
-  isMinimized() {
-    return this.panelState === WalletPanelState.Minimized;
-  }
-
-  isMaximized() {
-    return this.panelState === WalletPanelState.Maximized;
-  }
-
-  maximizeWallet() {
-    this.panelState = WalletPanelState.Maximized;
-  }
-
-  toggleWallet() {
-    this.panelState = this.panelState === WalletPanelState.Normal ?
-      WalletPanelState.Minimized : WalletPanelState.Normal;
+  toggleMaximizeWallet() {
+    this.isMaximized = ! this.isMaximized;
   }
 
   updateBalance() {

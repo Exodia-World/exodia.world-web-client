@@ -1,32 +1,35 @@
-<section class="main-screen" [ngClass]="{
-    'main-screen--wallet-minimized': isMinimized(),
-    'main-screen--wallet-maximized': isMaximized()
+<mat-sidenav-container>
+  <mat-sidenav #wallet mode="side" position="end" opened class="wallet" [ngClass]="{
+    'wallet--maximized': isMaximized
   }">
-</section>
-<section class="wallet" [ngClass]="{
-    'wallet--minimized': isMinimized(),
-    'wallet--maximized': isMaximized()
-  }">
-  <button *ngIf="! isMaximized()" mat-icon-button color="accent"
-          class="wallet__maximize" (click)="maximizeWallet()">
-    <mat-icon>arrow_left</mat-icon>
-  </button>
-  <button mat-icon-button color="accent" class="wallet__toggle" (click)="toggleWallet()">
-    <mat-icon *ngIf="isMinimized()">account_balance_wallet</mat-icon>
-    <mat-icon *ngIf="isMaximized()">arrow_right</mat-icon>
-    <mat-icon *ngIf="! isMinimized() && ! isMaximized()">minimize</mat-icon>
-  </button>
-  <header class="balance">
-    <h4 class="balance__title">Balance</h4>
-    <button mat-icon-button class="balance__refresh" (click)="updateBalance()">
-      <mat-icon>refresh</mat-icon>
+    <button mat-icon-button color="primary" (click)="toggleMaximizeWallet()">
+      <mat-icon *ngIf="! isMaximized">arrow_left</mat-icon>
+      <mat-icon *ngIf="isMaximized">arrow_right</mat-icon>
     </button>
-    <div id="balance__refresh" matTooltip matTooltipPosition="before" #comm="matTooltip"></div>
-    <div class="balance__content">
-      <div class="balance__value">
-        {{isMaximized() ? (balance | number:'1.0-9') : (balance | longNumber:'1.0-6')}}
+    <button *ngIf="wallet.opened && ! isMaximized" mat-icon-button
+      color="primary" class="wallet__toggle" (click)="wallet.close()">
+      <mat-icon>minimize</mat-icon>
+    </button>
+
+    <header class="balance">
+      <h4 class="balance__title">Balance</h4>
+      <button mat-icon-button color="primary" class="balance__refresh" (click)="updateBalance()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <div #comm="matTooltip" id="balance__refresh" matTooltip matTooltipPosition="before"></div>
+      <div class="balance__content">
+        <div class="balance__value">
+          {{isMaximized ? (balance | number:'1.0-9') : (balance | longNumber:'1.0-6')}}
+        </div>
+        <div class="balance__unit">EXO</div>
       </div>
-      <div class="balance__unit">EXO</div>
-    </div>
-  </header>
-</section>
+    </header>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-screen">
+    <button *ngIf="! wallet.opened" mat-icon-button color="primary"
+      class="wallet__toggle" (click)="wallet.open()">
+      <mat-icon>account_balance_wallet</mat-icon>
+    </button>
+  </mat-sidenav-content>
+</mat-sidenav-container>
