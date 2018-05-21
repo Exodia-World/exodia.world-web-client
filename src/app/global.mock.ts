@@ -21,6 +21,17 @@ export function spyOnEXOToken(): any {
         }
       )
     },
+    stakeBalanceOf: {
+      call: jasmine.createSpy('call').and.callFake(
+        (address: string, callback: (err, result) => void) => {
+          if (address === '0xERROR') {
+            callback({message: 'ERROR'}, null);
+          } else {
+            callback(null, parseInt(address.split('0x')[1]));
+          }
+        }
+      )
+    },
     transfer: jasmine.createSpy('transfer').and.callFake(
       (to: string, value: number, callback: (result) => void) => {
         if (to === '0xERROR') {

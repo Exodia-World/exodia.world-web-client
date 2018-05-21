@@ -50,6 +50,36 @@ describe('WalletService', () => {
     });
   });
 
+  it('should get stake balance of an address', (done) => {
+    walletService.getStakeBalance('0x9999', 'ether').then(outcome => {
+      expect(walletService.getToken().stakeBalanceOf.call).toHaveBeenCalled();
+      expect(Web3ServiceSpy.fromWei).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Success);
+      expect(outcome.getData()).toEqual(9999);
+      done();
+    });
+  });
+
+  it('should return error if get stake balance failed', (done) => {
+    walletService.getStakeBalance('0xERROR', 'ether').catch(outcome => {
+      expect(walletService.getToken().stakeBalanceOf.call).toHaveBeenCalled();
+      expect(Web3ServiceSpy.fromWei).not.toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
+      expect(outcome.getData().message).toEqual('ERROR');
+      done();
+    });
+  });
+
+  it('should get stake balance of the default account', (done) => {
+    walletService.getStakeBalanceOfDefaultAccount('ether').then(outcome => {
+      expect(walletService.getToken().stakeBalanceOf.call).toHaveBeenCalled();
+      expect(Web3ServiceSpy.fromWei).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Success);
+      expect(outcome.getData()).toEqual(8888);
+      done();
+    });
+  });
+
   it('should transfer tokens to another address', (done) => {
     walletService.transfer('0xOK', 1, 'ether').then(outcome => {
       expect(Web3ServiceSpy.toWei).toHaveBeenCalled();
