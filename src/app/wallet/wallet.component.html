@@ -12,11 +12,12 @@
     </button>
 
     <header class="balance">
-      <h4 class="balance__title">Balance</h4>
-      <button mat-icon-button color="primary" class="balance__refresh" (click)="updateBalance()">
-        <mat-icon>refresh</mat-icon>
-      </button>
-      <message name="balance__refresh" type="suggestion" position="before"></message>
+      <h4 class="balance__title"><mat-icon>account_balance</mat-icon></h4>
+      <!-- <span matTooltip="Refresh Wallet" matTooltipPosition="before">
+        <button mat-icon-button color="primary" class="wallet__refresh" (click)="refreshAll()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </span> -->
       <div class="balance__content">
         <div class="balance__value">
           {{isMaximized ? (balance | number:'1.0-9') : (balance | longNumber:'1.0-6')}}
@@ -24,6 +25,13 @@
         <div class="balance__unit">EXO</div>
       </div>
     </header>
+
+    <message name="refresh-wallet" type="suggestion" position="before"></message>
+    <div class="wallet-actions">
+      <button mat-raised-button color="primary" class="wallet-actions__refresh" (click)="refreshAll()">
+        Refresh All
+      </button>
+    </div>
 
     <mat-tab-group [dynamicHeight]="true">
       <mat-tab>
@@ -34,7 +42,9 @@
         </ng-template>
         <p class="staking-item">
           <label>Amount</label>
-          <strong class="staking-item__value">1000</strong>
+          <strong class="staking-item__value">
+            {{stakeBalance | longNumber:'1.0-6'}} EXO
+          </strong>
         </p>
         <p class="staking-item">
           <label>Interest</label>

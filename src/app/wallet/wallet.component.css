@@ -16,6 +16,15 @@
 }
 
 
+.wallet-actions {
+  text-align: center;
+  padding: 1em;
+}
+
+.wallet-actions__refresh {
+}
+
+
 .balance {
   padding: 1em;
 }
