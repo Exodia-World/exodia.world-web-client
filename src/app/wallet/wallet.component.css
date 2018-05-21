@@ -50,3 +50,18 @@
   text-align: center;
   width: 30%;
 }
+
+
+:host /deep/ .mat-tab-label {
+  min-width: 70px;
+}
+
+
+.staking-item {
+  padding: 1em;
+  margin: 0;
+}
+
+.staking-item__value {
+  float: right
+}

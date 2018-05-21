@@ -8,7 +8,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-h1, h2, h3, h4, button, label {
+h1, h2, h3, h4, button, label, .mat-raised-button {
   font-family: 'Exo 2', sans-serif;
   text-transform: uppercase;
 }
@@ -22,8 +22,8 @@ h4 {
   font-weight: 300;
 }
 
-button, label {
-  font-size: 1.6em;
+button, label, p, .mat-raised-button {
+  font-size: 1.2rem;
 }
 
 p {
@@ -31,7 +31,7 @@ p {
 }
 
 .mat-tooltip {
-  font-size: 1.25em;
+  font-size: 1.25rem;
 }
 
 .mat-tooltip.suggestion {

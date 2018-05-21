@@ -24,6 +24,46 @@
         <div class="balance__unit">EXO</div>
       </div>
     </header>
+
+    <mat-tab-group [dynamicHeight]="true">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span matTooltip="Staking">
+            <mat-icon>trending_up</mat-icon>
+          </span>
+        </ng-template>
+        <p class="staking-item">
+          <label>Amount</label>
+          <strong class="staking-item__value">1000</strong>
+        </p>
+        <p class="staking-item">
+          <label>Interest</label>
+          <strong class="staking-item__value">+1.89</strong>
+        </p>
+        <p class="staking-item">
+          <label>Duration</label>
+          <strong class="staking-item__value">9 Days</strong>
+        </p>
+        <p class="staking-item">
+          <label>Total</label>
+          <strong class="staking-item__value">1001.89</strong>
+        </p>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span matTooltip="Address">
+            <mat-icon>alternate_email</mat-icon>
+          </span>
+        </ng-template>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span matTooltip="Calculator">
+            <mat-icon>money</mat-icon>
+          </span>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-screen">
