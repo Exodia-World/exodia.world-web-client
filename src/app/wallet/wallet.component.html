@@ -16,7 +16,7 @@
       <button mat-icon-button color="primary" class="balance__refresh" (click)="updateBalance()">
         <mat-icon>refresh</mat-icon>
       </button>
-      <div #comm="matTooltip" id="balance__refresh" matTooltip matTooltipPosition="before"></div>
+      <message name="balance__refresh" type="suggestion" position="before"></message>
       <div class="balance__content">
         <div class="balance__value">
           {{isMaximized ? (balance | number:'1.0-9') : (balance | longNumber:'1.0-6')}}

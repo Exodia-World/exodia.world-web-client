@@ -33,3 +33,16 @@ p {
 .mat-tooltip {
   font-size: 1.25em;
 }
+
+.mat-tooltip.suggestion {
+  background-color: #1b93c7;
+}
+
+.mat-tooltip.warning {
+  background-color: #fc0;
+  color: #000;
+}
+
+.mat-tooltip.error {
+  background-color: #c00;
+}
