@@ -70,7 +70,18 @@ export function spyOnEXOToken(): any {
           callback(null, 5);
         }
       )
-    }
+    },
+    stakeStartTimeOf: {
+      call: jasmine.createSpy('call').and.callFake(
+        (address: string, callback: (err, result) => void) => {
+          if (address === '0xERROR') {
+            callback({message: 'ERROR'}, null);
+          } else {
+            callback(null, parseInt(address.split('0x')[1]));
+          }
+        }
+      )
+    },
   };
   return EXOTokenSpy;
 }
@@ -84,7 +95,8 @@ export function spyOnWeb3Service(contractSpy: any): any {
     'fromWei',
     'toWei',
     'getTransactionReceipt',
-    'checkTransactionStatus'
+    'checkTransactionStatus',
+    'getBlock'
   ]);
   Web3ServiceSpy.canSignTransactions.and.returnValue(true);
   Web3ServiceSpy.getContract.and.returnValue(contractSpy);
@@ -92,15 +104,18 @@ export function spyOnWeb3Service(contractSpy: any): any {
   Web3ServiceSpy.fromWei.and.callFake((value: number) => value);
   Web3ServiceSpy.toWei.and.callFake((value: number) => value);
   Web3ServiceSpy.getTransactionReceipt.and.callFake(
-    (hash: string, callback: (result: any) => void) => {
+    (hash: string, callback?: (err: any, result: any) => void) => {
       const status = hash === 'OK' ? '0x1' : '0x0';
-      callback({ status });
+      callback(null, { status });
     }
   );
   Web3ServiceSpy.checkTransactionStatus.and.callFake(
     (resolve, reject) => {
       return (hash: string) => {
-        Web3ServiceSpy.getTransactionReceipt(hash, receipt => {
+        Web3ServiceSpy.getTransactionReceipt(hash, (err, receipt) => {
+          if (err) {
+            reject(new Outcome(OutcomeType.Failure, err));
+          }
           if (parseInt(receipt.status, 16) === 1) {
             resolve(new Outcome(OutcomeType.Success, receipt));
           } else {
@@ -108,6 +123,11 @@ export function spyOnWeb3Service(contractSpy: any): any {
           }
         });
       };
+    }
+  );
+  Web3ServiceSpy.getBlock.and.callFake(
+    (blockNumber: any, callback?: (err: any, result: any) => void) => {
+      callback(null, {timestamp: 1234567890});
     }
   );
   return Web3ServiceSpy;

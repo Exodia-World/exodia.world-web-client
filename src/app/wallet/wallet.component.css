@@ -6,6 +6,7 @@
 .wallet {
   width: 230px;
   box-shadow: -5px 0px 16px #ccc7;
+  overflow: hidden;
 }
 .wallet--maximized {
   width: 100vw;
@@ -16,12 +17,15 @@
 }
 
 
-.wallet-actions {
+.wallet-footer {
   text-align: center;
   padding: 1em;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
 }
 
-.wallet-actions__refresh {
+.wallet-footer__refresh {
 }
 
 

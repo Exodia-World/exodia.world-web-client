@@ -56,8 +56,12 @@ export class Web3Service {
     return this.web3.toWei(value, unit);
   }
 
-  getTransactionReceipt(hashString: string, callback: any): any {
-    return this.web3.eth.getTransactionReceipt(hashString, callback);
+  getTransactionReceipt(hashString: string, callback?: any): any {
+    if (callback) {
+      this.web3.eth.getTransactionReceipt(hashString, callback);
+    } else {
+      return this.web3.eth.getTransactionReceipt(hashString);
+    }
   }
 
   getAccounts(): Promise<Outcome> {
@@ -82,7 +86,10 @@ export class Web3Service {
   ): (transactionHash: string) => void
   {
     return (transactionHash: string) => {
-      this.web3.eth.getTransactionReceipt(transactionHash, receipt => {
+      this.web3.eth.getTransactionReceipt(transactionHash, (err, receipt) => {
+        if (err) {
+          reject(this.outcomeService.fail('GetTransactionReceiptFailed', err));
+        }
         if (parseInt(receipt.status, 16) === 1) {
           resolve(this.outcomeService.succeed(receipt));
         } else {
@@ -90,5 +97,13 @@ export class Web3Service {
         }
       });
     };
+  }
+
+  getBlock(blockHashOrNumber: any, callback?: any): any {
+    if (callback) {
+      this.web3.eth.getBlock(blockHashOrNumber, false, callback);
+    } else {
+      return this.web3.eth.getBlock(blockHashOrNumber);
+    }
   }
 }

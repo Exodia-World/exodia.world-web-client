@@ -22,19 +22,10 @@ export class WalletService {
     return this.exoToken;
   }
 
-  getBalanceOfDefaultAccount(unit: string): Promise<Outcome> {
+  ofDefaultAccount(methodName: string, ...args: any[]): Promise<Outcome> {
     const defaultAccount = this.web3Service.getDefaultAccount();
     if (defaultAccount) {
-      return this.getBalance(defaultAccount, unit);
-    } else {
-      return Promise.reject(this.outcomeService.fail('NoDefaultAccount'));
-    }
-  }
-
-  getStakeBalanceOfDefaultAccount(unit: string): Promise<Outcome> {
-    const defaultAccount = this.web3Service.getDefaultAccount();
-    if (defaultAccount) {
-      return this.getStakeBalance(defaultAccount, unit);
+      return this[methodName](defaultAccount, ...args);
     } else {
       return Promise.reject(this.outcomeService.fail('NoDefaultAccount'));
     }
@@ -106,6 +97,35 @@ export class WalletService {
           reject(this.outcomeService.fail('CalculateInterestFailed', err));
         } else {
           resolve(this.outcomeService.succeed(this.web3Service.fromWei(interest, unit)));
+        }
+      });
+    });
+  }
+
+  getStakeDuration(address: string): Promise<Outcome> {
+    return this.getStakeStartTime(address).then(success => {
+      return new Promise<Outcome>((resolve, reject) => {
+        const stakeStartTime = success.getData();
+        this.web3Service.getBlock('latest', (err, block) => {
+          console.log(block.timestamp);
+          if (err) {
+            reject(this.outcomeService.fail('GetLatestBlockFailed', err));
+          }
+          resolve(this.outcomeService.succeed(
+            stakeStartTime > 0 ? block.timestamp - stakeStartTime : 0
+          ));
+        });
+      });
+    });
+  }
+
+  getStakeStartTime(address: string): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      this.exoToken.stakeStartTimeOf.call(address, (err, stakeStartTime) => {
+        if (err) {
+          reject(this.outcomeService.fail('GetStakeStartTimeFailed', err));
+        } else {
+          resolve(this.outcomeService.succeed(stakeStartTime));
         }
       });
     });

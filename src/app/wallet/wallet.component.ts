@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { BigNumber } from 'bignumber.js';
 import { CommunicatorComponent } from '../components/communicator.component';
 import { WalletService } from './shared/wallet.service';
 import { WalletPanelState } from './shared/wallet.model';
@@ -10,8 +11,10 @@ import { WalletPanelState } from './shared/wallet.model';
 })
 export class WalletComponent extends CommunicatorComponent implements AfterViewInit {
   isMaximized = false;
-  balance = 0.0;
-  stakeBalance = 0.0;
+  balance = new BigNumber(0);
+  stakeBalance = new BigNumber(0);
+  stakeInterest = new BigNumber(0);
+  stakeDuration = 0;
 
   constructor(private walletService: WalletService) {
     super();
@@ -27,12 +30,14 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
   refreshAll() {
     this.updateBalance();
     this.updateStakeBalance();
+    this.updateStakeInterest();
+    this.updateStakeDuration();
   }
 
   updateBalance() {
-    this.walletService.getBalanceOfDefaultAccount('ether')
+    this.walletService.ofDefaultAccount('getBalance', 'ether')
       .then(success => {
-        this.balance = success.getData().toNumber();
+        this.balance = success.getData();
       })
       .catch(failure => {
         this.communicate('refresh-wallet', failure.getMessage());
@@ -40,9 +45,29 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
   }
 
   updateStakeBalance() {
-    this.walletService.getStakeBalanceOfDefaultAccount('ether')
+    this.walletService.ofDefaultAccount('getStakeBalance', 'ether')
       .then(success => {
-        this.stakeBalance = success.getData().toNumber();
+        this.stakeBalance = success.getData();
+      })
+      .catch(failure => {
+        this.communicate('refresh-wallet', failure.getMessage());
+      });
+  }
+
+  updateStakeInterest() {
+    this.walletService.calculateInterest('ether')
+      .then(success => {
+        this.stakeInterest = success.getData();
+      })
+      .catch(failure => {
+        this.communicate('refresh-wallet', failure.getMessage());
+      });
+  }
+
+  updateStakeDuration() {
+    this.walletService.ofDefaultAccount('getStakeDuration')
+      .then(success => {
+        this.stakeDuration = success.getData();
       })
       .catch(failure => {
         this.communicate('refresh-wallet', failure.getMessage());
