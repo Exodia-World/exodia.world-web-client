@@ -60,6 +60,19 @@
             <mat-icon>alternate_email</mat-icon>
           </span>
         </ng-template>
+        <div *ngIf="address" class="address">
+          <qrcode class="address__qrcode" [qrdata]="address" [size]="128" [level]="'M'"></qrcode>
+          <button mat-icon-button color="primary" class="copy-address"
+            [clipboard]="address" (clipboardCopy)="onCopyAddressSuccess()">
+            <mat-icon>file_copy</mat-icon>
+          </button>
+          <message name="copy-address" position="above"></message>
+          <p class="address__text">{{address}}</p>
+        </div>
+        <p *ngIf="! address" class="address__unlock-msg">
+          Please unlock your Ethereum wallet account to show its address or
+          refresh the wallet if you have done so.
+        </p>
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
@@ -71,7 +84,7 @@
     </mat-tab-group>
 
     <footer class="wallet-footer">
-      <message name="refresh-wallet" type="suggestion" position="above"></message>
+      <message name="refresh-wallet" type="normal" position="above"></message>
       <button mat-raised-button color="primary" class="wallet-footer__refresh" (click)="refreshAll()">
         Refresh Wallet
       </button>

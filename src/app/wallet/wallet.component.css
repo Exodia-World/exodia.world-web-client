@@ -78,3 +78,26 @@
 .staking-item__value {
   float: right
 }
+
+
+.address {
+  padding: 1em;
+}
+
+:host /deep/ .address__qrcode img {
+  margin: 0 auto;
+}
+
+.address__text {
+  overflow-wrap: break-word;
+}
+
+.address__unlock-msg {
+  padding: 1em;
+  margin: 0;
+}
+
+
+.copy-address {
+  float: left;
+}

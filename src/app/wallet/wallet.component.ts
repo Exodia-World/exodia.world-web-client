@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { BigNumber } from 'bignumber.js';
 import { CommunicatorComponent } from '../components/communicator.component';
+import { Web3Service } from '../services/web3.service';
 import { WalletService } from './shared/wallet.service';
 import { WalletPanelState } from './shared/wallet.model';
 
@@ -11,12 +12,13 @@ import { WalletPanelState } from './shared/wallet.model';
 })
 export class WalletComponent extends CommunicatorComponent implements AfterViewInit {
   isMaximized = false;
+  address: string;
   balance = new BigNumber(0);
   stakeBalance = new BigNumber(0);
   stakeInterest = new BigNumber(0);
   stakeDuration = 0;
 
-  constructor(private walletService: WalletService) {
+  constructor(private web3Service: Web3Service, private walletService: WalletService) {
     super();
   }
 
@@ -28,10 +30,16 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
   }
 
   refreshAll() {
+    this.updateAddress();
     this.updateBalance();
     this.updateStakeBalance();
     this.updateStakeInterest();
     this.updateStakeDuration();
+  }
+
+  updateAddress() {
+    this.address = this.web3Service.getDefaultAccount();
+    console.log(this.address);
   }
 
   updateBalance() {
@@ -72,5 +80,9 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
       .catch(failure => {
         this.communicate('refresh-wallet', failure.getMessage());
       });
+  }
+
+  onCopyAddressSuccess() {
+    this.communicate('copy-address', 'Copied!');
   }
 }

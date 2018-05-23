@@ -34,15 +34,15 @@ p {
   font-size: 1.25rem;
 }
 
-.mat-tooltip.suggestion {
+.mat-tooltip.normal-msg {
   background-color: #1b93c7;
 }
 
-.mat-tooltip.warning {
+.mat-tooltip.warning-msg {
   background-color: #fc0;
   color: #000;
 }
 
-.mat-tooltip.error {
+.mat-tooltip.error-msg {
   background-color: #c00;
 }
