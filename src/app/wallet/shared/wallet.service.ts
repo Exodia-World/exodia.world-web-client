@@ -107,7 +107,6 @@ export class WalletService {
       return new Promise<Outcome>((resolve, reject) => {
         const stakeStartTime = success.getData();
         this.web3Service.getBlock('latest', (err, block) => {
-          console.log(block.timestamp);
           if (err) {
             reject(this.outcomeService.fail('GetLatestBlockFailed', err));
           }
