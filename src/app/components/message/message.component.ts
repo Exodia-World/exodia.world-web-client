@@ -3,15 +3,15 @@ import { Component, ViewChild, Input } from '@angular/core';
 @Component({
   selector: 'message',
   template: `
-    <div #comm="matTooltip" matTooltip [matTooltipPosition]="position"
-      [matTooltipClass]="type"></div>
+    <span #comm="matTooltip" matTooltip [matTooltipPosition]="position"
+      [matTooltipClass]="type + '-msg'"></span>
   `
 })
 export class MessageComponent {
   @ViewChild('comm') comm: any;
 
   @Input() name: string;
-  @Input() type = 'suggestion';
+  @Input() type = 'normal';
   @Input() position = 'above';
 
   set(text: string) {
