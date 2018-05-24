@@ -82,34 +82,55 @@
 }
 
 
-.staking-item {
+.staking-info {
+  max-width: 230px;
+}
+
+.staking-info-item {
   padding: 1em;
   margin: 0;
 }
 
-.staking-item__value {
+.staking-info-item__value {
   float: right
 }
 
 
 .address {
   padding: 1em;
+  max-width: 220px;
 }
 
-:host /deep/ .address__qrcode img {
+
+:host /deep/ .address-qrcode img {
   margin: 0 auto;
 }
 
-.address__text {
+
+.address-text {
   overflow-wrap: break-word;
+  width: 170px;
+  float: right;
 }
 
-.address__unlock-msg {
+
+.address-unlock-msg {
   padding: 1em;
   margin: 0;
 }
 
 
 .copy-address {
-  float: left;
+  margin-top: 3px;
+}
+
+
+.tab-title--with-icon {
+  display: inline;
+  vertical-align: super;
+}
+
+
+.restake {
+  margin: 1em;
 }

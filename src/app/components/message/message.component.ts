@@ -4,8 +4,7 @@ import { Component, ViewChild, Input } from '@angular/core';
   selector: 'message',
   template: `
     <span #comm="matTooltip" matTooltip [matTooltipPosition]="position"
-      [matTooltipClass]="type + '-msg'" matTooltipHideDelay="5000"
-      (mouseenter)="onMouseEnter()">
+      [matTooltipClass]="type + '-msg'" matTooltipHideDelay="5000">
       <ng-content></ng-content>
     </span>
   `
@@ -16,14 +15,16 @@ export class MessageComponent {
   @Input() name: string;
   @Input() type = 'normal';
   @Input() position = 'above';
+  timeout: any;
 
   set(text: string) {
+    clearTimeout(this.timeout);
+
     this.comm.message = text;
     this.comm.show();
-  }
 
-  private onMouseEnter() {
-    console.log('MOUSE ENTER');
-    this.comm.message = '';
+    this.timeout = setTimeout(() => {
+      this.comm.message = '';
+    }, 5000);
   }
 }
