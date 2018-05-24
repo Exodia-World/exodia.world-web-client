@@ -11,14 +11,16 @@
       <mat-icon>minimize</mat-icon>
     </button>
 
-    <header class="balance">
-      <h4 class="balance__title"><mat-icon>account_balance</mat-icon></h4>
-      <div class="balance__content">
-        <div class="balance__value">
-          {{isMaximized ? (balance.toNumber() | number:'1.0-9') :
-            (balance.toNumber() | longNumber:'1.0-6')}}
+    <header [ngClass]="isMaximized ? 'wallet-header' : ''">
+      <div class="balance">
+        <h4 class="balance__title"><mat-icon>account_balance</mat-icon></h4>
+        <div class="balance__content">
+          <div class="balance__value">
+            {{isMaximized ? (balance.toNumber() | number:'1.0-9') :
+              (balance.toNumber() | longNumber:'1.0-6')}}
+          </div>
+          <div class="balance__unit">EXO</div>
         </div>
-        <div class="balance__unit">EXO</div>
       </div>
     </header>
 
@@ -84,10 +86,12 @@
     </mat-tab-group>
 
     <footer class="wallet-footer">
-      <message name="refresh-wallet" type="normal" position="above"></message>
-      <button mat-raised-button color="primary" class="wallet-footer__refresh" (click)="refreshAll()">
-        Refresh Wallet
-      </button>
+      <message name="refresh-wallet" type="normal" position="above">
+        <button mat-raised-button color="primary" class="wallet-footer__refresh"
+          (click)="refreshAll()">
+          Refresh Wallet
+        </button>
+      </message>
     </footer>
   </mat-sidenav>
 

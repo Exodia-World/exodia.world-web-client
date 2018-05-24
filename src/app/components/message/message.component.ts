@@ -4,7 +4,10 @@ import { Component, ViewChild, Input } from '@angular/core';
   selector: 'message',
   template: `
     <span #comm="matTooltip" matTooltip [matTooltipPosition]="position"
-      [matTooltipClass]="type + '-msg'"></span>
+      [matTooltipClass]="type + '-msg'" matTooltipHideDelay="5000"
+      (mouseenter)="onMouseEnter()">
+      <ng-content></ng-content>
+    </span>
   `
 })
 export class MessageComponent {
@@ -17,5 +20,10 @@ export class MessageComponent {
   set(text: string) {
     this.comm.message = text;
     this.comm.show();
+  }
+
+  private onMouseEnter() {
+    console.log('MOUSE ENTER');
+    this.comm.message = '';
   }
 }

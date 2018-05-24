@@ -39,7 +39,7 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
 
   updateAddress() {
     this.address = this.web3Service.getDefaultAccount();
-    console.log(this.address);
+    console.log('Address', this.address);
   }
 
   updateBalance() {
