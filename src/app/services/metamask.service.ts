@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from './electron.service';
 
+/**
+ * Interacts with Electron to control Metamask.
+ */
 @Injectable()
 export class MetamaskService {
 

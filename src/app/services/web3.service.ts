@@ -6,6 +6,9 @@ import { MetamaskService } from './metamask.service';
 import { OutcomeService } from './outcome.service';
 import { Outcome } from '../models/outcome.model';
 
+/**
+ * Wraps web3.js and its functions.
+ */
 @Injectable()
 export class Web3Service {
   private web3: any;
@@ -27,6 +30,9 @@ export class Web3Service {
     }
   }
 
+  /**
+   * Check if a web3 object is injected.
+   */
   canSignTransactions(): boolean {
     return this.isWeb3Injected;
   }
@@ -64,6 +70,9 @@ export class Web3Service {
     }
   }
 
+  /**
+   * Retrieve a list of all accounts available in the wallet.
+   */
   getAccounts(): Promise<Outcome> {
     return new Promise<Outcome>((resolve, reject) => {
       this.web3.eth.getAccounts((err, accounts) => {
@@ -79,6 +88,14 @@ export class Web3Service {
     });
   }
 
+  /**
+   * Create an outcome based on the status of a transaction.
+   *
+   * @param {(outcome: Outcome) => void} resolve Callback if status == 0x1
+   * @param {(outcome: Outcome) => void} reject Callback if status == 0x0
+   * @param {string} errName Error/Failure's name; only used if status == 0x0
+   * @returns Function to pass a transaction hash into
+   */
   checkTransactionStatus(
     resolve: (outcome: Outcome) => void,
     reject: (outcome: Outcome) => void,
