@@ -1,12 +1,21 @@
 import { Component, ViewChildren, QueryList } from '@angular/core';
 import { MessageComponent } from './message/message.component';
 
+/**
+ * Enable message-based communication between components and users.
+ */
 @Component({
   selector: 'communicator'
 })
 export class CommunicatorComponent {
-  @ViewChildren(MessageComponent) messages: QueryList<any>;
+  @ViewChildren(MessageComponent) private messages: QueryList<any>;
 
+  /**
+   * Show text on a message component.
+   *
+   * @param {string} name The name of message element
+   * @param {string} text The text to be communicated
+   */
   communicate(name: string, text: string) {
     this.messages.toArray().forEach(message => {
       if (! message.name || message.name === name) {

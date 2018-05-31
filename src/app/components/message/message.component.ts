@@ -1,5 +1,9 @@
 import { Component, ViewChild, Input } from '@angular/core';
 
+/**
+ * A tooltip wrapper for any communication object, e.g., buttons, label, etc.
+ * It overrides the normal hover behavior of tooltips.
+ */
 @Component({
   selector: 'message',
   template: `
@@ -10,19 +14,34 @@ import { Component, ViewChild, Input } from '@angular/core';
   `
 })
 export class MessageComponent {
-  @ViewChild('comm') comm: any;
-
+  /**
+   * Name of message element
+   */
   @Input() name: string;
+  /**
+   * Type of message (normal, warning, error)
+   */
   @Input() type = 'normal';
+  /**
+   * Position to display text
+   */
   @Input() position = 'above';
-  timeout: any;
 
+  @ViewChild('comm') private comm: any;
+  private timeout: any;
+
+  /**
+   * Set the message text.
+   *
+   * @param {string} text The text to be displayed
+   */
   set(text: string) {
     clearTimeout(this.timeout);
 
     this.comm.message = text;
     this.comm.show();
 
+    // Don't show the text after the tooltip is hidden.
     this.timeout = setTimeout(() => {
       this.comm.message = '';
     }, 5000);

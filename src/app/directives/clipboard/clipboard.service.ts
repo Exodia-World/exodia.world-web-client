@@ -4,19 +4,24 @@ import { Injectable } from "@angular/core";
 
 @Injectable()
 export class ClipboardService {
-  // CAUTION: This service is tightly couped to the browser DOM (Document Object Model).
-  // But, by injecting the "document" reference rather than trying to reference it
-  // globally, we can at least pretend that we are trying to lower the tight coupling.
+  /**
+   * CAUTION: This service is tightly couped to the browser DOM (Document Object Model).
+   * But, by injecting the "document" reference rather than trying to reference it
+   * globally, we can at least pretend that we are trying to lower the tight coupling.
+   */
   constructor(@Inject(DOCUMENT) private dom: Document) {
   }
 
-  // Copy the given value to the user's system clipboard. Returns a promise that
-  // resolves to the given value on success or rejects with the raised Error.
+  /**
+   * Copy the given value to the user's system clipboard. Returns a promise that
+   * resolves to the given value on success or rejects with the raised Error.
+   *
+   * @param {string} value The value to be copied
+   */
   public copy(value: string): Promise<string> {
     return new Promise((resolve, reject): void => {
       var textarea = null;
       try {
-
         // In order to execute the "Copy" command, we actually have to have
         // a "selection" in the currently rendered document. As such, we're
         // going to inject a Textarea element and .select() it in order to

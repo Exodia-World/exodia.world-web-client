@@ -1,3 +1,6 @@
+/**
+ * Map error/failure names to their messages.
+ */
 export const errors = {
   NoDefaultAccount: 'Please unlock your account through Metamask/other Ethereum wallets first.',
   Unknown: 'Thank you for finding an unknown problem. ' +
