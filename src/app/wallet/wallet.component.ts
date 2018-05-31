@@ -3,15 +3,25 @@ import { BigNumber } from 'bignumber.js';
 import { CommunicatorComponent } from '../components/communicator.component';
 import { Web3Service } from '../services/web3.service';
 import { WalletService } from './shared/wallet.service';
-import { WalletPanelState } from './shared/wallet.model';
 
+/**
+ * Displays and manages wallet information.
+ */
 @Component({
   selector: 'app-wallet',
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.css']
 })
 export class WalletComponent extends CommunicatorComponent implements AfterViewInit {
+  /**
+   * Maximized mode displays many more features.
+   */
   isMaximized = false;
+  /**
+   * Interval for refreshing wallet information.
+   */
+  refreshInterval: any;
+
   address: string;
   balance = new BigNumber(0);
   stakeBalance = new BigNumber(0);
@@ -23,18 +33,27 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
   }
 
   ngAfterViewInit() {
+    this.refreshAll(true);
+    this.refreshInterval = setInterval(() => {
+      this.refreshAll(true);
+    }, 10000);
   }
 
   toggleMaximizeWallet() {
     this.isMaximized = ! this.isMaximized;
   }
 
-  refreshAll() {
+  /**
+   * Manual refresh of wallet information.
+   *
+   * @param {boolean} isInterval Is this method called from an interval?
+   */
+  refreshAll(isInterval: boolean = false) {
     this.updateAddress();
-    this.updateBalance();
-    this.updateStakeBalance();
-    this.updateStakeInterest();
-    this.updateStakeDuration();
+    this.updateOfDefaultAccount('getBalance', 'balance', isInterval);
+    this.updateOfDefaultAccount('getStakeBalance', 'stakeBalance', isInterval);
+    this.updateOfDefaultAccount('getStakeDuration', 'stakeDuration', isInterval);
+    this.updateStakeInterest(isInterval);
   }
 
   updateAddress() {
@@ -42,43 +61,38 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
     console.log('Address', this.address);
   }
 
-  updateBalance() {
-    this.walletService.ofDefaultAccount('getBalance', 'ether')
+  /**
+   * Update wallet information of the default account.
+   *
+   * @param {string} methodName The name of method to call
+   * @param {string} storageName The name of variable to store its result
+   * @param {boolean} isInterval Is this method called from an interval?
+   */
+  updateOfDefaultAccount(
+    methodName: string,
+    storageName: string,
+    isInterval: boolean = false
+  ) {
+    this.walletService.ofDefaultAccount(methodName, 'ether')
       .then(success => {
-        this.balance = success.getData();
+        this[storageName] = success.getData();
       })
       .catch(failure => {
-        this.communicate('refresh-wallet', failure.getMessage());
+        if (! isInterval) {
+          this.communicate('refresh-wallet', failure.getMessage());
+        }
       });
   }
 
-  updateStakeBalance() {
-    this.walletService.ofDefaultAccount('getStakeBalance', 'ether')
-      .then(success => {
-        this.stakeBalance = success.getData();
-      })
-      .catch(failure => {
-        this.communicate('refresh-wallet', failure.getMessage());
-      });
-  }
-
-  updateStakeInterest() {
+  updateStakeInterest(isInterval: boolean = false) {
     this.walletService.calculateInterest('ether')
       .then(success => {
         this.stakeInterest = success.getData();
       })
       .catch(failure => {
-        this.communicate('refresh-wallet', failure.getMessage());
-      });
-  }
-
-  updateStakeDuration() {
-    this.walletService.ofDefaultAccount('getStakeDuration')
-      .then(success => {
-        this.stakeDuration = success.getData();
-      })
-      .catch(failure => {
-        this.communicate('refresh-wallet', failure.getMessage());
+        if (! isInterval) {
+          this.communicate('refresh-wallet', failure.getMessage());
+        }
       });
   }
 
