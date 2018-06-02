@@ -5,7 +5,7 @@ import { Component, ViewChild, Input } from '@angular/core';
  * It overrides the normal hover behavior of tooltips.
  */
 @Component({
-  selector: 'message',
+  selector: 'exo-message',
   template: `
     <span #comm="matTooltip" matTooltip [matTooltipPosition]="position"
       [matTooltipClass]="type + '-msg'" matTooltipHideDelay="5000">

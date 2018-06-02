@@ -5,7 +5,7 @@ import { MessageComponent } from './message/message.component';
  * Enable message-based communication between components and users.
  */
 @Component({
-  selector: 'communicator'
+  selector: 'exo-communicator'
 })
 export class CommunicatorComponent {
   @ViewChildren(MessageComponent) private messages: QueryList<any>;
