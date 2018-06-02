@@ -36,6 +36,11 @@ $exo-theme: mat-light-theme($exo-primary, $exo-accent, $exo-warn);
 // that you are using.
 @include angular-material-theme($exo-theme);
 
+// Theme Helpers
+.h-bgcolor-primary-light {
+  background-color: mat-color($exo-primary, lighter);
+}
+
 // Example of an alternate theme.
 // .alternate-theme {
 //   $alternate-primary: mat-palette($mat-light-blue);
