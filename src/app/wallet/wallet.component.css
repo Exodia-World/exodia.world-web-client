@@ -11,19 +11,10 @@
 .wallet--maximized {
   width: 100vw;
 }
-.wallet__toggle {
+
+
+.toggle-wallet {
   float: right;
-}
-
-
-.wallet-header {
-  padding: 1em;
-  margin: 1em;
-  max-width: 800px;
-  box-shadow:
-    0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 
 
@@ -34,41 +25,6 @@
   position: absolute;
   bottom: 0;
 }
-.wallet-footer__refresh {
-}
-
-
-.balance {
-  padding: 1em;
-  max-width: 350px;
-}
-.balance__title {
-  font-size: 1.4em;
-  display: inline;
-}
-.balance__content {
-  margin: 0;
-  min-height: 4em;
-  overflow: hidden;
-  display: table;
-  width: 100%;
-  height: 100%;
-}
-.balance__value {
-  font-size: 3em;
-  text-align: right;
-  font-weight: bold;
-  overflow: hidden;
-  display: table-cell;
-  width: 70%;
-}
-.balance__unit {
-  font-size: 2em;
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-  width: 30%;
-}
 
 
 :host /deep/ .mat-tab-label {
@@ -76,54 +32,20 @@
 }
 
 
-.staking-info {
-  max-width: 230px;
-}
-
-.staking-info-item {
+.wallet-section {
   padding: 1em;
-  margin: 0;
-}
-.staking-info-item__value {
-  float: right
-}
-
-
-.address {
-  padding: 1em;
-  max-width: 220px;
-}
-
-
-:host /deep/ .address-qrcode img {
-  margin: 0 auto;
-}
-
-
-.address-text {
-  overflow-wrap: break-word;
-  width: 170px;
+  margin: 1.5em;
   float: right;
 }
-
-
-.address-unlock-msg {
-  padding: 1em;
-  margin: 0;
+.wallet-section--balance {
+  width: 800px;
 }
-
-
-.copy-address {
-  margin-top: 3px;
+.wallet-section--address {
+  width: 230px;
 }
-
-
-.tab-title--with-icon {
-  display: inline;
-  vertical-align: super;
+.wallet-section--staking {
+  width: 550px;
 }
-
-
-.restake {
-  margin: 1em;
+.wallet-section__title {
+  margin-left: 1em;
 }

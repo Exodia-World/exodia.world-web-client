@@ -1,0 +1,27 @@
+.address {
+  padding: 1em;
+  width: 210px;
+}
+
+
+:host /deep/ .address-qrcode img {
+  margin: 0 auto;
+}
+
+
+.address-text {
+  overflow-wrap: break-word;
+  width: 170px;
+  float: right;
+}
+
+
+.address-unlock-msg {
+  padding: 1em;
+  margin: 0;
+}
+
+
+.copy-address {
+  margin-top: 3px;
+}

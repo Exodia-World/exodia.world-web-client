@@ -7,115 +7,62 @@
       <mat-icon *ngIf="isMaximized">arrow_right</mat-icon>
     </button>
     <button *ngIf="wallet.opened && ! isMaximized" mat-icon-button
-      color="primary" class="wallet__toggle" (click)="wallet.close()">
+      color="primary" class="toggle-wallet" (click)="wallet.close()">
       <mat-icon>minimize</mat-icon>
     </button>
 
-    <header [ngClass]="isMaximized ? 'wallet-header' : ''">
-      <div class="balance">
-        <h4 class="balance__title"><mat-icon>account_balance</mat-icon></h4>
-        <div class="balance__content">
-          <div class="balance__value">
-            {{isMaximized ? (balance.toNumber() | number:'1.0-9') :
-              (balance.toNumber() | longNumber:'1.0-6')}}
-          </div>
-          <div class="balance__unit">EXO</div>
-        </div>
-      </div>
-    </header>
+    <exo-wallet-balance *ngIf="! isMaximized" [isMaximized]="isMaximized"
+      (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-balance>
 
-    <mat-tab-group [dynamicHeight]="true">
+    <mat-tab-group *ngIf="! isMaximized" [dynamicHeight]="true">
       <mat-tab>
         <ng-template mat-tab-label>
-          <span matTooltip="Staking" [matTooltipDisabled]="isMaximized">
-            <mat-icon>trending_up</mat-icon>
-          </span>
-          <h4 *ngIf="isMaximized" class="tab-title--with-icon">Staking</h4>
+          <span matTooltip="Staking"><mat-icon>trending_up</mat-icon></span>
         </ng-template>
-        <div class="staking-info">
-          <p class="staking-info-item">
-            <label>Amount</label>
-            <strong class="staking-info-item__value">
-              {{stakeBalance.toNumber() | longNumber:'1.0-6'}} EXO
-            </strong>
-          </p>
-          <p class="staking-info-item">
-            <label>Interest</label>
-            <strong class="staking-info-item__value">
-              +{{stakeInterest.toNumber() | longNumber:'1.0-6'}} EXO
-            </strong>
-          </p>
-          <p class="staking-info-item">
-            <label>Duration</label>
-            <strong class="staking-info-item__value">
-              {{stakeDuration/86400 | longNumber:'1.0-6'}} Days
-            </strong>
-          </p>
-          <p class="staking-info-item">
-            <label>Total</label>
-            <strong class="staking-info-item__value">
-              {{stakeBalance.plus(stakeInterest).toNumber() | longNumber:'1.0-6'}} EXO
-            </strong>
-          </p>
-          <button *ngIf="isMaximized" mat-raised-button color="primary"
-            class="restake">Restake</button>
-        </div>
-        <mat-divider [vertical]="true"></mat-divider>
-        <!-- <div class="staking-actions">
-          <mat-form-field appearance="standard">
-            <mat-label>Staking Amount</mat-label>
-            <input matInput type="number" placeholder="9,999">
-            <mat-hint>
-              Amount to be deposit into or withdrawn from your staking balance.
-            </mat-hint>
-          </mat-form-field>
-        </div> -->
+        <exo-wallet-staking [isMaximized]="isMaximized"
+          (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-staking>
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
-          <span matTooltip="Address" [matTooltipDisabled]="isMaximized">
-            <mat-icon>alternate_email</mat-icon>
-          </span>
-          <h4 *ngIf="isMaximized" class="tab-title--with-icon">Address</h4>
+          <span matTooltip="Address"><mat-icon>alternate_email</mat-icon></span>
         </ng-template>
-        <div *ngIf="address" class="address">
-          <qrcode class="address-qrcode" [qrdata]="address" [size]="128" [level]="'L'"></qrcode>
-          <p class="address-text">{{address}}</p>
-          <message name="copy-address" position="above">
-            <button mat-icon-button color="primary" class="copy-address"
-              [clipboard]="address" (clipboardCopy)="onCopyAddressSuccess()">
-              <mat-icon>file_copy</mat-icon>
-            </button>
-          </message>
-        </div>
-        <p *ngIf="! address" class="address-unlock-msg">
-          Please unlock your Ethereum wallet account to show its address or
-          refresh the wallet if you have done so.
-        </p>
+        <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
-          <span matTooltip="Calculator" [matTooltipDisabled]="isMaximized">
-            <mat-icon>money</mat-icon>
-          </span>
-          <h4 *ngIf="isMaximized" class="tab-title--with-icon">Calculator</h4>
+          <span matTooltip="Calculator"><mat-icon>money</mat-icon></span>
         </ng-template>
       </mat-tab>
     </mat-tab-group>
 
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--address -raised">
+      <h2 class="wallet-section__title">Address</h2>
+      <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
+    </section>
+
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--balance -raised">
+      <exo-wallet-balance [isMaximized]="isMaximized"
+        (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-balance>
+    </section>
+
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--staking -raised">
+      <h2 class="wallet-section__title">Staking</h2>
+      <exo-wallet-staking [isMaximized]="isMaximized"
+        (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-staking>
+    </section>
+
     <footer class="wallet-footer">
-      <message name="refresh-wallet" type="normal" position="above">
-        <button mat-raised-button color="primary" class="wallet-footer__refresh"
-          (click)="refreshAll()">
+      <exo-message name="refresh-wallet" type="normal" position="above">
+        <button mat-raised-button color="primary" (click)="refreshAll()">
           Refresh Wallet
         </button>
-      </message>
+      </exo-message>
     </footer>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-screen">
     <button *ngIf="! wallet.opened" mat-icon-button color="primary"
-      class="wallet__toggle" (click)="wallet.open()">
+      class="toggle-wallet" (click)="wallet.open()">
       <mat-icon>account_balance_wallet</mat-icon>
     </button>
   </mat-sidenav-content>

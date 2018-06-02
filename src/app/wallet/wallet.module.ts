@@ -3,14 +3,12 @@ import { SharedModule } from '../modules/shared.module';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { QRCodeModule } from 'angularx-qrcode';
 import { MessageModule } from '../components/message/message.module';
-import { LongNumberPipeModule } from '../pipes/long-number/long-number.module';
-import { ClipboardModule } from '../directives/clipboard/clipboard.module';
+import { BalanceModule } from './balance/balance.module';
+import { AddressModule } from './address/address.module';
+import { StakingModule } from './staking/staking.module';
 import { WalletService } from './shared/wallet.service';
 import { WalletComponent } from './wallet.component';
 
@@ -22,13 +20,11 @@ import { WalletComponent } from './wallet.component';
     SharedModule,
     MatSidenavModule,
     MatTabsModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    QRCodeModule,
+    MatTooltipModule,
     MessageModule,
-    LongNumberPipeModule,
-    ClipboardModule
+    BalanceModule,
+    AddressModule,
+    StakingModule
   ],
   providers: [
     WalletService

@@ -1,0 +1,28 @@
+.staking-info {
+  width: 230px;
+  display: inline-block;
+}
+
+.staking-info-item {
+  padding: 1em;
+  margin: 0;
+}
+.staking-info-item__value {
+  float: right
+}
+
+
+.staking-form {
+  font-size: 1.6em;
+  display: inline-block;
+  vertical-align: top;
+}
+.staking-form__fields {
+  padding: 1em;
+  padding-top: 0;
+}
+
+
+.staking-actions {
+  margin-top: 1em;
+}
