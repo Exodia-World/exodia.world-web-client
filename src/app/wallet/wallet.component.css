@@ -1,81 +1,51 @@
-
-
 .main-screen {
-  background-color: #f7912d;
-  position: absolute;
-  top: 0;
-  right: 20%;
-  bottom: 0;
-  left: 0;
-}
-.main-screen--wallet-minimized {
-  right: 0;
-}
-.main-screen--wallet-maximized {
-  right: 100%;
+  height: 100vh;
 }
 
 
 .wallet {
-  background-color: #fff;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 80%;
-
-  -moz-transition: right .5s ease, left .5s ease;
-  transition: right .5s ease, left .5s ease;
-}
-.wallet--minimized {
-  left: 100%;
+  width: 230px;
+  box-shadow: -5px 0px 16px #ccc7;
+  overflow: hidden;
 }
 .wallet--maximized {
-  left: 0;
-}
-
-.wallet__toggle {
-  position: absolute;
-  top: 0;
-  right: 0;
+  width: 100vw;
 }
 
 
-.balance {
+.toggle-wallet {
+  float: right;
+}
+
+
+.wallet-footer {
+  text-align: center;
   padding: 1em;
-}
-
-.balance__title {
-  font-size: 1.28em;
-  display: inline;
-}
-
-.balance__refresh {
-  font-size: 1.12em;
-}
-
-.balance__content {
-  margin: 0;
-  min-height: 4em;
-  overflow: hidden;
-  display: table;
   width: 100%;
-  height: 100%;
+  position: absolute;
+  bottom: 0;
 }
 
-.balance__value {
-  font-size: 3em;
-  text-align: right;
-  font-weight: bold;
-  overflow: hidden;
-  display:table-cell;
-  width: 70%;
+
+:host /deep/ .mat-tab-label {
+  min-width: 70px;
 }
 
-.balance__unit {
-  font-size: 2em;
-  display:table-cell;
-  vertical-align: middle;
-  text-align:center;
-  width: 30%;
+
+.wallet-section {
+  padding: 1em;
+  margin: 1.5em;
+  float: right;
+}
+.wallet-section--balance {
+  width: 800px;
+}
+.wallet-section--address {
+  width: 230px;
+}
+.wallet-section--staking {
+  width: 550px;
+}
+.wallet-section__title {
+  margin-left: 1em;
 }

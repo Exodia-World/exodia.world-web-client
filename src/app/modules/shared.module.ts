@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 // Import shared services.
 import { WindowService } from '../services/window.service';
@@ -16,8 +16,8 @@ import { OutcomeService } from '../services/outcome.service';
   imports: [
     CommonModule,
     FormsModule,
-    ButtonModule,
-    MatTooltipModule
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
     WindowService,
@@ -30,8 +30,8 @@ import { OutcomeService } from '../services/outcome.service';
   exports: [
     CommonModule,
     FormsModule,
-    ButtonModule,
-    MatTooltipModule
+    MatButtonModule,
+    MatIconModule
   ]
 })
 export class SharedModule { }

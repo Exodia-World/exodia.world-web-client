@@ -1,14 +1,14 @@
 import { AppPage } from './app.po';
 
-describe('exodia.world-web-client App', () => {
+describe('Exodia.World Web Client', () => {
   let page: AppPage;
 
   beforeEach(() => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display app warning if there is no web3 object', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getAppWarningText()).toContain('Please install an Ethereum wallet');
   });
 });

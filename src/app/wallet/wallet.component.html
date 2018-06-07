@@ -1,28 +1,69 @@
-<section class="main-screen" [ngClass]="{
-    'main-screen--wallet-minimized': isMinimized(),
-    'main-screen--wallet-maximized': isMaximized()
+<mat-sidenav-container>
+  <mat-sidenav #wallet mode="side" position="end" opened class="wallet" [ngClass]="{
+    'wallet--maximized': isMaximized
   }">
-</section>
-<section class="wallet" [ngClass]="{
-    'wallet--minimized': isMinimized(),
-    'wallet--maximized': isMaximized()
-  }">
-  <button *ngIf="! isMaximized()" pButton type="button" class="btn--ice wallet__maximize"
-          icon="fa-expand" (click)="maximizeWallet()"></button>
-  <button pButton type="button" class="btn--ice wallet__toggle"
-          [icon]="isMinimized() ? 'fa-money' :
-            (isMaximized() ? 'fa-window-restore' : 'fa-window-minimize')"
-          (click)="toggleWallet()"></button>
-  <header class="balance">
-    <h4 class="balance__title">Balance</h4>
-    <button pButton type="button" class="btn--ice balance__refresh"
-            icon="fa-refresh" (click)="updateBalance()"></button>
-    <div matTooltip="" matTooltipPosition="before" #balanceComm="matTooltip"></div>
-    <div class="balance__content">
-      <div class="balance__value">
-        {{isMaximized() ? (balance | number:'1.0-3') : (balance | toExponential)}}
-      </div>
-      <div class="balance__unit">EXO</div>
-    </div>
-  </header>
-</section>
+    <button mat-icon-button color="primary" (click)="toggleMaximizeWallet()">
+      <mat-icon *ngIf="! isMaximized">arrow_left</mat-icon>
+      <mat-icon *ngIf="isMaximized">arrow_right</mat-icon>
+    </button>
+    <button *ngIf="wallet.opened && ! isMaximized" mat-icon-button
+      color="primary" class="toggle-wallet" (click)="wallet.close()">
+      <mat-icon>minimize</mat-icon>
+    </button>
+
+    <exo-wallet-balance *ngIf="! isMaximized" [isMaximized]="isMaximized"
+      (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-balance>
+
+    <mat-tab-group *ngIf="! isMaximized" [dynamicHeight]="true">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span matTooltip="Staking"><mat-icon>trending_up</mat-icon></span>
+        </ng-template>
+        <exo-wallet-staking [isMaximized]="isMaximized"
+          (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-staking>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span matTooltip="Address"><mat-icon>alternate_email</mat-icon></span>
+        </ng-template>
+        <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span matTooltip="Calculator"><mat-icon>money</mat-icon></span>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--address -raised">
+      <h2 class="wallet-section__title">Address</h2>
+      <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
+    </section>
+
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--balance -raised">
+      <exo-wallet-balance [isMaximized]="isMaximized"
+        (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-balance>
+    </section>
+
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--staking -raised">
+      <h2 class="wallet-section__title">Staking</h2>
+      <exo-wallet-staking [isMaximized]="isMaximized"
+        (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-staking>
+    </section>
+
+    <footer class="wallet-footer">
+      <exo-message name="refresh-wallet" type="normal" position="above">
+        <button mat-raised-button color="primary" (click)="refreshAll()">
+          Refresh Wallet
+        </button>
+      </exo-message>
+    </footer>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-screen">
+    <button *ngIf="! wallet.opened" mat-icon-button color="primary"
+      class="toggle-wallet" (click)="wallet.open()">
+      <mat-icon>account_balance_wallet</mat-icon>
+    </button>
+  </mat-sidenav-content>
+</mat-sidenav-container>

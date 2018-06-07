@@ -3,6 +3,9 @@ export enum OutcomeType {
   Failure
 }
 
+/**
+ * Contain the type, data, and message of an action's outcome.
+ */
 export class Outcome {
   constructor(
     private type: OutcomeType,

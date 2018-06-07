@@ -1,17 +1,19 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { WalletService } from './wallet.service';
 import { OutcomeType, Outcome } from '../../models/outcome.model';
-import { spyOnEXOToken, spyOnWeb3Service } from '../../global.mock';
+import { spyOnEXOToken, spyOnWeb3Service, spyOnOutcomeService } from '../../global.mock';
 
 describe('WalletService', () => {
   let EXOTokenSpy: any;
   let Web3ServiceSpy: any;
+  let OutcomeServiceSpy: any;
   let walletService: WalletService;
 
   beforeEach(() => {
     EXOTokenSpy = spyOnEXOToken();
     Web3ServiceSpy = spyOnWeb3Service(EXOTokenSpy);
-    walletService = new WalletService(Web3ServiceSpy);
+    OutcomeServiceSpy = spyOnOutcomeService();
+    walletService = new WalletService(Web3ServiceSpy, OutcomeServiceSpy);
   });
 
   it('should initialize EXO token', () => {
@@ -39,11 +41,31 @@ describe('WalletService', () => {
   });
 
   it('should get balance of the default account', (done) => {
-    walletService.getBalanceOfDefaultAccount('ether').then(outcome => {
+    walletService.ofDefaultAccount('getBalance', 'ether').then(outcome => {
       expect(walletService.getToken().balanceOf.call).toHaveBeenCalled();
       expect(Web3ServiceSpy.fromWei).toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Success);
       expect(outcome.getData()).toEqual(8888);
+      done();
+    });
+  });
+
+  it('should get stake balance of an address', (done) => {
+    walletService.getStakeBalance('0x9999', 'ether').then(outcome => {
+      expect(walletService.getToken().stakeBalanceOf.call).toHaveBeenCalled();
+      expect(Web3ServiceSpy.fromWei).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Success);
+      expect(outcome.getData()).toEqual(9999);
+      done();
+    });
+  });
+
+  it('should return error if get stake balance failed', (done) => {
+    walletService.getStakeBalance('0xERROR', 'ether').catch(outcome => {
+      expect(walletService.getToken().stakeBalanceOf.call).toHaveBeenCalled();
+      expect(Web3ServiceSpy.fromWei).not.toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
+      expect(outcome.getData().message).toEqual('ERROR');
       done();
     });
   });
@@ -167,6 +189,44 @@ describe('WalletService', () => {
       expect(walletService.getToken().calculateInterest.call).toHaveBeenCalled();
       expect(Web3ServiceSpy.fromWei).not.toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Failure);
+      done();
+    });
+  });
+
+  it('should get the latest stake time of an address', (done) => {
+    walletService.getStakeStartTime('0x9999').then(outcome => {
+      expect(walletService.getToken().stakeStartTimeOf.call).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Success);
+      expect(outcome.getData()).toEqual(9999);
+      done();
+    });
+  });
+
+  it ('should return error if get stake time failed', (done) => {
+    walletService.getStakeStartTime('0xERROR').catch(outcome => {
+      expect(walletService.getToken().stakeStartTimeOf.call).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
+      expect(outcome.getData().message).toEqual('ERROR');
+      done();
+    });
+  });
+
+  it('should get the latest stake duration of an address', (done) => {
+    walletService.getStakeDuration('0x9999').then(outcome => {
+      expect(walletService.getToken().stakeStartTimeOf.call).toHaveBeenCalled();
+      expect(Web3ServiceSpy.getBlock).toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Success);
+      expect(outcome.getData()).toEqual(1234557891);
+      done();
+    });
+  });
+
+  it ('should return error if get stake duration failed', (done) => {
+    walletService.getStakeDuration('0xERROR').catch(outcome => {
+      expect(walletService.getToken().stakeStartTimeOf.call).toHaveBeenCalled();
+      expect(Web3ServiceSpy.getBlock).not.toHaveBeenCalled();
+      expect(outcome.getType()).toEqual(OutcomeType.Failure);
+      expect(outcome.getData().message).toEqual('ERROR');
       done();
     });
   });
