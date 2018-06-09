@@ -19,7 +19,7 @@ export class MessageComponent {
    */
   @Input() name: string;
   /**
-   * Type of message (normal, warning, error)
+   * Type of message (success, normal, warning, error)
    */
   @Input() type = 'normal';
   /**

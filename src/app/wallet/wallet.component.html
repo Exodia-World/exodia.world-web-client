@@ -2,7 +2,9 @@
   <mat-sidenav #wallet mode="side" position="end" opened class="wallet" [ngClass]="{
     'wallet--maximized': isMaximized
   }">
-    <button mat-icon-button color="primary" (click)="toggleMaximizeWallet()">
+    <button mat-icon-button color="primary" [ngClass]="{
+      'h-display-block': isMaximized
+    }" (click)="toggleMaximizeWallet()">
       <mat-icon *ngIf="! isMaximized">arrow_left</mat-icon>
       <mat-icon *ngIf="isMaximized">arrow_right</mat-icon>
     </button>
@@ -35,11 +37,6 @@
       </mat-tab>
     </mat-tab-group>
 
-    <section *ngIf="isMaximized" class="wallet-section wallet-section--address -raised">
-      <h2 class="wallet-section__title">Address</h2>
-      <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
-    </section>
-
     <section *ngIf="isMaximized" class="wallet-section wallet-section--balance -raised">
       <exo-wallet-balance [isMaximized]="isMaximized"
         (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-balance>
@@ -49,6 +46,11 @@
       <h2 class="wallet-section__title">Staking</h2>
       <exo-wallet-staking [isMaximized]="isMaximized"
         (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-staking>
+    </section>
+
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--address -raised">
+      <h2 class="wallet-section__title">Address</h2>
+      <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
     </section>
 
     <footer class="wallet-footer">

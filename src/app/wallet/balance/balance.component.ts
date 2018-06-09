@@ -1,7 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { BigNumber } from 'bignumber.js';
 import { Outcome } from '../../models/outcome.model';
+import { Web3Service } from '../../services/web3.service';
 import { WalletService } from '../shared/wallet.service';
+import { CommunicatorComponent } from '../../components/communicator.component';
 
 /**
  * Displays and manages wallet balance information.
@@ -19,16 +21,44 @@ import { WalletService } from '../shared/wallet.service';
         <div class="balance__unit">EXO</div>
       </div>
     </div>
+    <form *ngIf="isMaximized" class="send-tokens-form h-font-size-x-large">
+      <span class="send-tokens-form__field">
+        <mat-form-field appearance="standard">
+          <mat-label>Address</mat-label>
+          <input matInput type="text" name="destAddress" placeholder="0x18a08a1b7e96be6..."
+            [(ngModel)]="destAddress">
+          <mat-hint>
+            Address to send tokens to.
+          </mat-hint>
+        </mat-form-field>
+      </span>
+      <span class="send-tokens-form__field">
+        <mat-form-field appearance="standard">
+          <mat-label>Sent Amount</mat-label>
+          <input matInput type="number" name="sentAmount" placeholder="9,999 EXO"
+            [(ngModel)]="sentAmount">
+          <mat-hint>
+            Amount to be sent to the address.
+          </mat-hint>
+        </mat-form-field>
+      </span>
+      <button mat-raised-button color="primary" class="send-tokens h-margin-1"
+        [disabled]="! validateAddress() || ! sentAmount || sentAmount <= 0"
+        (click)="sendTokens()">Send</button>
+    </form>
   `,
   styleUrls: ['balance.component.css']
 })
-export class BalanceComponent implements OnInit {
+export class BalanceComponent extends CommunicatorComponent implements OnInit {
   @Input() isMaximized = false;
   @Output() refreshOutcome = new EventEmitter<Outcome>();
 
   balance = new BigNumber(0);
+  destAddress: string;
+  sentAmount: number;
 
-  constructor(private walletService: WalletService) {
+  constructor(private walletService: WalletService, private web3Service: Web3Service) {
+    super();
   }
 
   ngOnInit() {
@@ -62,6 +92,21 @@ export class BalanceComponent implements OnInit {
         if (! isInterval) {
           this.refreshOutcome.emit(failure);
         }
+      });
+  }
+
+  validateAddress() {
+    return this.destAddress && this.web3Service.isAddress(this.destAddress);
+  }
+
+  sendTokens() {
+    this.walletService.transfer(this.destAddress, this.sentAmount, 'ether')
+      .then(success => {
+        this.communicate('send-tokens', success.getMessage(), 'success');
+      })
+      .catch(failure => {
+        console.log(failure);
+        this.communicate('send-tokens', failure.getMessage(), 'error');
       });
   }
 }

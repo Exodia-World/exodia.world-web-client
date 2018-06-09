@@ -54,10 +54,16 @@ export class Web3Service {
     this.web3.eth.defaultAccount = address;
   }
 
+  /**
+   * Convert wei to the unit as a BigNumber.
+   */
   fromWei(value: any, unit: string): any {
     return this.web3.fromWei(value, unit);
   }
 
+  /**
+   * Convert from the unit to wei as a string.
+   */
   toWei(value: any, unit: string): any {
     return this.web3.toWei(value, unit);
   }
@@ -80,7 +86,7 @@ export class Web3Service {
           reject(this.outcomeService.fail('GetAccountsFailed', err));
         }
         if (accounts) {
-          resolve(this.outcomeService.succeed(accounts));
+          resolve(this.outcomeService.succeed('GetAccountsSucceeded', accounts));
         } else {
           reject(this.outcomeService.fail('NoAccountsFound'));
         }
@@ -93,22 +99,26 @@ export class Web3Service {
    *
    * @param {(outcome: Outcome) => void} resolve Callback if status == 0x1
    * @param {(outcome: Outcome) => void} reject Callback if status == 0x0
+   * @param {string} okName success' name; only used if status == 0x1
    * @param {string} errName Error/Failure's name; only used if status == 0x0
    * @returns Function to pass a transaction hash into
    */
   checkTransactionStatus(
     resolve: (outcome: Outcome) => void,
     reject: (outcome: Outcome) => void,
+    okName: string,
     errName: string
   ): (transactionHash: string) => void
   {
     return (transactionHash: string) => {
+      console.log(transactionHash);
       this.web3.eth.getTransactionReceipt(transactionHash, (err, receipt) => {
+        console.log('err', err);
         if (err) {
           reject(this.outcomeService.fail('GetTransactionReceiptFailed', err));
         }
         if (parseInt(receipt.status, 16) === 1) {
-          resolve(this.outcomeService.succeed(receipt));
+          resolve(this.outcomeService.succeed(okName, receipt));
         } else {
           reject(this.outcomeService.fail(errName, receipt));
         }
@@ -122,5 +132,9 @@ export class Web3Service {
     } else {
       return this.web3.eth.getBlock(blockHashOrNumber);
     }
+  }
+
+  isAddress(hexString: string): boolean {
+    return this.web3.isAddress(hexString);
   }
 }

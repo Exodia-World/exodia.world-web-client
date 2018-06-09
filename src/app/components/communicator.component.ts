@@ -16,9 +16,10 @@ export class CommunicatorComponent {
    * @param {string} name The name of message element
    * @param {string} text The text to be communicated
    */
-  communicate(name: string, text: string) {
+  communicate(name: string, text: string, type = 'normal') {
     this.messages.toArray().forEach(message => {
       if (! message.name || message.name === name) {
+        message.type = type;
         message.set(text);
       }
     });

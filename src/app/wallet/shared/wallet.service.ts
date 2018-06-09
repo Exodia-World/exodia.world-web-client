@@ -52,7 +52,8 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('GetBalanceFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(balance,unit)));
+          resolve(this.outcomeService.succeed('GetBalanceSucceeded',
+            this.web3Service.fromWei(balance,unit)));
         }
       });
     });
@@ -70,7 +71,8 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('GetStakeBalanceFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(balance,unit)));
+          resolve(this.outcomeService.succeed('GetStakeBalanceSucceeded',
+            this.web3Service.fromWei(balance,unit)));
         }
       });
     });
@@ -86,9 +88,9 @@ export class WalletService {
   transfer(to: string, value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.transfer(to, value, this.web3Service.checkTransactionStatus(
-        resolve, reject, 'TransferFailed'
-      ));
+      this.exoToken.transfer(to, valueInWei, {from: this.web3Service.getDefaultAccount()},
+        this.web3Service.checkTransactionStatus(resolve, reject,
+          'TransferSucceeded', 'TransferFailed'));
     });
   }
 
@@ -101,8 +103,8 @@ export class WalletService {
   depositStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.depositStake(value, this.web3Service.checkTransactionStatus(
-        resolve, reject, 'DepositStakeFailed'
+      this.exoToken.depositStake(valueInWei, this.web3Service.checkTransactionStatus(
+        resolve, reject, 'DepositStakeSucceeded', 'DepositStakeFailed'
       ));
     });
   }
@@ -116,8 +118,8 @@ export class WalletService {
   withdrawStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.withdrawStake(value, this.web3Service.checkTransactionStatus(
-        resolve, reject, 'WithdrawStakeFailed'
+      this.exoToken.withdrawStake(valueInWei, this.web3Service.checkTransactionStatus(
+        resolve, reject, 'WithdrawStakeSucceeded', 'WithdrawStakeFailed'
       ));
     });
   }
@@ -128,7 +130,7 @@ export class WalletService {
   updateStakeBalance(): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       this.exoToken.updateStakeBalance(this.web3Service.checkTransactionStatus(
-        resolve, reject, 'UpdateStakeBalanceFailed'
+        resolve, reject, 'UpdateStakeBalanceSucceeded', 'UpdateStakeBalanceFailed'
       ));
     });
   }
@@ -144,7 +146,8 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('CalculateInterestFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(interest, unit)));
+          resolve(this.outcomeService.succeed('CalculateInterestSucceeded',
+            this.web3Service.fromWei(interest, unit)));
         }
       });
     });
@@ -161,11 +164,10 @@ export class WalletService {
         const stakeStartTime = success.getData();
         this.web3Service.getBlock('latest', (err, block) => {
           if (err) {
-            reject(this.outcomeService.fail('GetLatestBlockFailed', err));
+            reject(this.outcomeService.fail('GetStakeDurationFailed', err));
           }
-          resolve(this.outcomeService.succeed(
-            stakeStartTime > 0 ? block.timestamp - stakeStartTime : 0
-          ));
+          resolve(this.outcomeService.succeed('GetStakeDurationSucceeded',
+            stakeStartTime > 0 ? block.timestamp - stakeStartTime : 0));
         });
       });
     });
@@ -182,7 +184,7 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('GetStakeStartTimeFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(stakeStartTime));
+          resolve(this.outcomeService.succeed('GetStakeStartTimeSucceeded', stakeStartTime));
         }
       });
     });

@@ -35,7 +35,7 @@
 .wallet-section {
   padding: 1em;
   margin: 1.5em;
-  float: right;
+  float: left;
 }
 .wallet-section--balance {
   width: 800px;

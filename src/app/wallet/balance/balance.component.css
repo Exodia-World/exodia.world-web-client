@@ -1,4 +1,5 @@
 .balance {
+  display: inline-block;
   padding: 1em;
   width: 220px;
 }
@@ -31,4 +32,18 @@
   vertical-align: middle;
   text-align: center;
   width: 30%;
+}
+
+
+.send-tokens-form {
+  display: inline-block;
+  vertical-align: top;
+}
+.send-tokens-form__field {
+  padding: 1em;
+  padding-top: 0;
+}
+
+.send-tokens {
+  vertical-align: middle;
 }

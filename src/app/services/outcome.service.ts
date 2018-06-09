@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { errors } from '../constants/error.constant';
+import { messages } from '../constants/message.constant';
 import { Outcome, OutcomeType } from '../models/outcome.model';
 
 /**
@@ -10,33 +10,33 @@ export class OutcomeService {
   /**
    * Create a successful outcome.
    *
+   * @param {string} msgName Success' name
    * @param {any} data The data to be included in outcome
-   * @param {string} msg Message to be shown to users
    * @returns Outcome
    */
-  succeed(data: any = null, msg: string = ''): Outcome {
-    return new Outcome(OutcomeType.Success, data, msg);
+  succeed(msgName: string, data: any = null): Outcome {
+    return new Outcome(OutcomeType.Success, data, this.getMessage(msgName));
   }
 
   /**
    * Create an unsuccessful outcome.
    *
-   * @param {string} errName Error/Failure's name
+   * @param {string} msgName Failure's name
    * @param {any} data The data to be included in outcome
    * @returns Outcome
    */
-  fail(errName: string, data: any = null): Outcome {
-    console.log(errName, data);
-    return new Outcome(OutcomeType.Failure, data, this.getErrMsg(errName));
+  fail(msgName: string, data: any = null): Outcome {
+    console.log(msgName, data);
+    return new Outcome(OutcomeType.Failure, data, this.getMessage(msgName));
   }
 
   /**
-   * Retrieve an error message based on its name.
+   * Retrieve a message based on its name.
    *
-   * @param {string} errName Error/Failure's name
-   * @returns Error message
+   * @param {string} msgName Success/Failure's name
+   * @returns Message text
    */
-  getErrMsg(errName: string): string {
-    return errors[errName] ? errors[errName] : errors.Unknown;
+  getMessage(msgName: string): string {
+    return messages[msgName] ? messages[msgName] : messages.UnknownProblem;
   }
 }

@@ -60,6 +60,6 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
    * Communicate the outcome from each type of refresh.
    */
   handleRefreshOutcome(outcome: Outcome) {
-    this.communicate('refresh-wallet', outcome.getMessage());
+    this.communicate('refresh-wallet', outcome.getMessage(), 'error');
   }
 }

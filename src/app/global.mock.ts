@@ -137,15 +137,15 @@ export function spyOnOutcomeService(): any {
   const OutcomeServiceSpy = jasmine.createSpyObj('OutcomeService', [
     'succeed',
     'fail',
-    'getErrMsg'
+    'getMessage'
   ]);
 
   OutcomeServiceSpy.succeed.and.callFake(
-    (data: any = null, msg: string = ''): Outcome => new Outcome(OutcomeType.Success, data, msg)
+    (msgName: string, data: any = null): Outcome => new Outcome(OutcomeType.Success, data, '')
   );
   OutcomeServiceSpy.fail.and.callFake(
-    (errName: string, data: any = null): Outcome => new Outcome(OutcomeType.Failure, data, '')
+    (msgName: string, data: any = null): Outcome => new Outcome(OutcomeType.Failure, data, '')
   );
-  OutcomeServiceSpy.getErrMsg.and.callFake((errName: string) => '');
+  OutcomeServiceSpy.getMessage.and.callFake((msgName: string) => '');
   return OutcomeServiceSpy;
 }

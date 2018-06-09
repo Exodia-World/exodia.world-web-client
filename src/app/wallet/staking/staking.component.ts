@@ -37,21 +37,24 @@ import { WalletService } from '../shared/wallet.service';
       <button *ngIf="isMaximized" mat-raised-button color="primary"
         class="h-margin-1">Restake</button>
     </div>
-    <div *ngIf="isMaximized" class="staking-form h-margin-1">
-      <div class="staking-form__fields">
+    <form *ngIf="isMaximized" class="staking-form h-font-size-x-large h-margin-1">
+      <div class="staking-form__field">
         <mat-form-field appearance="standard">
           <mat-label>Staking Amount</mat-label>
-          <input matInput type="number" placeholder="9,999">
+          <input matInput type="number" name="stakeAmount" placeholder="9,999 EXO"
+            [(ngModel)]="stakeAmount">
           <mat-hint>
             Amount to be deposit into or withdrawn from your staking balance.
           </mat-hint>
         </mat-form-field>
       </div>
       <div class="staking-actions">
-        <button mat-raised-button color="primary" class="h-margin-1">Deposit</button>
-        <button mat-raised-button color="primary" class="-weak h-margin-1">Withdraw</button>
+        <button mat-raised-button color="primary" class="h-margin-1"
+          [disabled]="! stakeAmount || stakeAmount <= 0">Deposit</button>
+        <button mat-raised-button color="primary" class="-weak h-margin-1"
+          [disabled]="! stakeAmount || stakeAmount <= 0">Withdraw</button>
       </div>
-    </div>
+    </form>
   `,
   styleUrls: ['staking.component.css']
 })
@@ -62,6 +65,7 @@ export class StakingComponent implements OnInit {
   stakeBalance = new BigNumber(0);
   stakeInterest = new BigNumber(0);
   stakeDuration = 0;
+  stakeAmount: number;
 
   constructor(private walletService: WalletService) {
   }
