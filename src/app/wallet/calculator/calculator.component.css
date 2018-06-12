@@ -1,0 +1,17 @@
+.capitalize {
+  text-transform: capitalize;
+}
+
+h3 {
+  letter-spacing: initial;
+  text-align: center;
+}
+
+input, select {
+  display: block;
+  margin: 5px auto;
+  border-radius: 2px;
+  border: 1px solid #7A7A7A;
+  min-width: 15rem;
+  min-height: 1.6rem;
+}
