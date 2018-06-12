@@ -99,6 +99,10 @@ p {
   font-size: $font-size-normal;
 }
 
+.mat-tooltip.success-msg {
+  background-color: #4bb543;
+}
+
 .mat-tooltip.normal-msg {
   background-color: #1b93c7;
 }

@@ -3,13 +3,14 @@
  */
 export const messages = {
   NoDefaultAccount: 'Please unlock your account through Metamask/other Ethereum wallets first.',
+  SendTransactionFailed: 'Failed to send transaction. Please click `submit` on Metamask.',
   GetTransactionReceiptFailed: 'Failed to get transaction receipt. Are you connected?',
   GetBalanceFailed: 'We failed to get your balance.',
   GetStakeBalanceFailed: 'We failed to get your staking balance.',
   GetStakeDurationFailed: 'We failed to get your staking duration.',
   GetStakeStartTimeFailed: 'We failed to get your staking start time.',
   TransferSucceeded: 'Successfully sent tokens!',
-  TransferFailed: 'The tokens failed to reach its recipient.',
+  TransferFailed: 'The tokens failed to reach its recipient. Please check our rules about tokens transfer.',
   DepositStakeFailed: 'The tokens failed to be deposit.',
   WithdrawStakeFailed: 'The tokens failed to be withdrawn.',
   UpdateStakeBalanceFailed: 'The tokens failed to be restaked.',

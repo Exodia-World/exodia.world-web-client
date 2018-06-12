@@ -155,8 +155,8 @@ describe('WalletService', () => {
 
   it('should return error if update stake balance failed', (done) => {
     EXOTokenSpy.updateStakeBalance.and.callFake(
-      (callback: (result) => void) => {
-        callback('ERROR');
+      (callback: (err, result) => void) => {
+        callback(null, 'ERROR');
       }
     );
     walletService.updateStakeBalance().catch(outcome => {

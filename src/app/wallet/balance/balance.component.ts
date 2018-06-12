@@ -45,6 +45,7 @@ import { CommunicatorComponent } from '../../components/communicator.component';
       <button mat-raised-button color="primary" class="send-tokens h-margin-1"
         [disabled]="! validateAddress() || ! sentAmount || sentAmount <= 0"
         (click)="sendTokens()">Send</button>
+      <exo-message name="send-tokens" position="right"><label></label></exo-message>
     </form>
   `,
   styleUrls: ['balance.component.css']
@@ -103,9 +104,10 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
     this.walletService.transfer(this.destAddress, this.sentAmount, 'ether')
       .then(success => {
         this.communicate('send-tokens', success.getMessage(), 'success');
+        this.destAddress = null;
+        this.sentAmount = null;
       })
       .catch(failure => {
-        console.log(failure);
         this.communicate('send-tokens', failure.getMessage(), 'error');
       });
   }

@@ -84,6 +84,7 @@ export class Web3Service {
       this.web3.eth.getAccounts((err, accounts) => {
         if (err) {
           reject(this.outcomeService.fail('GetAccountsFailed', err));
+          return;
         }
         if (accounts) {
           resolve(this.outcomeService.succeed('GetAccountsSucceeded', accounts));
@@ -108,14 +109,17 @@ export class Web3Service {
     reject: (outcome: Outcome) => void,
     okName: string,
     errName: string
-  ): (transactionHash: string) => void
+  ): (err: any, txHash: string) => void
   {
-    return (transactionHash: string) => {
-      console.log(transactionHash);
-      this.web3.eth.getTransactionReceipt(transactionHash, (err, receipt) => {
-        console.log('err', err);
+    return (err: any, txHash: string) => {
+      if (err) {
+        reject(this.outcomeService.fail('SendTransactionFailed', err));
+        return;
+      }
+      this.web3.eth.getTransactionReceipt(txHash, (err, receipt) => {
         if (err) {
           reject(this.outcomeService.fail('GetTransactionReceiptFailed', err));
+          return;
         }
         if (parseInt(receipt.status, 16) === 1) {
           resolve(this.outcomeService.succeed(okName, receipt));

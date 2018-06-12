@@ -81,16 +81,20 @@ export class WalletService {
   /**
    * Transfer an amount of tokens in unit from the default account to another address.
    *
-   * @param {string} address Account address
+   * @param {string} to Destination account address
    * @param {number} value Amount of tokens
    * @param {string} unit The unit of value (wei, ether, etc.)
    */
   transfer(to: string, value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.transfer(to, valueInWei, {from: this.web3Service.getDefaultAccount()},
+      this.exoToken.transfer(
+        to,
+        valueInWei,
+        {from: this.web3Service.getDefaultAccount()},
         this.web3Service.checkTransactionStatus(resolve, reject,
-          'TransferSucceeded', 'TransferFailed'));
+          'TransferSucceeded', 'TransferFailed')
+      );
     });
   }
 
@@ -165,9 +169,10 @@ export class WalletService {
         this.web3Service.getBlock('latest', (err, block) => {
           if (err) {
             reject(this.outcomeService.fail('GetStakeDurationFailed', err));
+          } else {
+            resolve(this.outcomeService.succeed('GetStakeDurationSucceeded',
+              stakeStartTime > 0 ? block.timestamp - stakeStartTime : 0));
           }
-          resolve(this.outcomeService.succeed('GetStakeDurationSucceeded',
-            stakeStartTime > 0 ? block.timestamp - stakeStartTime : 0));
         });
       });
     });

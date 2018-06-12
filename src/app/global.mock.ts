@@ -33,35 +33,35 @@ export function spyOnEXOToken(): any {
       )
     },
     transfer: jasmine.createSpy('transfer').and.callFake(
-      (to: string, value: number, callback: (result) => void) => {
+      (to: string, value: number, txObj: any, callback: (err, result) => void) => {
         if (to === '0xERROR') {
-          callback('ERROR');
+          callback(null, 'ERROR');
         } else {
-          callback(to.split('0x')[1]); // return transaction hash
+          callback(null, to.split('0x')[1]); // return transaction hash
         }
       }
     ),
     depositStake: jasmine.createSpy('depositStake').and.callFake(
-      (value: number, callback: (result) => void) => {
+      (value: number, callback: (err, result) => void) => {
         if (value <= 0) {
-          callback('ERROR');
+          callback(null, 'ERROR');
         } else {
-          callback('OK');
+          callback(null, 'OK');
         }
       }
     ),
     withdrawStake: jasmine.createSpy('withdrawStake').and.callFake(
-      (value: number, callback: (result) => void) => {
+      (value: number, callback: (err, result) => void) => {
         if (value <= 0) {
-          callback('ERROR');
+          callback(null, 'ERROR');
         } else {
-          callback('OK');
+          callback(null, 'OK');
         }
       }
     ),
     updateStakeBalance: jasmine.createSpy('updateStakeBalance').and.callFake(
-      (callback: (result) => void) => {
-        callback('OK');
+      (callback: (err, result) => void) => {
+        callback(null, 'OK');
       }
     ),
     calculateInterest: {
@@ -111,10 +111,15 @@ export function spyOnWeb3Service(contractSpy: any): any {
   );
   Web3ServiceSpy.checkTransactionStatus.and.callFake(
     (resolve, reject) => {
-      return (hash: string) => {
+      return (err: any, hash: string) => {
+        if (err) {
+          reject(new Outcome(OutcomeType.Failure, err));
+          return;
+        }
         Web3ServiceSpy.getTransactionReceipt(hash, (err, receipt) => {
           if (err) {
             reject(new Outcome(OutcomeType.Failure, err));
+            return;
           }
           if (parseInt(receipt.status, 16) === 1) {
             resolve(new Outcome(OutcomeType.Success, receipt));
