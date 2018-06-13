@@ -45,6 +45,8 @@ export class CalculatorComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const stakeDays = this.calculatorForm.get('stakingDays').value;
+    
     console.log(this.calculatorForm)
   }
 }
