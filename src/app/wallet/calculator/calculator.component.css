@@ -15,3 +15,18 @@ input, select {
   min-width: 15rem;
   min-height: 1.6rem;
 }
+
+select {
+  height: 2rem;
+  width: 15.5rem;
+}
+
+.calculate-bar {
+  display: flex;
+  padding: 1rem;
+  justify-content: space-between;
+
+  span {
+    margin-right: 0.5rem;
+  }
+}
