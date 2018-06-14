@@ -36,7 +36,7 @@ import { CommunicatorComponent } from '../../components/communicator.component';
         <mat-form-field appearance="standard">
           <mat-label>Sent Amount</mat-label>
           <input matInput type="number" name="sentAmount" placeholder="9,999 EXO"
-            [(ngModel)]="sentAmount">
+            min="0" [(ngModel)]="sentAmount">
           <mat-hint>
             Amount to be sent to the address.
           </mat-hint>
@@ -57,6 +57,7 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
   balance = new BigNumber(0);
   destAddress: string;
   sentAmount: number;
+  isSending = false;
 
   constructor(private walletService: WalletService, private web3Service: Web3Service) {
     super();
@@ -101,6 +102,8 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
   }
 
   sendTokens() {
+    this.isSending = true;
+
     this.walletService.transfer(this.destAddress, this.sentAmount, 'ether')
       .then(success => {
         this.communicate('send-tokens', success.getMessage(), 'success');
@@ -109,6 +112,9 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
       })
       .catch(failure => {
         this.communicate('send-tokens', failure.getMessage(), 'error');
+      })
+      .then(() => {
+        this.isSending = false;
       });
   }
 }
