@@ -13,18 +13,25 @@ import * as calculatorHelper from './helpers';
     <h3>EXO Interest Calculator</h3>
     <form [formGroup]="calculatorForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <input class="form-control" formControlName="exoDate" type="date">
-        <input class="form-control" formControlName="exoStake" type="number"
-          placeholder="Total EXO Staked">
-        <input class="form-control" formControlName="stakingDays" type="number"
-          placeholder="Staking Days">
-        <select class="form-control" formControlName="interest">
-           <option class="capitalize" *ngFor="let interest of interestArray"
-            [value]="interest">{{interest}}</option>
-        </select>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="exoDate" [matDatepicker]="myDatepicker">
+          <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="exoStake" type="number" placeholder="Total EXO Staked">
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="stakingDays" type="number" placeholder="Staking Days">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="interest">
+            <mat-option class="capitalize" *ngFor="let interest of interestArray" [value]="interest"> {{interest}} </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
       <div class="calculate-bar">
-        <button type="submit" class="">Calculate</button>
+        <button mat-raised-button type="submit" class="">Calculate</button>
         <p><strong>{{exoAmount}} EXO</strong></p>
       </div>
     </form>
