@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { LongNumberPipeModule } from '../../pipes/long-number/long-number.module';
+import { MessageModule } from '../../components/message/message.module';
 import { WalletService } from '../shared/wallet.service';
 import { StakingComponent } from './staking.component';
 
@@ -16,7 +17,8 @@ import { StakingComponent } from './staking.component';
     SharedModule,
     MatFormFieldModule,
     MatInputModule,
-    LongNumberPipeModule
+    LongNumberPipeModule,
+    MessageModule
   ],
   providers: [
     WalletService

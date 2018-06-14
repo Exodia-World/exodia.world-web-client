@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { BigNumber } from 'bignumber.js';
 import { Outcome } from '../../models/outcome.model';
 import { WalletService } from '../shared/wallet.service';
+import { CommunicatorComponent } from '../../components/communicator.component';
 
 /**
  * Displays and manages wallet staking information.
@@ -34,31 +35,39 @@ import { WalletService } from '../shared/wallet.service';
           {{stakeBalance.plus(stakeInterest).toNumber() | longNumber:'1.0-6'}} EXO
         </strong>
       </p>
-      <button *ngIf="isMaximized" mat-raised-button color="primary"
-        class="h-margin-1">Restake</button>
+      <exo-message name="restake" position="right">
+        <button *ngIf="isMaximized" mat-raised-button color="primary"
+          class="h-margin-1" (click)="restake()">Restake</button>
+      </exo-message>
     </div>
     <form *ngIf="isMaximized" class="staking-form h-font-size-x-large h-margin-1">
       <div class="staking-form__field">
         <mat-form-field appearance="standard">
           <mat-label>Staking Amount</mat-label>
           <input matInput type="number" name="stakeAmount" placeholder="9,999 EXO"
-            [(ngModel)]="stakeAmount">
+            min="0" [(ngModel)]="stakeAmount">
           <mat-hint>
             Amount to be deposit into or withdrawn from your staking balance.
           </mat-hint>
         </mat-form-field>
       </div>
       <div class="staking-actions">
-        <button mat-raised-button color="primary" class="h-margin-1"
-          [disabled]="! stakeAmount || stakeAmount <= 0">Deposit</button>
-        <button mat-raised-button color="primary" class="-weak h-margin-1"
-          [disabled]="! stakeAmount || stakeAmount <= 0">Withdraw</button>
+        <exo-message name="deposit-stake" position="below">
+          <button mat-raised-button color="primary" class="h-margin-1"
+            [disabled]="! stakeAmount || stakeAmount <= 0"
+            (click)="depositStake()">Deposit</button>
+        </exo-message>
+        <exo-message name="withdraw-stake" position="below">
+          <button mat-raised-button color="primary" class="-weak h-margin-1"
+            [disabled]="! stakeAmount || stakeAmount <= 0"
+            (click)="withdrawStake()">Withdraw</button>
+        </exo-message>
       </div>
     </form>
   `,
   styleUrls: ['staking.component.css']
 })
-export class StakingComponent implements OnInit {
+export class StakingComponent extends CommunicatorComponent implements OnInit {
   @Input() isMaximized = false;
   @Output() refreshOutcome = new EventEmitter<Outcome>();
 
@@ -68,6 +77,7 @@ export class StakingComponent implements OnInit {
   stakeAmount: number;
 
   constructor(private walletService: WalletService) {
+    super();
   }
 
   ngOnInit() {
@@ -120,6 +130,38 @@ export class StakingComponent implements OnInit {
         if (! isInterval) {
           this.refreshOutcome.emit(failure);
         }
+      });
+  }
+
+  restake() {
+    this.walletService.updateStakeBalance()
+      .then(success => {
+        this.communicate('restake', success.getMessage(), 'success');
+      })
+      .catch(failure => {
+        this.communicate('restake', failure.getMessage(), 'error');
+      });
+  }
+
+  depositStake() {
+    this.walletService.depositStake(this.stakeAmount, 'ether')
+      .then(success => {
+        this.communicate('deposit-stake', success.getMessage(), 'success');
+        this.stakeAmount = null;
+      })
+      .catch(failure => {
+        this.communicate('deposit-stake', failure.getMessage(), 'error');
+      });
+  }
+
+  withdrawStake() {
+    this.walletService.withdrawStake(this.stakeAmount, 'ether')
+      .then(success => {
+        this.communicate('withdraw-stake', success.getMessage(), 'success');
+        this.stakeAmount = null;
+      })
+      .catch(failure => {
+        this.communicate('withdraw-stake', failure.getMessage(), 'error');
       });
   }
 }
