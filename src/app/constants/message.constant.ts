@@ -3,6 +3,7 @@
  */
 export const messages = {
   NoDefaultAccount: 'Please unlock your account through Metamask/other Ethereum wallets first.',
+  SendTransactionSucceeded: 'Submitted transaction to network. Please wait for it to be processed.',
   SendTransactionFailed: 'Failed to send transaction. Please click `submit` on Metamask.',
   GetTransactionReceiptFailed: 'Failed to get transaction receipt. Are you connected?',
   GetBalanceFailed: 'We failed to get your balance.',
