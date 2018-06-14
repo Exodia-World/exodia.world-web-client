@@ -107,9 +107,12 @@ export class WalletService {
   depositStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.depositStake(valueInWei, this.web3Service.checkTransactionStatus(
-        resolve, reject, 'DepositStakeSucceeded', 'DepositStakeFailed'
-      ));
+      this.exoToken.depositStake(
+        valueInWei,
+        {from: this.web3Service.getDefaultAccount()},
+        this.web3Service.checkTransactionStatus(resolve, reject,
+          'DepositStakeSucceeded', 'DepositStakeFailed')
+      );
     });
   }
 
@@ -122,9 +125,12 @@ export class WalletService {
   withdrawStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.withdrawStake(valueInWei, this.web3Service.checkTransactionStatus(
-        resolve, reject, 'WithdrawStakeSucceeded', 'WithdrawStakeFailed'
-      ));
+      this.exoToken.withdrawStake(
+        valueInWei,
+        {from: this.web3Service.getDefaultAccount()},
+        this.web3Service.checkTransactionStatus(resolve, reject,
+          'WithdrawStakeSucceeded', 'WithdrawStakeFailed')
+      );
     });
   }
 
@@ -133,9 +139,11 @@ export class WalletService {
    */
   updateStakeBalance(): Promise<Outcome> {
     return new Promise((resolve, reject) => {
-      this.exoToken.updateStakeBalance(this.web3Service.checkTransactionStatus(
-        resolve, reject, 'UpdateStakeBalanceSucceeded', 'UpdateStakeBalanceFailed'
-      ));
+      this.exoToken.updateStakeBalance(
+        {from: this.web3Service.getDefaultAccount()},
+        this.web3Service.checkTransactionStatus(resolve, reject,
+          'UpdateStakeBalanceSucceeded', 'UpdateStakeBalanceFailed')
+      );
     });
   }
 

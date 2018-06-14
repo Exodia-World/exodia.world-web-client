@@ -42,7 +42,7 @@ export function spyOnEXOToken(): any {
       }
     ),
     depositStake: jasmine.createSpy('depositStake').and.callFake(
-      (value: number, callback: (err, result) => void) => {
+      (value: number, txObj: any, callback: (err, result) => void) => {
         if (value <= 0) {
           callback(null, 'ERROR');
         } else {
@@ -51,7 +51,7 @@ export function spyOnEXOToken(): any {
       }
     ),
     withdrawStake: jasmine.createSpy('withdrawStake').and.callFake(
-      (value: number, callback: (err, result) => void) => {
+      (value: number, txObj: any, callback: (err, result) => void) => {
         if (value <= 0) {
           callback(null, 'ERROR');
         } else {
@@ -60,7 +60,7 @@ export function spyOnEXOToken(): any {
       }
     ),
     updateStakeBalance: jasmine.createSpy('updateStakeBalance').and.callFake(
-      (callback: (err, result) => void) => {
+      (txObj: any, callback: (err, result) => void) => {
         callback(null, 'OK');
       }
     ),
@@ -116,6 +116,8 @@ export function spyOnWeb3Service(contractSpy: any): any {
           reject(new Outcome(OutcomeType.Failure, err));
           return;
         }
+        resolve(new Outcome(OutcomeType.Success));
+
         Web3ServiceSpy.getTransactionReceipt(hash, (err, receipt) => {
           if (err) {
             reject(new Outcome(OutcomeType.Failure, err));

@@ -116,7 +116,7 @@ export class Web3Service {
         reject(this.outcomeService.fail('SendTransactionFailed', err));
         return;
       }
-      // Notify of successful transaction submission before finding out its status.
+      // Notify of successful transaction submission before knowing its status.
       resolve(this.outcomeService.succeed('SendTransactionSucceeded', txHash));
 
       this.web3.eth.getTransactionReceipt(txHash, (err, receipt) => {
