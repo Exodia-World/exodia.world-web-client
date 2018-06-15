@@ -63,17 +63,23 @@ export class CalculatorComponent implements OnInit {
     const stakeEndDate = moment(this.calculatorForm.get('exoDate').value).add(stakeDays, 'days');
     let totalInterest = 0;
 
+    // stake end date is before the staking date
+    if (stakeEndDate.isBefore(calculatorHelper.STAKING_STARTDATE)) {
+      this.exoAmount = 0;
+      return;
+    }
+
     // less than 3 years after ICO
-    if (stakeEndDate.isBefore(calculatorHelper.ICO_THREEYEARS)) {
+    if (stakeEndDate.isBefore(calculatorHelper.FIRST_INTEREST_PERIOD_END_DATE)) {
       const eligibleStakeDays = Math.floor(stakeDays / 7) * 7;
       // Ex: interest = 50 EXO * (10%/365 days) * 28 days
       totalInterest = Math.floor(exoStake * (0.1 / 365) * eligibleStakeDays);
     }
 
     // 5% for the rest of the years
-    if (stakeEndDate.isAfter(calculatorHelper.ICO_THREEYEARS)) {
+    if (stakeEndDate.isAfter(calculatorHelper.FIRST_INTEREST_PERIOD_END_DATE)) {
       // adds one to include the start date
-      const diff = calculatorHelper.ICO_THREEYEARS.diff(stakeDate, 'days') + 1;
+      const diff = calculatorHelper.FIRST_INTEREST_PERIOD_END_DATE.diff(stakeDate, 'days') + 1;
 
       if (diff > 0) {
         const interestTenpercent = Math.floor(exoStake * (0.1 / 365) * diff);
