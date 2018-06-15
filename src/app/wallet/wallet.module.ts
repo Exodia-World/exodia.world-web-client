@@ -11,6 +11,7 @@ import { AddressModule } from './address/address.module';
 import { StakingModule } from './staking/staking.module';
 import { WalletService } from './shared/wallet.service';
 import { WalletComponent } from './wallet.component';
+import { CalculatorModule } from './calculator/calculator.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { WalletComponent } from './wallet.component';
     MessageModule,
     BalanceModule,
     AddressModule,
-    StakingModule
+    StakingModule,
+    CalculatorModule
   ],
   providers: [
     WalletService

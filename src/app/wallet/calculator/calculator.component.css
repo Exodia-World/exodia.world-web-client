@@ -1,0 +1,27 @@
+.capitalize {
+  text-transform: capitalize;
+}
+
+h3 {
+  letter-spacing: initial;
+  text-align: center;
+}
+
+.form-group {
+  text-align: center;
+}
+
+mat-form-field {
+  width: 18em;
+  font-size: 11px;
+}
+
+.calculate-bar {
+  display: flex;
+  padding: 1rem;
+  justify-content: space-between;
+
+  span {
+    margin-right: 0.5rem;
+  }
+}
