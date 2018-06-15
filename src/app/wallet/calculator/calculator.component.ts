@@ -69,6 +69,14 @@ export class CalculatorComponent implements OnInit {
       return;
     }
 
+    // stake date is before staking start but stake end date is after staking start
+    if (stakeDate.isBefore(calculatorHelper.STAKING_STARTDATE) && stakeEndDate.isAfter(calculatorHelper.STAKING_STARTDATE)) {
+      const diff = stakeEndDate.diff(calculatorHelper.STAKING_STARTDATE, 'days') + 1;
+      const eligibleStakeDays = Math.floor(diff / 7) * 7;
+      this.exoAmount = Math.floor(exoStake * (0.1 / 365) * eligibleStakeDays);
+      return;
+    }
+
     // less than 3 years after ICO
     if (stakeEndDate.isBefore(calculatorHelper.FIRST_INTEREST_PERIOD_END_DATE)) {
       const eligibleStakeDays = Math.floor(stakeDays / 7) * 7;
