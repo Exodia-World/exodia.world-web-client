@@ -1,6 +1,7 @@
 import { BalanceComponent } from './balance.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('Component: Balance', () => {
   let component: BalanceComponent;
@@ -8,8 +9,9 @@ describe('Component: Balance', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      declarations: [BalanceComponent]
+      imports: [ReactiveFormsModule, FormsModule],
+      declarations: [BalanceComponent],
+      schema: [ NO_ERRORS_SCHEMA ]
     });
 
     // create component and test fixture
