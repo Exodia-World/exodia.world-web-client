@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { BigNumber } from 'bignumber.js';
 import { Outcome } from '../../models/outcome.model';
 import { Web3Service } from '../../services/web3.service';
@@ -21,30 +22,25 @@ import { CommunicatorComponent } from '../../components/communicator.component';
         <div class="balance__unit">EXO</div>
       </div>
     </div>
-    <form *ngIf="isMaximized" class="send-tokens-form h-font-size-x-large">
+    <form *ngIf="isMaximized" class="send-tokens-form h-font-size-x-large" [formGroup]="form">
       <span class="send-tokens-form__field">
         <mat-form-field appearance="standard">
           <mat-label>Address</mat-label>
-          <input matInput type="text" name="destAddress" placeholder="0x18a08a1b7e96be6..."
-            [(ngModel)]="destAddress">
-          <mat-hint>
-            Address to send tokens to.
-          </mat-hint>
+          <input matInput type="text" name="destAddress"
+            placeholder="0x18a08a1b7e96be6..." formControlName="destAddress">
+          <mat-hint>Address to send tokens to.</mat-hint>
         </mat-form-field>
       </span>
       <span class="send-tokens-form__field">
         <mat-form-field appearance="standard">
           <mat-label>Sent Amount</mat-label>
-          <input matInput type="number" name="sentAmount" placeholder="9,999 EXO"
-            min="0" [(ngModel)]="sentAmount">
-          <mat-hint>
-            Amount to be sent to the address.
-          </mat-hint>
+          <input matInput type="number" name="sentAmount"
+            placeholder="9,999 EXO" min="0" formControlName="sentAmount">
+          <mat-hint>Amount to be sent to the address.</mat-hint>
         </mat-form-field>
       </span>
       <button mat-raised-button color="primary" class="send-tokens h-margin-1"
-        [disabled]="! validateAddress() || ! sentAmount || sentAmount <= 0"
-        (click)="sendTokens()">Send</button>
+        [disabled]="form.invalid" (click)="sendTokens()">Send</button>
       <exo-message name="send-tokens" position="right"><label></label></exo-message>
     </form>
   `,
@@ -55,16 +51,38 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
   @Output() refreshOutcome = new EventEmitter<Outcome>();
 
   balance = new BigNumber(0);
-  destAddress: string;
-  sentAmount: number;
+  form: FormGroup;
   isSending = false;
 
-  constructor(private walletService: WalletService, private web3Service: Web3Service) {
+  constructor(
+    private walletService: WalletService,
+    private web3Service: Web3Service,
+    private formBuilder: FormBuilder
+  ) {
     super();
   }
 
   ngOnInit() {
+    this.resetForm();
     this.refreshAll(true);
+  }
+
+  resetForm() {
+    this.form = this.formBuilder.group({
+      destAddress: new FormControl('', [
+        Validators.required,
+        (control: AbstractControl): {[key: string]: any} | null => {
+          // Only accept valid and non-zero addresses.
+          if (this.web3Service.isAddress(control.value) &&
+            control.value.slice(-40) !== "0000000000000000000000000000000000000000") {
+            return null;
+          } else {
+            return {value: control.value};
+          }
+        }
+      ]),
+      sentAmount: new FormControl(null, [Validators.required, Validators.min(1)])
+    });
   }
 
   /**
@@ -97,18 +115,15 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
       });
   }
 
-  validateAddress() {
-    return this.destAddress && this.web3Service.isAddress(this.destAddress);
-  }
-
   sendTokens() {
     this.isSending = true;
+    const destAddress: string = this.form.get('destAddress').value;
+    const sentAmount: number = this.form.get('sentAmount').value;
 
-    this.walletService.transfer(this.destAddress, this.sentAmount, 'ether')
+    this.walletService.transfer(destAddress, sentAmount, 'ether')
       .then(success => {
         this.communicate('send-tokens', success.getMessage(), 'success');
-        this.destAddress = null;
-        this.sentAmount = null;
+        this.resetForm();
       })
       .catch(failure => {
         this.communicate('send-tokens', failure.getMessage(), 'error');
