@@ -67,7 +67,7 @@ describe('Component: Calculator', () => {
 
   it('should return 10% for the days in the first interest period if stake date is before staking day start and stake end date is after', () => {
     component.calculatorForm.get('exoStake').setValue(400);
-    component.calculatorForm.get('exoDate').setValue(calculatorHelper.AFTER_STAKING_STARTDATE_FIRST_INTEREST_PERIOD_BETWEN_DATE);
+    component.calculatorForm.get('exoDate').setValue(calculatorHelper.AFTER_STAKING_STARTDATE_FIRST_INTEREST_PERIOD_BETWEEN_DATE);
     component.calculatorForm.get('stakingDays').setValue(400);
     component.onSubmit();
     expect(component.exoAmount).toBe(18);
