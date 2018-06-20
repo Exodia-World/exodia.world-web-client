@@ -1,13 +1,5 @@
 import { Outcome, OutcomeType } from './models/outcome.model';
 
-export class ElectronServiceMock { }
-
-export class MetamaskServiceMock { }
-
-export class Web3ServiceMock { }
-
-export class WalletServiceMock { }
-
 export function spyOnEXOToken(): any {
   const EXOTokenSpy = {
     balanceOf: {
@@ -96,7 +88,8 @@ export function spyOnWeb3Service(contractSpy: any): any {
     'toWei',
     'getTransactionReceipt',
     'checkTransactionStatus',
-    'getBlock'
+    'getBlock',
+    'isAddress'
   ]);
   Web3ServiceSpy.canSignTransactions.and.returnValue(true);
   Web3ServiceSpy.getContract.and.returnValue(contractSpy);
@@ -155,4 +148,16 @@ export function spyOnOutcomeService(): any {
   );
   OutcomeServiceSpy.getMessage.and.callFake((msgName: string) => '');
   return OutcomeServiceSpy;
+}
+
+export function spyOnWalletService(): any {
+  const WalletServiceSpy = jasmine.createSpyObj('WalletService', [
+    'ofDefaultAccount',
+    'transfer'
+  ]);
+
+  // TODO: Use spyOn instead.
+  WalletServiceSpy.transfer.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
+
+  return WalletServiceSpy;
 }
