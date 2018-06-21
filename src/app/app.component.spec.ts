@@ -45,6 +45,7 @@ describe('AppComponent', () => {
   it('should show app warning if web3 cannot sign transactions', () => {
     Web3ServiceSpy.canSignTransactions.and.returnValue(false);
 
+    component = TestBed.createComponent(AppComponent).componentInstance;
     expect(Web3ServiceSpy.canSignTransactions).toHaveBeenCalled();
     expect(component.showAppWarning).toBe(true);
   });

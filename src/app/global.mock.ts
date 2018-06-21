@@ -156,7 +156,11 @@ export function spyOnWalletService(): any {
     'transfer'
   ]);
 
-  // TODO: Use spyOn instead.
+  WalletServiceSpy.ofDefaultAccount.and.callFake((methodName: string, ...args: any[]) => {
+    if (methodName === 'getBalance') {
+      return Promise.resolve(new Outcome(OutcomeType.Success, 9999, ''));
+    }
+  });
   WalletServiceSpy.transfer.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
 
   return WalletServiceSpy;

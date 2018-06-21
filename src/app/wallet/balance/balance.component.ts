@@ -67,6 +67,9 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
     this.refreshAll(true);
   }
 
+  /**
+   * Recreate the transfer form and set validators.
+   */
   resetForm() {
     this.form = this.formBuilder.group({
       destAddress: new FormControl('', [

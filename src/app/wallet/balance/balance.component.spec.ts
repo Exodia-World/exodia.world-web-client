@@ -38,6 +38,8 @@ describe('Component: Balance', () => {
 
     fixture = TestBed.createComponent(BalanceComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'refreshAll');
+
     component.ngOnInit();
   });
 
@@ -45,7 +47,17 @@ describe('Component: Balance', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create form on ngOnInit', () => {
+  it('should reset form and refresh information on ngOnInit', () => {
     expect(component.form).toBeDefined();
+    expect(component.refreshAll).toHaveBeenCalled();
+  });
+
+  it('should reject negative sent amount', () => {
+    component.form.get('sentAmount').setValue(-1);
+
+    const sendTokensBtn = fixture.nativeElement.querySelector('div');
+    console.log(sendTokensBtn);
+    expect(component.form.invalid).toBe(true);
+    expect(sendTokensBtn.disabled).toBe(true);
   });
 });
