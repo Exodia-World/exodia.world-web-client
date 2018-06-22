@@ -35,7 +35,7 @@ import { CommunicatorComponent } from '../../components/communicator.component';
         <mat-form-field appearance="standard">
           <mat-label>Sent Amount</mat-label>
           <input matInput type="number" name="sentAmount"
-            placeholder="9,999 EXO" min="0" formControlName="sentAmount">
+            placeholder="9,999 EXO" min="1" formControlName="sentAmount">
           <mat-hint>Amount to be sent to the address.</mat-hint>
         </mat-form-field>
       </span>
@@ -52,7 +52,6 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
 
   balance = new BigNumber(0);
   form: FormGroup;
-  isSending = false;
 
   constructor(
     private walletService: WalletService,
@@ -118,8 +117,11 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
       });
   }
 
+  /**
+   * Send an amount of tokens to the destination address and display a successful
+   * transaction submission message.
+   */
   sendTokens() {
-    this.isSending = true;
     const destAddress: string = this.form.get('destAddress').value;
     const sentAmount: number = this.form.get('sentAmount').value;
 
@@ -130,9 +132,6 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
       })
       .catch(failure => {
         this.communicate('send-tokens', failure.getMessage(), 'error');
-      })
-      .then(() => {
-        this.isSending = false;
       });
   }
 }
