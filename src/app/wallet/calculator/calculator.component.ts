@@ -57,10 +57,11 @@ export class CalculatorComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const exoDate = (new Date(this.calculatorForm.get('exoDate').value)).toISOString();
     const stakeDays = this.calculatorForm.get('stakingDays').value;
     const exoStake = this.calculatorForm.get('exoStake').value;
-    const stakeDate = moment(this.calculatorForm.get('exoDate').value);
-    const stakeEndDate = moment(this.calculatorForm.get('exoDate').value).add(stakeDays, 'days');
+    const stakeDate = moment(exoDate);
+    const stakeEndDate = moment(exoDate).add(stakeDays, 'days');
     let totalInterest = 0;
 
     // stake end date is before the staking date
