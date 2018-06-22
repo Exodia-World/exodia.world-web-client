@@ -130,6 +130,9 @@ export function spyOnWeb3Service(contractSpy: any): any {
       callback(null, {timestamp: 1234567890});
     }
   );
+  Web3ServiceSpy.isAddress.and.callFake(
+    (addr: string) => addr === '0xfE9e8709d3215310075d67E3ed32A380CCf451C8'
+  );
   return Web3ServiceSpy;
 }
 

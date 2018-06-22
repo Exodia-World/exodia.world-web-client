@@ -16,6 +16,14 @@ describe('Component: Balance', () => {
   let WalletServiceSpy: any;
   let Web3ServiceSpy: any;
 
+  let isAcceptedByForm = (isAccepted: boolean) => {
+    fixture.detectChanges();
+
+    const sendTokensBtn = el.querySelector('.send-tokens');
+    expect(component.form.valid).toBe(isAccepted);
+    expect(sendTokensBtn.disabled).toBe(! isAccepted);
+  };
+
   beforeEach(async(() => {
     WalletServiceSpy = spyOnWalletService();
     Web3ServiceSpy = spyOnWeb3Service(spyOnEXOToken());
@@ -38,8 +46,11 @@ describe('Component: Balance', () => {
     fixture = TestBed.createComponent(BalanceComponent);
     el = fixture.debugElement.nativeElement;
     component = fixture.componentInstance;
+    spyOn(component, 'communicate').and.callThrough();
+    spyOn(component, 'resetForm').and.callThrough();
     spyOn(component, 'refreshAll');
 
+    component.isMaximized = true;
     component.ngOnInit();
     fixture.detectChanges();
   });
@@ -55,36 +66,61 @@ describe('Component: Balance', () => {
 
   it('should only show form if it is maximized', () => {
     let form = el.querySelector('form');
-    expect(form).toEqual(null);
+    expect(form).not.toEqual(null);
 
-    component.isMaximized = true;
+    component.isMaximized = false;
     fixture.detectChanges();
     form = el.querySelector('form');
-    expect(form).not.toEqual(null);
+    expect(form).toEqual(null);
   });
 
-  it('should reject sent amount that is <= 0', () => {
-    component.isMaximized = true;
-    component.form.get('sentAmount').setValue(0);
-    fixture.detectChanges();
+  it('should submit a transfer transaction if all inputs are valid', async(() => {
+    component.form.get('destAddress').setValue('0xfE9e8709d3215310075d67E3ed32A380CCf451C8');
+    component.form.get('sentAmount').setValue(1);
+    component.sendTokens();
 
-    const sendTokensBtn = el.querySelector('.send-tokens');
-    expect(component.form.invalid).toBe(true);
-    expect(sendTokensBtn.disabled).toBe(true);
+    fixture.whenStable().then(() => {
+      expect(component.communicate).toHaveBeenCalled();
+      expect(component.resetForm).toHaveBeenCalled();
+    });
+  }));
+
+  it('should accept valid Ethereum addresses and sent amount values that are > 0', () => {
+    component.form.get('destAddress').setValue('0xfE9e8709d3215310075d67E3ed32A380CCf451C8');
+    component.form.get('sentAmount').setValue(1);
+    isAcceptedByForm(true);
+  });
+
+  it('should reject null as a sent amount value', () => {
+    component.form.get('sentAmount').setValue(null);
+    isAcceptedByForm(false);
+  });
+
+  it('should reject sent amount values that are <= 0', () => {
+    component.form.get('sentAmount').setValue(0);
+    isAcceptedByForm(false);
 
     component.form.get('sentAmount').setValue(-1);
-    fixture.detectChanges();
-    expect(component.form.invalid).toBe(true);
-    expect(sendTokensBtn.disabled).toBe(true);
+    isAcceptedByForm(false);
   });
 
-  it('should reject empty destination address', () => {
-    component.isMaximized = true;
-    component.form.get('destAddress').setValue('');
-    fixture.detectChanges();
+  it('should reject null as a destination address', () => {
+    component.form.get('destAddress').setValue(null);
+    isAcceptedByForm(false);
+  });
 
-    const sendTokensBtn = el.querySelector('.send-tokens');
-    expect(component.form.invalid).toBe(true);
-    expect(sendTokensBtn.disabled).toBe(true);
+  it('should reject empty destination addresses', () => {
+    component.form.get('destAddress').setValue('');
+    isAcceptedByForm(false);
+  });
+
+  it('should reject malformed destination addresses', () => {
+    component.form.get('destAddress').setValue('0xabcd123999');
+    isAcceptedByForm(false);
+  });
+
+  it('should reject 0x0 as destination address', () => {
+    component.form.get('destAddress').setValue('0x0000000000000000000000000000000000000000');
+    isAcceptedByForm(false);
   });
 });

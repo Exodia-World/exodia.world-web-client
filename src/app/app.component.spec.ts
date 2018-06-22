@@ -24,10 +24,12 @@ describe('AppComponent', () => {
         {provide: Web3Service, useValue: Web3ServiceSpy}
       ]
     }).compileComponents();
+  }));
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-  }));
+  });
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
