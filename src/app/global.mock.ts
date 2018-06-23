@@ -158,18 +158,22 @@ export function spyOnWalletService(): any {
   const WalletServiceSpy = jasmine.createSpyObj('WalletService', [
     'ofDefaultAccount',
     'transfer',
-    'calculateInterest',
-    'updateStakeBalance'
+    'depositStake',
+    'withdrawStake',
+    'updateStakeBalance',
+    'calculateInterest'
   ]);
 
   WalletServiceSpy.ofDefaultAccount.and.callFake((methodName: string, ...args: any[]) => {
     return Promise.resolve(new Outcome(OutcomeType.Success, new BigNumber(9999), ''));
   });
   WalletServiceSpy.transfer.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
+  WalletServiceSpy.depositStake.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
+  WalletServiceSpy.withdrawStake.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
+  WalletServiceSpy.updateStakeBalance.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
   WalletServiceSpy.calculateInterest.and.returnValue(
     Promise.resolve(new Outcome(OutcomeType.Success, new BigNumber(9999), ''))
   );
-  WalletServiceSpy.updateStakeBalance.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
 
   return WalletServiceSpy;
 }

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { SharedModule } from '../../modules/shared.module';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +22,8 @@ import { StakingComponent } from './staking.component';
     MessageModule
   ],
   providers: [
-    WalletService
+    WalletService,
+    FormBuilder
   ],
   exports: [
     StakingComponent
