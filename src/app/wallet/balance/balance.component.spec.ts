@@ -21,7 +21,7 @@ describe('Component: Balance', () => {
 
     const sendTokensBtn = el.querySelector('.send-tokens');
     expect(component.form.valid).toBe(isAccepted);
-    expect(sendTokensBtn.disabled).toBe(! isAccepted);
+    expect(sendTokensBtn.disabled).toBe(!isAccepted);
   };
 
   beforeEach(async(() => {
@@ -33,8 +33,8 @@ describe('Component: Balance', () => {
         LongNumberPipeModule
       ],
       providers: [
-        {provide: WalletService, useValue: WalletServiceSpy},
-        {provide: Web3Service, useValue: Web3ServiceSpy},
+        { provide: WalletService, useValue: WalletServiceSpy },
+        { provide: Web3Service, useValue: Web3ServiceSpy },
         FormBuilder
       ],
       declarations: [BalanceComponent],
@@ -48,7 +48,7 @@ describe('Component: Balance', () => {
     component = fixture.componentInstance;
     spyOn(component, 'communicate').and.callThrough();
     spyOn(component, 'resetForm').and.callThrough();
-    spyOn(component, 'refreshAll');
+    spyOn(component, 'refreshAll').and.callThrough();
 
     component.isMaximized = true;
     component.ngOnInit();
@@ -62,6 +62,7 @@ describe('Component: Balance', () => {
   it('should reset form and refresh information on ngOnInit', () => {
     expect(component.form).toBeDefined();
     expect(component.refreshAll).toHaveBeenCalled();
+    expect(WalletServiceSpy.ofDefaultAccount).toHaveBeenCalled();
   });
 
   it('should only show form if it is maximized', () => {
@@ -78,6 +79,7 @@ describe('Component: Balance', () => {
     component.form.get('destAddress').setValue('0xfE9e8709d3215310075d67E3ed32A380CCf451C8');
     component.form.get('sentAmount').setValue(1);
     component.sendTokens();
+    expect(WalletServiceSpy.transfer).toHaveBeenCalled();
 
     fixture.whenStable().then(() => {
       expect(component.communicate).toHaveBeenCalled();
