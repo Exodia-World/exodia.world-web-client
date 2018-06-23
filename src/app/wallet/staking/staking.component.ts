@@ -110,7 +110,7 @@ export class StakingComponent extends CommunicatorComponent implements OnInit {
         this[storageName] = success.getData();
       })
       .catch(failure => {
-        if (! isInterval) {
+        if (!isInterval) {
           this.refreshOutcome.emit(failure);
         }
       });
@@ -127,7 +127,7 @@ export class StakingComponent extends CommunicatorComponent implements OnInit {
         this.stakeInterest = success.getData();
       })
       .catch(failure => {
-        if (! isInterval) {
+        if (!isInterval) {
           this.refreshOutcome.emit(failure);
         }
       });
