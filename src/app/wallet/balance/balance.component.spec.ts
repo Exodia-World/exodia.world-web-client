@@ -9,7 +9,7 @@ import { Web3Service } from '../../services/web3.service';
 import { WalletService } from '../shared/wallet.service';
 import { spyOnWalletService, spyOnWeb3Service, spyOnEXOToken } from '../../global.mock';
 
-describe('Component: Balance', () => {
+describe('BalanceComponent', () => {
   let component: BalanceComponent;
   let fixture: ComponentFixture<BalanceComponent>;
   let el: any;
@@ -62,7 +62,8 @@ describe('Component: Balance', () => {
   it('should reset form and refresh information on ngOnInit', () => {
     expect(component.form).toBeDefined();
     expect(component.refreshAll).toHaveBeenCalled();
-    expect(WalletServiceSpy.ofDefaultAccount).toHaveBeenCalled();
+    expect(WalletServiceSpy.ofDefaultAccount)
+      .toHaveBeenCalledWith('getBalance', jasmine.any(String));
   });
 
   it('should only show form if it is maximized', () => {
@@ -76,10 +77,13 @@ describe('Component: Balance', () => {
   });
 
   it('should submit a transfer transaction if all inputs are valid', async(() => {
+    (component.resetForm as any).calls.reset();
+
     component.form.get('destAddress').setValue('0xfE9e8709d3215310075d67E3ed32A380CCf451C8');
     component.form.get('sentAmount').setValue(1);
     component.sendTokens();
-    expect(WalletServiceSpy.transfer).toHaveBeenCalled();
+    expect(WalletServiceSpy.transfer)
+      .toHaveBeenCalledWith('0xfE9e8709d3215310075d67E3ed32A380CCf451C8', 1, jasmine.any(String));
 
     fixture.whenStable().then(() => {
       expect(component.communicate).toHaveBeenCalled();
