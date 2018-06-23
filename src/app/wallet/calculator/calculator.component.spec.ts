@@ -5,8 +5,7 @@ import * as moment from 'moment';
 import * as calculatorHelper from './helpers';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('Component: Calculator', () => {
-
+describe('CalculatorComponent', () => {
   let component: CalculatorComponent;
   let fixture: ComponentFixture<CalculatorComponent>;
 
