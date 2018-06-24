@@ -58,11 +58,10 @@ import { CommunicatorComponent } from '../../components/communicator.component';
             class="h-margin-1" [disabled]="form.invalid"
             (click)="depositStake()">Deposit</button>
         </exo-message>
-        <exo-message name="withdraw-stake" position="below">
-          <button mat-raised-button color="primary" id="withdraw-stake"
-            class="-weak h-margin-1" [disabled]="form.invalid"
-            (click)="withdrawStake()">Withdraw</button>
-        </exo-message>
+        <exo-message name="withdraw-stake" position="below"><label></label></exo-message>
+        <button mat-raised-button color="primary" id="withdraw-stake"
+          class="-weak h-margin-1" [disabled]="form.invalid"
+          (click)="withdrawStake()">Withdraw</button>
       </div>
     </form>
   `,
