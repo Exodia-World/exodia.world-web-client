@@ -22,13 +22,13 @@ import { CommunicatorComponent } from '../../components/communicator.component';
         <div class="balance__unit">EXO</div>
       </div>
     </div>
-    <form *ngIf="isMaximized" class="send-tokens-form h-font-size-x-large" [formGroup]="form">
+    <form *ngIf="isMaximized" class="send-tokens-form" [formGroup]="form">
       <span class="send-tokens-form__field">
         <mat-form-field appearance="standard">
           <mat-label>Address</mat-label>
           <input matInput type="text" name="destAddress"
             placeholder="0x18a08a1b7e96be6..." formControlName="destAddress">
-          <mat-hint>Address to send tokens to.</mat-hint>
+          <mat-hint>Address to send tokens to</mat-hint>
         </mat-form-field>
       </span>
       <span class="send-tokens-form__field">
@@ -36,7 +36,7 @@ import { CommunicatorComponent } from '../../components/communicator.component';
           <mat-label>Sent Amount</mat-label>
           <input matInput type="number" name="sentAmount"
             placeholder="9,999 EXO" min="1" formControlName="sentAmount">
-          <mat-hint>Amount to be sent to the address.</mat-hint>
+          <mat-hint>Amount to be sent to the address</mat-hint>
         </mat-form-field>
       </span>
       <button mat-raised-button color="primary" class="send-tokens h-margin-1"

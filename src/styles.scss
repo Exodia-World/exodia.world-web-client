@@ -83,20 +83,17 @@ p {
   text-transform: uppercase;
 }
 
-.mat-raised-button {
+.mat-raised-button, .mat-tooltip, .mat-form-field-hint-wrapper mat-hint {
   font-size: $font-size-normal;
 }
 
-.mat-form-field-label mat-label {
+.mat-form-field-label mat-label, .mat-form-field .mat-form-field-infix, .mat-select {
   font-size: $font-size-large;
 }
 
-.mat-form-field-hint-wrapper mat-hint {
+.mat-form-field .mat-form-field-infix, .mat-select, .mat-option,
+  .mat-form-field-hint-wrapper mat-hint {
   font-family: 'Montserrat', sans-serif;
-}
-
-.mat-tooltip {
-  font-size: $font-size-normal;
 }
 
 .mat-tooltip.success-msg {

@@ -1,27 +1,17 @@
-.capitalize {
-  text-transform: capitalize;
-}
-
-h3 {
-  letter-spacing: initial;
-  text-align: center;
-}
-
 .form-group {
   text-align: center;
+  padding-top: 1rem;
 }
 
 mat-form-field {
-  width: 18em;
-  font-size: 11px;
+  width: 184px;
 }
 
-.calculate-bar {
-  display: flex;
-  padding: 1rem;
-  justify-content: space-between;
+.calculation-result {
+  text-align: right;
+  margin-right: 23px;
+}
 
-  span {
-    margin-right: 0.5rem;
-  }
+.calculate {
+  margin-left: 23px;
 }
