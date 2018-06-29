@@ -102,6 +102,38 @@ describe('BalanceComponent', () => {
     isAcceptedByForm(false);
   });
 
+  it('should only show form if it is maximized', () => {
+    let form = el.querySelector('form');
+    expect(form).not.toEqual(null);
+
+    component.isMaximized = false;
+    fixture.detectChanges();
+    form = el.querySelector('form');
+    expect(form).toEqual(null);
+  });
+
+  it('should submit a transfer transaction if all inputs are valid', async(() => {
+    component.form.get('destAddress').setValue('0xfE9e8709d3215310075d67E3ed32A380CCf451C8');
+    component.form.get('sentAmount').setValue(1);
+    component.sendTokens();
+
+    fixture.whenStable().then(() => {
+      expect(component.communicate).toHaveBeenCalled();
+      expect(component.resetForm).toHaveBeenCalled();
+    });
+  }));
+
+  it('should accept valid Ethereum addresses and sent amount values that are > 0', () => {
+    component.form.get('destAddress').setValue('0xfE9e8709d3215310075d67E3ed32A380CCf451C8');
+    component.form.get('sentAmount').setValue(1);
+    isAcceptedByForm(true);
+  });
+
+  it('should reject null as a sent amount value', () => {
+    component.form.get('sentAmount').setValue(null);
+    isAcceptedByForm(false);
+  });
+
   it('should reject sent amount values that are <= 0', () => {
     component.form.get('sentAmount').setValue(0);
     isAcceptedByForm(false);

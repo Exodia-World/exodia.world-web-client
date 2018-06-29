@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { BigNumber } from 'bignumber.js';
 import { Outcome } from '../../models/outcome.model';
 import { Web3Service } from '../../services/web3.service';

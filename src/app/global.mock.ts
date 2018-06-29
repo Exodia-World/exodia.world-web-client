@@ -1,3 +1,4 @@
+import { BigNumber } from 'bignumber.js';
 import { Outcome, OutcomeType } from './models/outcome.model';
 
 export function spyOnEXOToken(): any {
@@ -6,7 +7,7 @@ export function spyOnEXOToken(): any {
       call: jasmine.createSpy('call').and.callFake(
         (address: string, callback: (err, result) => void) => {
           if (address === '0xERROR') {
-            callback({message: 'ERROR'}, null);
+            callback({ message: 'ERROR' }, null);
           } else {
             callback(null, parseInt(address.split('0x')[1]));
           }
@@ -17,7 +18,7 @@ export function spyOnEXOToken(): any {
       call: jasmine.createSpy('call').and.callFake(
         (address: string, callback: (err, result) => void) => {
           if (address === '0xERROR') {
-            callback({message: 'ERROR'}, null);
+            callback({ message: 'ERROR' }, null);
           } else {
             callback(null, parseInt(address.split('0x')[1]));
           }
@@ -67,7 +68,7 @@ export function spyOnEXOToken(): any {
       call: jasmine.createSpy('call').and.callFake(
         (address: string, callback: (err, result) => void) => {
           if (address === '0xERROR') {
-            callback({message: 'ERROR'}, null);
+            callback({ message: 'ERROR' }, null);
           } else {
             callback(null, parseInt(address.split('0x')[1]));
           }
@@ -127,7 +128,7 @@ export function spyOnWeb3Service(contractSpy: any): any {
   );
   Web3ServiceSpy.getBlock.and.callFake(
     (blockNumber: any, callback?: (err: any, result: any) => void) => {
-      callback(null, {timestamp: 1234567890});
+      callback(null, { timestamp: 1234567890 });
     }
   );
   Web3ServiceSpy.isAddress.and.callFake(
@@ -156,15 +157,23 @@ export function spyOnOutcomeService(): any {
 export function spyOnWalletService(): any {
   const WalletServiceSpy = jasmine.createSpyObj('WalletService', [
     'ofDefaultAccount',
-    'transfer'
+    'transfer',
+    'depositStake',
+    'withdrawStake',
+    'updateStakeBalance',
+    'calculateInterest'
   ]);
 
   WalletServiceSpy.ofDefaultAccount.and.callFake((methodName: string, ...args: any[]) => {
-    if (methodName === 'getBalance') {
-      return Promise.resolve(new Outcome(OutcomeType.Success, 9999, ''));
-    }
+    return Promise.resolve(new Outcome(OutcomeType.Success, new BigNumber(9999), ''));
   });
   WalletServiceSpy.transfer.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
+  WalletServiceSpy.depositStake.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
+  WalletServiceSpy.withdrawStake.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
+  WalletServiceSpy.updateStakeBalance.and.returnValue(Promise.resolve(new Outcome(OutcomeType.Success, null, '')));
+  WalletServiceSpy.calculateInterest.and.returnValue(
+    Promise.resolve(new Outcome(OutcomeType.Success, new BigNumber(9999), ''))
+  );
 
   return WalletServiceSpy;
 }
