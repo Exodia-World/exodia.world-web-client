@@ -9,7 +9,7 @@ import { Web3Service } from '../../services/web3.service';
 import { WalletService } from '../shared/wallet.service';
 import { spyOnWalletService, spyOnWeb3Service, spyOnEXOToken } from '../../global.mock';
 
-describe('Component: Balance', () => {
+describe('BalanceComponent', () => {
   let component: BalanceComponent;
   let fixture: ComponentFixture<BalanceComponent>;
   let el: any;
@@ -21,7 +21,7 @@ describe('Component: Balance', () => {
 
     const sendTokensBtn = el.querySelector('.send-tokens');
     expect(component.form.valid).toBe(isAccepted);
-    expect(sendTokensBtn.disabled).toBe(! isAccepted);
+    expect(sendTokensBtn.disabled).toBe(!isAccepted);
   };
 
   beforeEach(async(() => {
@@ -33,8 +33,8 @@ describe('Component: Balance', () => {
         LongNumberPipeModule
       ],
       providers: [
-        {provide: WalletService, useValue: WalletServiceSpy},
-        {provide: Web3Service, useValue: Web3ServiceSpy},
+        { provide: WalletService, useValue: WalletServiceSpy },
+        { provide: Web3Service, useValue: Web3ServiceSpy },
         FormBuilder
       ],
       declarations: [BalanceComponent],
@@ -48,7 +48,7 @@ describe('Component: Balance', () => {
     component = fixture.componentInstance;
     spyOn(component, 'communicate').and.callThrough();
     spyOn(component, 'resetForm').and.callThrough();
-    spyOn(component, 'refreshAll');
+    spyOn(component, 'refreshAll').and.callThrough();
 
     component.isMaximized = true;
     component.ngOnInit();
@@ -62,6 +62,44 @@ describe('Component: Balance', () => {
   it('should reset form and refresh information on ngOnInit', () => {
     expect(component.form).toBeDefined();
     expect(component.refreshAll).toHaveBeenCalled();
+    expect(WalletServiceSpy.ofDefaultAccount)
+      .toHaveBeenCalledWith('getBalance', jasmine.any(String));
+  });
+
+  it('should only show form if it is maximized', () => {
+    let form = el.querySelector('form');
+    expect(form).not.toEqual(null);
+
+    component.isMaximized = false;
+    fixture.detectChanges();
+    form = el.querySelector('form');
+    expect(form).toEqual(null);
+  });
+
+  it('should submit a transfer transaction if all inputs are valid', async(() => {
+    (component.resetForm as any).calls.reset();
+
+    component.form.get('destAddress').setValue('0xfE9e8709d3215310075d67E3ed32A380CCf451C8');
+    component.form.get('sentAmount').setValue(1);
+    component.sendTokens();
+    expect(WalletServiceSpy.transfer)
+      .toHaveBeenCalledWith('0xfE9e8709d3215310075d67E3ed32A380CCf451C8', 1, jasmine.any(String));
+
+    fixture.whenStable().then(() => {
+      expect(component.communicate).toHaveBeenCalled();
+      expect(component.resetForm).toHaveBeenCalled();
+    });
+  }));
+
+  it('should accept valid Ethereum addresses and sent amount values that are > 0', () => {
+    component.form.get('destAddress').setValue('0xfE9e8709d3215310075d67E3ed32A380CCf451C8');
+    component.form.get('sentAmount').setValue(1);
+    isAcceptedByForm(true);
+  });
+
+  it('should reject null as a sent amount value', () => {
+    component.form.get('sentAmount').setValue(null);
+    isAcceptedByForm(false);
   });
 
   it('should only show form if it is maximized', () => {

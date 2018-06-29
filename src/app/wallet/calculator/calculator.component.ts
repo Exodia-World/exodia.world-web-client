@@ -10,30 +10,30 @@ import * as calculatorHelper from './helpers';
 @Component({
   selector: 'exo-wallet-calculator',
   template: `
-    <h3>EXO Interest Calculator</h3>
-    <form [formGroup]="calculatorForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="calculatorForm" class="h-font-size-large" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <mat-form-field appearance="standard">
+          <mat-label>Staking Start Date</mat-label>
           <input matInput formControlName="exoDate" [matDatepicker]="myDatepicker">
           <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
           <mat-datepicker #myDatepicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="standard">
-          <input matInput formControlName="exoStake" type="number" placeholder="Total EXO Staked">
+          <mat-label>Total EXO Staked</mat-label>
+          <input matInput formControlName="exoStake" type="number" placeholder="9,999 EXO">
         </mat-form-field>
         <mat-form-field appearance="standard">
-          <input matInput formControlName="stakingDays" type="number" placeholder="Staking Days">
+          <mat-label>Staking Days</mat-label>
+          <input matInput formControlName="stakingDays" type="number" placeholder="365 Days">
         </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="interest">
-            <mat-option class="capitalize" *ngFor="let interest of interestArray" [value]="interest"> {{interest}} </mat-option>
+            <mat-option *ngFor="let interest of interestArray" [value]="interest"> {{interest}} </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="calculate-bar">
-        <button mat-raised-button type="submit" class="">Calculate</button>
-        <p><strong>{{exoAmount}} EXO</strong></p>
-      </div>
+      <p class="calculation-result"><strong>{{exoAmount}} EXO</strong></p>
+      <button mat-raised-button color="primary" type="submit" class="calculate">Calculate</button>
     </form>
   `,
   styleUrls: ['calculator.component.css']
