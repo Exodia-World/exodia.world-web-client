@@ -26,7 +26,7 @@ export class Transaction {
 }
 
 export enum TransactionStatus {
-  Waiting,
-  Completed,
-  Rejected
+  Waiting = "Waiting",
+  Completed = "Completed",
+  Rejected = "Rejected"
 }
