@@ -104,7 +104,15 @@ export class TransactionService {
   }
 
   private load() {
-    this.txs = this.storageService.getSessionItem('txs');
+    const savedTxs = this.storageService.getSessionItem('txs');
+    if (savedTxs) {
+      for (let i = 0; i < savedTxs.length; i++) {
+        const tx = savedTxs[i];
+        this.txs.push(new Transaction(tx.title, tx.hash, tx.status));
+      }
+    } else {
+      this.txs = [];
+    }
   }
 
 }
