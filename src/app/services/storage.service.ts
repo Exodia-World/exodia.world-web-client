@@ -25,11 +25,11 @@ export class StorageService {
   }
 
   private prepareValue(content: any): string {
-    return btoa(JSON.stringify(content));
+    return content ? btoa(JSON.stringify(content)) : content;
   }
 
   private extractContent(value: any): any {
-    return JSON.parse(atob(value));
+    return value ? JSON.parse(atob(value)) : value;
   }
 
 }

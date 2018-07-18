@@ -95,44 +95,6 @@ export class Web3Service {
     });
   }
 
-  /**
-   * Create an outcome based on the status of a transaction.
-   *
-   * @param {(outcome: Outcome) => void} resolve Callback if status == 0x1
-   * @param {(outcome: Outcome) => void} reject Callback if status == 0x0
-   * @param {string} okName success' name; only used if status == 0x1
-   * @param {string} errName Error/Failure's name; only used if status == 0x0
-   * @returns Function to pass a transaction hash into
-   */
-  checkTransactionStatus(
-    resolve: (outcome: Outcome) => void,
-    reject: (outcome: Outcome) => void,
-    okName: string,
-    errName: string
-  ): (err: any, txHash: string) => void
-  {
-    return (err: any, txHash: string) => {
-      if (err) {
-        reject(this.outcomeService.fail('SendTransactionFailed', err));
-        return;
-      }
-      // Notify of successful transaction submission before knowing its status.
-      resolve(this.outcomeService.succeed('SendTransactionSucceeded', txHash));
-
-      this.web3.eth.getTransactionReceipt(txHash, (err, receipt) => {
-        if (err) {
-          reject(this.outcomeService.fail('GetTransactionReceiptFailed', err));
-          return;
-        }
-        if (parseInt(receipt.status, 16) === 1) {
-          resolve(this.outcomeService.succeed(okName, receipt));
-        } else {
-          reject(this.outcomeService.fail(errName, receipt));
-        }
-      });
-    };
-  }
-
   getBlock(blockHashOrNumber: any, callback?: any): any {
     if (callback) {
       this.web3.eth.getBlock(blockHashOrNumber, false, callback);
