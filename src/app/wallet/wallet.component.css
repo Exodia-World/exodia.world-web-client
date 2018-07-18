@@ -46,6 +46,9 @@
 .wallet-section--staking {
   width: 550px;
 }
+.wallet-section--recent-transactions {
+  width: 400px;
+}
 .wallet-section__title {
   margin-left: 1em;
 }
