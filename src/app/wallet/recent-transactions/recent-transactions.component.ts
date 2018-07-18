@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { StorageService } from '../../services/storage.service';
-import { Transaction } from './shared/recent-transactions.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { TransactionService } from '../../services/transaction.service';
+import { Transaction } from '../../models/transaction.model';
 
 @Component({
   selector: 'exo-recent-transactions',
@@ -15,36 +15,21 @@ import { Transaction } from './shared/recent-transactions.model';
   `,
   styleUrls: ['./recent-transactions.component.css']
 })
-export class RecentTransactionsComponent implements OnInit {
+export class RecentTransactionsComponent implements OnInit, OnDestroy {
 
-  recentTxs = [];
+  recentTxs: Transaction[] = [];
+  pollInterval: any;
 
-  constructor(private storageService: StorageService) { }
+  constructor(private transactionService: TransactionService) { }
 
   ngOnInit() {
-    this.loadTxs();
+    this.pollInterval = setInterval(() => {
+      this.recentTxs = this.transactionService.get();
+    }, 1000);
   }
 
-  pushTx(tx: Transaction) {
-    this.recentTxs.push(tx);
-    this.saveTxs();
+  ngOnDestroy() {
+    clearInterval(this.pollInterval);
   }
 
-  updateTx(newTx: Transaction) {
-    for (let i = 0; i < this.recentTxs.length; i++) {
-      if (this.recentTxs[i].hash === newTx.hash) {
-        this.recentTxs[i] = newTx;
-        this.saveTxs();
-        break;
-      }
-    }
-  }
-
-  private saveTxs() {
-    this.storageService.setSessionItem('recentTxs', this.recentTxs);
-  }
-
-  private loadTxs() {
-    this.recentTxs = this.storageService.getSessionItem('recentTxs');
-  }
 }

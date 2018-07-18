@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
-import { StorageService } from '../../services/storage.service';
+import { SharedModule } from '../../modules/shared.module';
+import { TransactionService } from '../../services/transaction.service';
 import { RecentTransactionsComponent } from './recent-transactions.component';
 
 @NgModule({
   declarations: [
     RecentTransactionsComponent
   ],
-  imports: [],
+  imports: [
+    SharedModule
+  ],
   providers: [
-    StorageService
+    TransactionService
   ],
   exports: [
     RecentTransactionsComponent
