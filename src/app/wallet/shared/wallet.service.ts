@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Web3Service } from '../../services/web3.service';
 import { OutcomeService } from '../../services/outcome.service';
+import { TransactionService } from '../../services/transaction.service';
 import { Outcome } from '../../models/outcome.model';
 
 const exoTokenContract = require('../../contracts/EXOToken.json');
@@ -16,7 +17,8 @@ export class WalletService {
 
   constructor(
     private web3Service: Web3Service,
-    private outcomeService: OutcomeService
+    private outcomeService: OutcomeService,
+    private transactionService: TransactionService
   ) {
     this.exoToken = this.web3Service.getContract(exoTokenABI, exoTokenAddress);
   }
@@ -88,11 +90,13 @@ export class WalletService {
   transfer(to: string, value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
+      const txTitle = 'Transfer ' + value + ' EXO';
+
       this.exoToken.transfer(
         to,
         valueInWei,
         {from: this.web3Service.getDefaultAccount()},
-        this.web3Service.checkTransactionStatus(resolve, reject,
+        this.transactionService.checkStatus(resolve, reject, txTitle,
           'TransferSucceeded', 'TransferFailed')
       );
     });
@@ -107,10 +111,12 @@ export class WalletService {
   depositStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
+      const txTitle = 'Deposit ' + value + ' EXO for staking';
+
       this.exoToken.depositStake(
         valueInWei,
         {from: this.web3Service.getDefaultAccount()},
-        this.web3Service.checkTransactionStatus(resolve, reject,
+        this.transactionService.checkStatus(resolve, reject, txTitle,
           'DepositStakeSucceeded', 'DepositStakeFailed')
       );
     });
@@ -125,10 +131,12 @@ export class WalletService {
   withdrawStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
+      const txTitle = 'Withdraw ' + value + ' EXO from staking';
+
       this.exoToken.withdrawStake(
         valueInWei,
         {from: this.web3Service.getDefaultAccount()},
-        this.web3Service.checkTransactionStatus(resolve, reject,
+        this.transactionService.checkStatus(resolve, reject, txTitle,
           'WithdrawStakeSucceeded', 'WithdrawStakeFailed')
       );
     });
@@ -139,9 +147,11 @@ export class WalletService {
    */
   updateStakeBalance(): Promise<Outcome> {
     return new Promise((resolve, reject) => {
+      const txTitle = 'Update stake balance';
+
       this.exoToken.updateStakeBalance(
         {from: this.web3Service.getDefaultAccount()},
-        this.web3Service.checkTransactionStatus(resolve, reject,
+        this.transactionService.checkStatus(resolve, reject, txTitle,
           'UpdateStakeBalanceSucceeded', 'UpdateStakeBalanceFailed')
       );
     });
