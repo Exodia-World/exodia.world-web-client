@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from '../../modules/shared.module';
 import { MessageModule } from '../../components/message/message.module';
 import { ClipboardModule } from '../../directives/clipboard/clipboard.module';
@@ -10,6 +11,7 @@ import { RecentTransactionsComponent } from './recent-transactions.component';
     RecentTransactionsComponent
   ],
   imports: [
+    MatProgressSpinnerModule,
     SharedModule,
     MessageModule,
     ClipboardModule
