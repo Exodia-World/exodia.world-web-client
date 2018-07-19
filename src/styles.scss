@@ -54,6 +54,10 @@ p {
   opacity: 1;
 }
 
+.-grayed {
+  color: #0004;
+}
+
 .-badge {
   font-size: $font-size-normal;
   color: #fff;
@@ -95,6 +99,10 @@ p {
 
 .h-font-size-x-large {
   font-size: $font-size-x-large !important;
+}
+
+.h-text-align-center {
+  text-align: center !important;
 }
 
 
