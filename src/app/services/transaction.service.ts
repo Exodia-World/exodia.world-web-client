@@ -57,10 +57,10 @@ export class TransactionService {
           return;
         }
         if (parseInt(receipt.status, 16) === 1) {
-          this.completeTx(txHash);
+          this.completeTx(txHash); // transaction is completed
           resolve(this.outcomeService.succeed(okName, receipt));
         } else {
-          this.rejectTx(txHash);
+          this.rejectTx(txHash); // transaction is rejected
           reject(this.outcomeService.fail(errName, receipt));
         }
       });
@@ -71,24 +71,47 @@ export class TransactionService {
     return this.txs;
   }
 
+  /**
+   * Push a transaction to the list of most recent transactions.
+   *
+   * @param {string} title Transaction's title
+   * @param {string} hash Transaction's hash on Ethereum
+   * @param {TransactionStatus} status Transaction's status
+   */
   push(
     title: string,
     hash: string,
     status: TransactionStatus = TransactionStatus.Waiting
   ) {
     const tx = new Transaction(title, hash, status);
-    this.txs.push(tx);
+    this.txs.unshift(tx);
     this.save();
   }
 
+  /**
+   * Update the status of a transaction with a given hash to Completed.
+   *
+   * @param {string} hash Transaction's hash
+   */
   completeTx(hash: string) {
     this.updateStatus(hash, TransactionStatus.Completed);
   }
 
+  /**
+   * Update the status of a transaction with a given hash to Rejected.
+   *
+   * @param {string} hash Transaction's hash
+   */
   rejectTx(hash: string) {
     this.updateStatus(hash, TransactionStatus.Rejected);
   }
 
+  /**
+   * Update the status of a transaction with a given hash.
+   *
+   * @param {string} hash Transaction's hash
+   * @param {TransactionStatus} status Updated transaction's status
+   */
   updateStatus(hash: string, status: TransactionStatus) {
     for (let i = 0; i < this.txs.length; i++) {
       if (this.txs[i].getHash() === hash) {
@@ -106,8 +129,10 @@ export class TransactionService {
   private load() {
     const savedTxs = this.storageService.getSessionItem('txs');
     if (savedTxs) {
+      // Reconstruct each transaction and push it to the list.
       for (let i = 0; i < savedTxs.length; i++) {
         const tx = savedTxs[i];
+        // Watch out! If we use `unshift` here, we would have reversed the list.
         this.txs.push(new Transaction(tx.title, tx.hash, tx.status));
       }
     } else {
