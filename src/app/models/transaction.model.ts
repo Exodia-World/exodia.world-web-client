@@ -1,3 +1,6 @@
+/**
+ * Contains the title, hash, and status of an Ethereum transaction.
+ */
 export class Transaction {
 
   constructor(
