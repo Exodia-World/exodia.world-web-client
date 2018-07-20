@@ -16,17 +16,21 @@ import { Transaction, TransactionStatus } from '../../models/transaction.model';
       </div>
 
       <div *ngIf="!isLoading && recentTxs.length === 0" class="h-text-align-center">
-        <mat-icon class="no-transactions-icon -grayed">not_interested</mat-icon>
+        <mat-icon class="no-transactions-icon -grayed s-no-tx-icon">
+          not_interested
+        </mat-icon>
         <p class="-grayed h-font-size-normal">We found no transactions :(</p>
       </div>
 
-      <div *ngFor="let tx of recentTxs" class="recent-transaction">
+      <div *ngFor="let tx of recentTxs" class="recent-transaction s-recent-tx">
         <div class="recent-transaction-info">
           <div class="transaction-header">
-            <h4 class="transaction-title h-display-inline h-font-size-large">{{tx.title}}</h4>
-            <span class="-badge" [ngClass]="getStatusClass(tx.status)">{{tx.status}}</span>
+            <h4 class="transaction-title h-display-inline h-font-size-large s-tx-title">
+              {{tx.title}}
+            </h4>
+            <span class="-badge s-tx-status" [ngClass]="getStatusClass(tx.status)">{{tx.status}}</span>
           </div>
-          <p class="transaction-hash">{{tx.hash}}</p>
+          <p class="transaction-hash s-tx-hash">{{tx.hash}}</p>
         </div>
         <div class="recent-transaction-actions">
           <exo-message name="copy-hash-{{tx.hash}}" position="above">
