@@ -20,6 +20,7 @@ describe('WalletService', () => {
     Web3ServiceSpy = spyOnWeb3Service(EXOTokenSpy);
     OutcomeServiceSpy = spyOnOutcomeService();
     TransactionServiceSpy = spyOnTransactionService(Web3ServiceSpy);
+    
     walletService = new WalletService(Web3ServiceSpy, OutcomeServiceSpy,
       TransactionServiceSpy);
   });
