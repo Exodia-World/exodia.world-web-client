@@ -88,7 +88,6 @@ export function spyOnWeb3Service(contractSpy: any): any {
     'fromWei',
     'toWei',
     'getTransactionReceipt',
-    'checkTransactionStatus',
     'getBlock',
     'isAddress'
   ]);
@@ -101,29 +100,6 @@ export function spyOnWeb3Service(contractSpy: any): any {
     (hash: string, callback?: (err: any, result: any) => void) => {
       const status = hash === 'OK' ? '0x1' : '0x0';
       callback(null, { status });
-    }
-  );
-  Web3ServiceSpy.checkTransactionStatus.and.callFake(
-    (resolve, reject) => {
-      return (err: any, hash: string) => {
-        if (err) {
-          reject(new Outcome(OutcomeType.Failure, err));
-          return;
-        }
-        resolve(new Outcome(OutcomeType.Success));
-
-        Web3ServiceSpy.getTransactionReceipt(hash, (err, receipt) => {
-          if (err) {
-            reject(new Outcome(OutcomeType.Failure, err));
-            return;
-          }
-          if (parseInt(receipt.status, 16) === 1) {
-            resolve(new Outcome(OutcomeType.Success, receipt));
-          } else {
-            reject(new Outcome(OutcomeType.Failure, receipt));
-          }
-        });
-      };
     }
   );
   Web3ServiceSpy.getBlock.and.callFake(
@@ -176,4 +152,41 @@ export function spyOnWalletService(): any {
   );
 
   return WalletServiceSpy;
+}
+
+export function spyOnTransactionService(web3ServiceSpy: any): any {
+  const TransactionServiceSpy = jasmine.createSpyObj('TransactionService', [
+    'checkStatus',
+    'get',
+    'push',
+    'completeTx',
+    'rejectTx'
+  ]);
+
+  TransactionServiceSpy.checkStatus.and.callFake(
+    (resolve, reject, txTitle, okName, errName) => {
+      return (err: any, hash: string) => {
+        if (err) {
+          reject(new Outcome(OutcomeType.Failure, err));
+          return;
+        }
+        resolve(new Outcome(OutcomeType.Success));
+
+        web3ServiceSpy.getTransactionReceipt(hash, (err, receipt) => {
+          if (err) {
+            reject(new Outcome(OutcomeType.Failure, err));
+            return;
+          }
+          if (parseInt(receipt.status, 16) === 1) {
+            resolve(new Outcome(OutcomeType.Success, receipt));
+          } else {
+            reject(new Outcome(OutcomeType.Failure, receipt));
+          }
+        });
+      };
+    }
+  );
+  TransactionServiceSpy.get.and.returnValue([]);
+
+  return TransactionServiceSpy;
 }

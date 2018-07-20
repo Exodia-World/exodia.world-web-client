@@ -54,6 +54,11 @@
       <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
     </section>
 
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--recent-transactions -raised">
+      <h2 class="wallet-section__title">Recent Transactions</h2>
+      <exo-recent-transactions></exo-recent-transactions>
+    </section>
+
     <footer class="wallet-footer">
       <exo-message name="refresh-wallet" type="normal" position="above">
         <button mat-raised-button color="primary" (click)="refreshAll()">

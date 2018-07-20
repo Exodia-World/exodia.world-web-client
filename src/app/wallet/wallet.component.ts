@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { BigNumber } from 'bignumber.js';
 import { CommunicatorComponent } from '../components/communicator.component';
 import { Web3Service } from '../services/web3.service';
@@ -16,7 +16,9 @@ import { StakingComponent } from './staking/staking.component';
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.css']
 })
-export class WalletComponent extends CommunicatorComponent implements AfterViewInit {
+export class WalletComponent extends CommunicatorComponent
+  implements AfterViewInit, OnDestroy
+{
   /**
    * Maximized mode displays many more features.
    */
@@ -39,6 +41,10 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
     this.refreshInterval = setInterval(() => {
       this.refreshAll(true);
     }, 5000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.refreshInterval);
   }
 
   toggleMaximizeWallet() {

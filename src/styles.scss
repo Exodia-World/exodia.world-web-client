@@ -54,6 +54,27 @@ p {
   opacity: 1;
 }
 
+.-grayed {
+  color: #0004;
+}
+
+.-badge {
+  font-size: $font-size-normal;
+  color: #fff;
+  text-transform: uppercase;
+  padding: .5rem;
+  border-radius: 2px;
+}
+.-badge--success {
+  background-color: #4bb543;
+}
+.-badge--normal {
+  background-color: #1b93c7;
+}
+.-badge--error {
+  background-color: #c00c;
+}
+
 
 /* Helpers */
 .h-margin-1 {
@@ -62,6 +83,10 @@ p {
 
 .h-display-block {
   display: block !important;
+}
+
+.h-display-inline {
+  display: inline !important;
 }
 
 .h-font-size-normal {
@@ -74,6 +99,10 @@ p {
 
 .h-font-size-x-large {
   font-size: $font-size-x-large !important;
+}
+
+.h-text-align-center {
+  text-align: center !important;
 }
 
 
