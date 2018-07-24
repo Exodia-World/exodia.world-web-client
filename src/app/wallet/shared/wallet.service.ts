@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Web3Service } from '../../services/web3.service';
 import { OutcomeService } from '../../services/outcome.service';
 import { Outcome } from '../../models/outcome.model';
@@ -16,7 +17,8 @@ export class WalletService {
 
   constructor(
     private web3Service: Web3Service,
-    private outcomeService: OutcomeService
+    private outcomeService: OutcomeService,
+    private httpClient: HttpClient
   ) {
     this.exoToken = this.web3Service.getContract(exoTokenABI, exoTokenAddress);
   }
@@ -52,9 +54,45 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('GetBalanceFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(balance,unit)));
+          resolve(this.outcomeService.succeed(this.web3Service.fromWei(balance, unit)));
         }
       });
+    });
+  }
+
+  /*
+   * Get the balance of an address in ethereum.
+   *
+   * @param {string} address The account address
+   */
+  getEtherBalance(address: string): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      this.web3Service.getEtherBalance(address, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.outcomeService.succeed(this.web3Service.fromWei(result, 'ether')));
+        }
+      });
+    });
+  }
+
+  /*
+   * Get the balance of an address in USD.
+   *
+   * @param {string} address The account address
+   */
+  getUsdBalance(address): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      if (address) {
+        this.httpClient.get('https://api.coinmarketcap.com/v1/ticker/ethereum/').
+          subscribe(response => {
+            this.getEtherBalance(address).then(res => {
+              let value = response[0]['price_usd'] * res.getData();
+              resolve(this.outcomeService.succeed(value));
+            });
+          });
+      }
     });
   }
 
@@ -70,7 +108,7 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('GetStakeBalanceFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(balance,unit)));
+          resolve(this.outcomeService.succeed(this.web3Service.fromWei(balance, unit)));
         }
       });
     });

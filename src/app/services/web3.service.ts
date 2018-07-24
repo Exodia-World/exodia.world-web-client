@@ -100,8 +100,7 @@ export class Web3Service {
     resolve: (outcome: Outcome) => void,
     reject: (outcome: Outcome) => void,
     errName: string
-  ): (transactionHash: string) => void
-  {
+  ): (transactionHash: string) => void {
     return (transactionHash: string) => {
       this.web3.eth.getTransactionReceipt(transactionHash, (err, receipt) => {
         if (err) {
@@ -121,6 +120,24 @@ export class Web3Service {
       this.web3.eth.getBlock(blockHashOrNumber, false, callback);
     } else {
       return this.web3.eth.getBlock(blockHashOrNumber);
+    }
+  }
+
+  getEtherBalance(address, callback?: any): Promise<string> {
+    if (callback) {
+      this.web3.eth.getBalance(address, callback);
+    }
+    else {
+      return new Promise<string>((resolve, reject) => {
+        this.web3.eth.getBalance(address, (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          else {
+            resolve(result);
+          }
+        });
+      });
     }
   }
 }

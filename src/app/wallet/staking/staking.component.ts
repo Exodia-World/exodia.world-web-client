@@ -34,6 +34,18 @@ import { WalletService } from '../shared/wallet.service';
           {{stakeBalance.plus(stakeInterest).toNumber() | longNumber:'1.0-6'}} EXO
         </strong>
       </p>
+      <p class="staking-info-item">
+        <label>USD</label>
+        <strong class="staking-info-item__value">
+          {{usdBalance | number}} $
+        </strong>
+      </p>
+      <p class="staking-info-item">
+        <label>Ethereum</label>
+        <strong class="staking-info-item__value">
+          {{etherBalance.toNumber() | number}} ETH
+        </strong>
+      </p>
       <button *ngIf="isMaximized" mat-raised-button color="primary"
         class="h-margin-1">Restake</button>
     </div>
@@ -76,6 +88,8 @@ export class StakingComponent implements OnInit {
   refreshAll(isInterval: boolean) {
     this.updateOfDefaultAccount('getStakeBalance', 'stakeBalance', isInterval);
     this.updateOfDefaultAccount('getStakeDuration', 'stakeDuration', isInterval);
+    this.updateOfDefaultAccount('getEtherBalance', 'etherBalance', isInterval);
+    this.updateOfDefaultAccount('getUsdBalance', 'usdBalance', isInterval);
     this.updateStakeInterest(isInterval);
   }
 
@@ -96,7 +110,7 @@ export class StakingComponent implements OnInit {
         this[storageName] = success.getData();
       })
       .catch(failure => {
-        if (! isInterval) {
+        if (!isInterval) {
           this.refreshOutcome.emit(failure);
         }
       });
@@ -113,7 +127,7 @@ export class StakingComponent implements OnInit {
         this.stakeInterest = success.getData();
       })
       .catch(failure => {
-        if (! isInterval) {
+        if (!isInterval) {
           this.refreshOutcome.emit(failure);
         }
       });
