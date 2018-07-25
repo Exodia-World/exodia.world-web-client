@@ -49,3 +49,7 @@
 .wallet-section__title {
   margin-left: 1em;
 }
+.wallet-section--price {
+	width: min-content;
+  float: right;
+}

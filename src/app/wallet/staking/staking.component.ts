@@ -34,13 +34,13 @@ import { WalletService } from '../shared/wallet.service';
           {{stakeBalance.plus(stakeInterest).toNumber() | longNumber:'1.0-6'}} EXO
         </strong>
       </p>
-      <p class="staking-info-item">
+      <p class="staking-info-item" *ngIf="!isMaximized">
         <label>USD</label>
         <strong class="staking-info-item__value">
           {{usdBalance | number}} $
         </strong>
       </p>
-      <p class="staking-info-item">
+      <p class="staking-info-item" *ngIf="!isMaximized">
         <label>Ethereum</label>
         <strong class="staking-info-item__value">
           {{etherBalance.toNumber() | number}} ETH

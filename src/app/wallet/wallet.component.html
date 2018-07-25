@@ -51,6 +51,10 @@
         (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-staking>
     </section>
 
+    <div *ngIf="isMaximized" class="wallet-section--price">
+      <exo-price></exo-price>
+    </div>
+
     <footer class="wallet-footer">
       <exo-message name="refresh-wallet" type="normal" position="above">
         <button mat-raised-button color="primary" (click)="refreshAll()">

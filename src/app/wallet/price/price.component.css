@@ -1,0 +1,22 @@
+.price-section {
+  width: 200px;
+  float: right;
+  padding: 1em;
+  margin: 1.5em;
+
+}
+
+.price-info-item__value {
+  float: right;
+  font-size: 1.5em;
+  padding: 27px 7px;
+}
+
+.price-info-item__value strong {
+  padding-right: 10px;
+}
+
+.price-info-item__image {
+  height: 5em;
+  padding: 1em;
+}
