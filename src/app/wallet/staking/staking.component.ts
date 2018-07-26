@@ -73,6 +73,8 @@ export class StakingComponent implements OnInit {
 
   stakeBalance = new BigNumber(0);
   stakeInterest = new BigNumber(0);
+  etherBalance = new BigNumber(0);
+  usdBalance = new BigNumber(0);
   stakeDuration = 0;
 
   constructor(private walletService: WalletService) {

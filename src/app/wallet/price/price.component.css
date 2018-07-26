@@ -9,7 +9,7 @@
 .price-info-item__value {
   float: right;
   font-size: 1.5em;
-  padding: 27px 7px;
+  padding: 28px 0px 27px 0px;
 }
 
 .price-info-item__value strong {

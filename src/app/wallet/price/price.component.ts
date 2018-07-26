@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CommunicatorComponent } from '../../components/communicator.component';
-import { Web3Service } from '../../services/web3.service';
+import { BigNumber } from 'bignumber.js';
+import { Outcome } from '../../models/outcome.model';
+import { WalletService } from '../shared/wallet.service';
 
 /**
  * Displays and manages exo prices.
@@ -11,42 +12,79 @@ import { Web3Service } from '../../services/web3.service';
     <section class="price-section wallet-section--value -raised ng-star-inserted">
       <img [src]="'/assets/img/icons/dollar_icon.png'" class="price-info-item__image">
       <span class="price-info-item__value">
-        <strong>98.745</strong> USD
+        <strong>{{ usdBalance | number }}</strong> USD
       </span>
     </section>
 
     <section class="price-section wallet-section--value -raised ng-star-inserted">
       <img [src]="'/assets/img/icons/ethereum_icon.png'" class="price-info-item__image">
       <span class="price-info-item__value">
-        <strong>98.745</strong> ETH
+        <strong>{{ etherBalance.toNumber() | number }} $</strong> ETH
       </span>
     </section>
   `,
   styleUrls: ['price.component.css']
 })
-export class PriceComponent extends CommunicatorComponent implements OnInit {
+export class PriceComponent implements OnInit {
   @Input() isMaximized = false;
+  @Output() refreshOutcome = new EventEmitter<Outcome>();
 
-  address: string;
+  usdBalance = new BigNumber(0);
+  etherBalance = new BigNumber(0);
 
-  constructor(private web3Service: Web3Service) {
-    super();
+  constructor(private walletService: WalletService) {
   }
 
   ngOnInit() {
-    this.refreshAll();
+    this.refreshAll(true);
   }
 
-  refreshAll() {
-    this.updateAddress();
+  /**
+   * Refresh staking information.
+   */
+  refreshAll(isInterval: boolean) {
+    this.updateOfDefaultAccount('getEtherBalance', 'etherBalance', isInterval);
+    this.updateOfDefaultAccount('getUsdBalance', 'usdBalance', isInterval);
+    this.updateStakeInterest(isInterval);
   }
 
-  updateAddress() {
-    this.address = this.web3Service.getDefaultAccount();
-    console.log('Address', this.address);
+  /**
+   * Update some staking information of the default account.
+   *
+   * @param {string} methodName The name of method to call
+   * @param {string} storageName The name of variable to store its result
+   * @param {boolean} isInterval Is this method called from an interval?
+   */
+  updateOfDefaultAccount(
+    methodName: string,
+    storageName: string,
+    isInterval: boolean = false
+  ) {
+    this.walletService.ofDefaultAccount(methodName, 'ether')
+      .then(success => {
+        this[storageName] = success.getData();
+      })
+      .catch(failure => {
+        if (!isInterval) {
+          this.refreshOutcome.emit(failure);
+        }
+      });
   }
 
-  onCopyAddressSuccess() {
-    this.communicate('copy-address', 'Copied!');
+  /**
+   * Update staking interest of the default account.
+   *
+   * @param {boolean} isInterval Is this method called from an interval?
+   */
+  updateStakeInterest(isInterval: boolean = false) {
+    this.walletService.calculateInterest('ether')
+      .then(success => {
+        this.stakeInterest = success.getData();
+      })
+      .catch(failure => {
+        if (!isInterval) {
+          this.refreshOutcome.emit(failure);
+        }
+      });
   }
 }

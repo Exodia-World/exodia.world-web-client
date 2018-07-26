@@ -88,7 +88,7 @@ export class WalletService {
         this.httpClient.get('https://api.coinmarketcap.com/v1/ticker/ethereum/').
           subscribe(response => {
             this.getEtherBalance(address).then(res => {
-              let value = response[0]['price_usd'] * res.getData();
+              const value = response[0]['price_usd'] * res.getData();
               resolve(this.outcomeService.succeed(value));
             });
           });
