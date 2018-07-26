@@ -7,6 +7,7 @@ import { Outcome } from '../models/outcome.model';
 import { BalanceComponent } from './balance/balance.component';
 import { AddressComponent } from './address/address.component';
 import { StakingComponent } from './staking/staking.component';
+import { PriceComponent } from './price/price.component';
 
 /**
  * Displays and manages wallet information.
@@ -29,6 +30,7 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
   @ViewChild(BalanceComponent) balance: BalanceComponent;
   @ViewChild(AddressComponent) address: AddressComponent;
   @ViewChild(StakingComponent) staking: StakingComponent;
+  @ViewChild(PriceComponent) price: PriceComponent;
 
   constructor(private web3Service: Web3Service, private walletService: WalletService) {
     super();
@@ -42,7 +44,7 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
   }
 
   toggleMaximizeWallet() {
-    this.isMaximized = ! this.isMaximized;
+    this.isMaximized = !this.isMaximized;
   }
 
   /**
@@ -54,6 +56,7 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
     this.address.refreshAll();
     this.balance.refreshAll(isInterval);
     this.staking.refreshAll(isInterval);
+    this.price.refreshAll(isInterval);
   }
 
   /**

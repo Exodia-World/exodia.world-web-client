@@ -126,14 +126,12 @@ export class Web3Service {
   getEtherBalance(address, callback?: any): Promise<string> {
     if (callback) {
       this.web3.eth.getBalance(address, callback);
-    }
-    else {
+    } else {
       return new Promise<string>((resolve, reject) => {
         this.web3.eth.getBalance(address, (err, result) => {
           if (err) {
             reject(err);
-          }
-          else {
+          } else {
             resolve(result);
           }
         });

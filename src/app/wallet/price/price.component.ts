@@ -12,14 +12,14 @@ import { WalletService } from '../shared/wallet.service';
     <section class="price-section wallet-section--value -raised ng-star-inserted">
       <img [src]="'/assets/img/icons/dollar_icon.png'" class="price-info-item__image">
       <span class="price-info-item__value">
-        <strong>{{ usdBalance | number }}</strong> USD
+        <strong>{{usdBalance == 0 ? 0 : usdBalance | number }}</strong> USD
       </span>
     </section>
 
     <section class="price-section wallet-section--value -raised ng-star-inserted">
       <img [src]="'/assets/img/icons/ethereum_icon.png'" class="price-info-item__image">
       <span class="price-info-item__value">
-        <strong>{{ etherBalance.toNumber() | number }} $</strong> ETH
+        <strong>{{ etherBalance.toNumber() | number }}</strong> ETH
       </span>
     </section>
   `,
@@ -29,6 +29,7 @@ export class PriceComponent implements OnInit {
   @Input() isMaximized = false;
   @Output() refreshOutcome = new EventEmitter<Outcome>();
 
+  stakeInterest = new BigNumber(0);
   usdBalance = new BigNumber(0);
   etherBalance = new BigNumber(0);
 
@@ -72,10 +73,10 @@ export class PriceComponent implements OnInit {
   }
 
   /**
-   * Update staking interest of the default account.
-   *
-   * @param {boolean} isInterval Is this method called from an interval?
-   */
+ * Update staking interest of the default account.
+ *
+ * @param {boolean} isInterval Is this method called from an interval?
+ */
   updateStakeInterest(isInterval: boolean = false) {
     this.walletService.calculateInterest('ether')
       .then(success => {
