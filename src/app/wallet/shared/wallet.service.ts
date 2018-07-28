@@ -67,12 +67,9 @@ export class WalletService {
    */
   getEtherBalance(address: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
-      this.web3Service.getEtherBalance(address, (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(result, 'ether')));
-        }
+      this.getBalance(address, 'ether').then(result => {
+        const etherValue = result.getData();
+        resolve(this.outcomeService.succeed(etherValue.toNumber() / 7300));
       });
     });
   }

@@ -56,7 +56,10 @@ export class WalletComponent extends CommunicatorComponent implements AfterViewI
     this.address.refreshAll();
     this.balance.refreshAll(isInterval);
     this.staking.refreshAll(isInterval);
-    this.price.refreshAll(isInterval);
+
+    if (this.price) {
+      this.price.refreshAll(isInterval);
+    }
   }
 
   /**

@@ -43,7 +43,7 @@ import { WalletService } from '../shared/wallet.service';
       <p class="staking-info-item" *ngIf="!isMaximized">
         <label>Ethereum</label>
         <strong class="staking-info-item__value">
-          {{etherBalance ? etherBalance.toNumber() : null | number}} ETH
+          {{etherBalance == 0 ? 0 : etherBalance | number}} ETH
         </strong>
       </p>
       <button *ngIf="isMaximized" mat-raised-button color="primary"
