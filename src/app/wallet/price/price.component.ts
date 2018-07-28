@@ -19,7 +19,7 @@ import { WalletService } from '../shared/wallet.service';
     <section class="price-section wallet-section--value -raised ng-star-inserted">
       <img [src]="'/assets/img/icons/ethereum_icon.png'" class="price-info-item__image">
       <span class="price-info-item__value">
-        <strong>{{ etherBalance | number }}</strong> ETH
+        <strong>{{ etherBalance == 0 ? 0 : etherBalance | number }}</strong> ETH
       </span>
     </section>
   `,
