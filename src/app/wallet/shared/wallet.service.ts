@@ -64,7 +64,7 @@ export class WalletService {
   }
 
   /*
-   * Get the balance of an address in ethereum.
+   * Get the balance of an address in Ether.
    *
    * @param {string} address The account address
    */
@@ -72,7 +72,8 @@ export class WalletService {
     return new Promise((resolve, reject) => {
       this.getBalance(address, 'ether').then(result => {
         const etherValue = result.getData();
-        resolve(this.outcomeService.succeed(etherValue.toNumber() / 7300));
+        resolve(this.outcomeService.succeed('GetEtherBalanceSucceeded',
+          etherValue.toNumber() / 7300));
       });
     });
   }
@@ -89,7 +90,7 @@ export class WalletService {
           subscribe(response => {
             this.getEtherBalance(address).then(res => {
               const value = response[0]['price_usd'] * res.getData();
-              resolve(this.outcomeService.succeed(value));
+              resolve(this.outcomeService.succeed('GetUSDBalanceSucceeded', value));
             });
           });
       }
