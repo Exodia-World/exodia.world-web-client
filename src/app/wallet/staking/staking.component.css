@@ -13,11 +13,10 @@
 
 
 .staking-form {
-  font-size: 1.6em;
   display: inline-block;
   vertical-align: top;
 }
-.staking-form__fields {
+.staking-form__field {
   padding: 1em;
   padding-top: 0;
 }

@@ -33,9 +33,9 @@
 
 
 .wallet-section {
-  padding: 1em;
-  margin: 1.5em;
-  float: right;
+  padding: 1rem;
+  margin: 1rem;
+  float: left;
 }
 .wallet-section--balance {
   width: 800px;
@@ -44,7 +44,10 @@
   width: 230px;
 }
 .wallet-section--staking {
-  width: 550px;
+  width: 529px;
+}
+.wallet-section--recent-transactions {
+  width: 400px;
 }
 .wallet-section__title {
   margin-left: 1em;

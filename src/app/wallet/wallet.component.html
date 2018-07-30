@@ -2,7 +2,9 @@
   <mat-sidenav #wallet mode="side" position="end" opened class="wallet" [ngClass]="{
     'wallet--maximized': isMaximized
   }">
-    <button mat-icon-button color="primary" (click)="toggleMaximizeWallet()">
+    <button mat-icon-button color="primary" [ngClass]="{
+      'h-display-block': isMaximized
+    }" (click)="toggleMaximizeWallet()">
       <mat-icon *ngIf="! isMaximized">arrow_left</mat-icon>
       <mat-icon *ngIf="isMaximized">arrow_right</mat-icon>
     </button>
@@ -32,13 +34,9 @@
         <ng-template mat-tab-label>
           <span matTooltip="Calculator"><mat-icon>money</mat-icon></span>
         </ng-template>
+        <exo-wallet-calculator [isMaximized]="isMaximized"></exo-wallet-calculator>
       </mat-tab>
     </mat-tab-group>
-
-    <section *ngIf="isMaximized" class="wallet-section wallet-section--address -raised">
-      <h2 class="wallet-section__title">Address</h2>
-      <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
-    </section>
 
     <section *ngIf="isMaximized" class="wallet-section wallet-section--balance -raised">
       <exo-wallet-balance [isMaximized]="isMaximized"
@@ -51,9 +49,19 @@
         (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-staking>
     </section>
 
-    <div *ngIf="isMaximized" class="wallet-section--price">
+    <section *ngIf="isMaximized" class="wallet-section--price">
       <exo-price></exo-price>
-    </div>
+    </section>
+
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--address -raised">
+      <h2 class="wallet-section__title">Address</h2>
+      <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
+    </section>
+
+    <section *ngIf="isMaximized" class="wallet-section wallet-section--recent-transactions -raised">
+      <h2 class="wallet-section__title">Recent Transactions</h2>
+      <exo-recent-transactions></exo-recent-transactions>
+    </section>
 
     <footer class="wallet-footer">
       <exo-message name="refresh-wallet" type="normal" position="above">

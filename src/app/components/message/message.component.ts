@@ -19,11 +19,11 @@ export class MessageComponent {
    */
   @Input() name: string;
   /**
-   * Type of message (normal, warning, error)
+   * Type of message (success, normal, warning, error)
    */
   @Input() type = 'normal';
   /**
-   * Position to display text
+   * Position to display text (above, below, left, right, before, after)
    */
   @Input() position = 'above';
 

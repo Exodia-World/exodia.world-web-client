@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Web3Service } from '../../services/web3.service';
 import { OutcomeService } from '../../services/outcome.service';
+import { TransactionService } from '../../services/transaction.service';
 import { Outcome } from '../../models/outcome.model';
 
 const exoTokenContract = require('../../contracts/EXOToken.json');
@@ -18,6 +19,7 @@ export class WalletService {
   constructor(
     private web3Service: Web3Service,
     private outcomeService: OutcomeService,
+    private transactionService: TransactionService,
     private httpClient: HttpClient
   ) {
     this.exoToken = this.web3Service.getContract(exoTokenABI, exoTokenAddress);
@@ -54,7 +56,8 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('GetBalanceFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(balance, unit)));
+          resolve(this.outcomeService.succeed('GetBalanceSucceeded',
+            this.web3Service.fromWei(balance, unit)));
         }
       });
     });
@@ -105,7 +108,8 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('GetStakeBalanceFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(balance, unit)));
+          resolve(this.outcomeService.succeed('GetStakeBalanceSucceeded',
+            this.web3Service.fromWei(balance, unit)));
         }
       });
     });
@@ -114,16 +118,22 @@ export class WalletService {
   /**
    * Transfer an amount of tokens in unit from the default account to another address.
    *
-   * @param {string} address Account address
+   * @param {string} to Destination account address
    * @param {number} value Amount of tokens
    * @param {string} unit The unit of value (wei, ether, etc.)
    */
   transfer(to: string, value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.transfer(to, value, this.web3Service.checkTransactionStatus(
-        resolve, reject, 'TransferFailed'
-      ));
+      const txTitle = 'Transfer ' + value + ' EXO';
+
+      this.exoToken.transfer(
+        to,
+        valueInWei,
+        {from: this.web3Service.getDefaultAccount()},
+        this.transactionService.checkStatus(resolve, reject, txTitle,
+          'TransferSucceeded', 'TransferFailed')
+      );
     });
   }
 
@@ -136,9 +146,14 @@ export class WalletService {
   depositStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.depositStake(value, this.web3Service.checkTransactionStatus(
-        resolve, reject, 'DepositStakeFailed'
-      ));
+      const txTitle = 'Deposit ' + value + ' EXO for staking';
+
+      this.exoToken.depositStake(
+        valueInWei,
+        {from: this.web3Service.getDefaultAccount()},
+        this.transactionService.checkStatus(resolve, reject, txTitle,
+          'DepositStakeSucceeded', 'DepositStakeFailed')
+      );
     });
   }
 
@@ -151,9 +166,14 @@ export class WalletService {
   withdrawStake(value: number, unit: string): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       const valueInWei = this.web3Service.toWei(value, unit);
-      this.exoToken.withdrawStake(value, this.web3Service.checkTransactionStatus(
-        resolve, reject, 'WithdrawStakeFailed'
-      ));
+      const txTitle = 'Withdraw ' + value + ' EXO from staking';
+
+      this.exoToken.withdrawStake(
+        valueInWei,
+        {from: this.web3Service.getDefaultAccount()},
+        this.transactionService.checkStatus(resolve, reject, txTitle,
+          'WithdrawStakeSucceeded', 'WithdrawStakeFailed')
+      );
     });
   }
 
@@ -162,9 +182,13 @@ export class WalletService {
    */
   updateStakeBalance(): Promise<Outcome> {
     return new Promise((resolve, reject) => {
-      this.exoToken.updateStakeBalance(this.web3Service.checkTransactionStatus(
-        resolve, reject, 'UpdateStakeBalanceFailed'
-      ));
+      const txTitle = 'Update stake balance';
+
+      this.exoToken.updateStakeBalance(
+        {from: this.web3Service.getDefaultAccount()},
+        this.transactionService.checkStatus(resolve, reject, txTitle,
+          'UpdateStakeBalanceSucceeded', 'UpdateStakeBalanceFailed')
+      );
     });
   }
 
@@ -179,7 +203,8 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('CalculateInterestFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(this.web3Service.fromWei(interest, unit)));
+          resolve(this.outcomeService.succeed('CalculateInterestSucceeded',
+            this.web3Service.fromWei(interest, unit)));
         }
       });
     });
@@ -196,11 +221,11 @@ export class WalletService {
         const stakeStartTime = success.getData();
         this.web3Service.getBlock('latest', (err, block) => {
           if (err) {
-            reject(this.outcomeService.fail('GetLatestBlockFailed', err));
+            reject(this.outcomeService.fail('GetStakeDurationFailed', err));
+          } else {
+            resolve(this.outcomeService.succeed('GetStakeDurationSucceeded',
+              stakeStartTime > 0 ? block.timestamp - stakeStartTime : 0));
           }
-          resolve(this.outcomeService.succeed(
-            stakeStartTime > 0 ? block.timestamp - stakeStartTime : 0
-          ));
         });
       });
     });
@@ -217,7 +242,7 @@ export class WalletService {
         if (err) {
           reject(this.outcomeService.fail('GetStakeStartTimeFailed', err));
         } else {
-          resolve(this.outcomeService.succeed(stakeStartTime));
+          resolve(this.outcomeService.succeed('GetStakeStartTimeSucceeded', stakeStartTime));
         }
       });
     });

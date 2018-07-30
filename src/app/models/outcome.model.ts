@@ -4,7 +4,7 @@ export enum OutcomeType {
 }
 
 /**
- * Contain the type, data, and message of an action's outcome.
+ * Contains the type, data, and message of an action's outcome.
  */
 export class Outcome {
   constructor(

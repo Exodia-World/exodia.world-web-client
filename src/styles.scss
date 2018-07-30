@@ -1,4 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Variables */
+$font-size-normal: 1.2rem;
+$font-size-large: 1.4rem;
+$font-size-x-large: 1.6rem;
+
+
+/* Tag Styles */
 html {
   font-size: 10px;
 }
@@ -22,7 +30,7 @@ h4 {
 }
 
 button, label, p {
-  font-size: 1.2rem;
+  font-size: $font-size-normal;
 }
 
 p {
@@ -30,7 +38,7 @@ p {
 }
 
 
-/* Global Modifiers */
+/* Modifiers */
 .-raised {
   box-shadow:
     0px 3px 1px -2px rgba(0, 0, 0, 0.2),
@@ -46,33 +54,79 @@ p {
   opacity: 1;
 }
 
+.-grayed {
+  color: #0004;
+}
 
-/* Global Helpers */
+.-badge {
+  font-size: $font-size-normal;
+  color: #fff;
+  text-transform: uppercase;
+  padding: .5rem;
+  border-radius: 2px;
+}
+.-badge--success {
+  background-color: #4bb543;
+}
+.-badge--normal {
+  background-color: #1b93c7;
+}
+.-badge--error {
+  background-color: #c00c;
+}
+
+
+/* Helpers */
 .h-margin-1 {
   margin: 1em !important;
 }
 
+.h-display-block {
+  display: block !important;
+}
 
-/* Global Overrides */
+.h-display-inline {
+  display: inline !important;
+}
+
+.h-font-size-normal {
+  font-size: $font-size-normal !important;
+}
+
+.h-font-size-large {
+  font-size: $font-size-large !important;
+}
+
+.h-font-size-x-large {
+  font-size: $font-size-x-large !important;
+}
+
+.h-text-align-center {
+  text-align: center !important;
+}
+
+
+/* Material Overrides */
 .mat-raised-button, .mat-form-field-label mat-label {
   font-family: 'Exo 2', sans-serif;
   text-transform: uppercase;
 }
 
-.mat-raised-button {
-  font-size: 1.2rem;
+.mat-raised-button, .mat-tooltip, .mat-form-field-hint-wrapper mat-hint {
+  font-size: $font-size-normal;
 }
 
-.mat-form-field-label mat-label {
-  font-size: 1.4rem;
+.mat-form-field-label mat-label, .mat-form-field .mat-form-field-infix, .mat-select {
+  font-size: $font-size-large;
 }
 
-.mat-form-field-hint-wrapper mat-hint {
+.mat-form-field .mat-form-field-infix, .mat-select, .mat-option,
+  .mat-form-field-hint-wrapper mat-hint {
   font-family: 'Montserrat', sans-serif;
 }
 
-.mat-tooltip {
-  font-size: 1.25rem;
+.mat-tooltip.success-msg {
+  background-color: #4bb543;
 }
 
 .mat-tooltip.normal-msg {
@@ -85,5 +139,5 @@ p {
 }
 
 .mat-tooltip.error-msg {
-  background-color: #c00;
+  background-color: #c00c;
 }

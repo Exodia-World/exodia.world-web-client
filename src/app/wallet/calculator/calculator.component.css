@@ -1,0 +1,17 @@
+.form-group {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+mat-form-field {
+  width: 184px;
+}
+
+.calculation-result {
+  text-align: right;
+  margin-right: 23px;
+}
+
+.calculate {
+  margin-left: 23px;
+}

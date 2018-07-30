@@ -10,6 +10,9 @@ import { BalanceModule } from './balance/balance.module';
 import { AddressModule } from './address/address.module';
 import { PriceModule } from './price/price.module';
 import { StakingModule } from './staking/staking.module';
+import { CalculatorModule } from './calculator/calculator.module';
+import { RecentTransactionsModule } from './recent-transactions/recent-transactions.module';
+
 import { WalletService } from './shared/wallet.service';
 import { WalletComponent } from './wallet.component';
 
@@ -26,7 +29,9 @@ import { WalletComponent } from './wallet.component';
     BalanceModule,
     AddressModule,
     PriceModule,
-    StakingModule
+    StakingModule,
+    CalculatorModule,
+    RecentTransactionsModule
   ],
   providers: [
     WalletService

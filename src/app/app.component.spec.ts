@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { WalletModule } from './wallet/wallet.module';
@@ -6,6 +6,8 @@ import { Web3Service } from './services/web3.service';
 import { spyOnEXOToken, spyOnWeb3Service } from './global.mock';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
   let Web3ServiceSpy: any;
 
   beforeEach(async(() => {
@@ -24,31 +26,29 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+  });
 
-  it(`should have as title 'Exodia.World'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('Exodia.World');
-  }));
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
 
-  it('should NOT show app warning if web3 can sign transactions', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
+  it(`should have as title 'Exodia.World'`, () => {
+    expect(component.title).toEqual('Exodia.World');
+  });
+
+  it('should NOT show app warning if web3 can sign transactions', () => {
     expect(Web3ServiceSpy.canSignTransactions).toHaveBeenCalled();
-    expect(app.showAppWarning).toBe(false);
-  }));
+    expect(component.showAppWarning).toBe(false);
+  });
 
-  it('should show app warning if web3 cannot sign transactions', async(() => {
+  it('should show app warning if web3 cannot sign transactions', () => {
     Web3ServiceSpy.canSignTransactions.and.returnValue(false);
 
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
+    component = TestBed.createComponent(AppComponent).componentInstance;
     expect(Web3ServiceSpy.canSignTransactions).toHaveBeenCalled();
-    expect(app.showAppWarning).toBe(true);
-  }));
+    expect(component.showAppWarning).toBe(true);
+  });
 });

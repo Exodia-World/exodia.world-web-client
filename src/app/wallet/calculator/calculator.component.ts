@@ -1,0 +1,106 @@
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+
+import * as moment from 'moment';
+import * as calculatorHelper from './helpers';
+
+/**
+ * Displays Forms to calculate Interest
+ */
+@Component({
+  selector: 'exo-wallet-calculator',
+  template: `
+    <form [formGroup]="calculatorForm" class="h-font-size-large" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <mat-form-field appearance="standard">
+          <mat-label>Staking Start Date</mat-label>
+          <input matInput formControlName="exoDate" [matDatepicker]="myDatepicker">
+          <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Total EXO Staked</mat-label>
+          <input matInput formControlName="exoStake" type="number" placeholder="9,999 EXO">
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Staking Days</mat-label>
+          <input matInput formControlName="stakingDays" type="number" placeholder="365 Days">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="interest">
+            <mat-option *ngFor="let interest of interestArray" [value]="interest"> {{interest}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <p class="calculation-result"><strong>{{exoAmount}} EXO</strong></p>
+      <button mat-raised-button color="primary" type="submit" class="calculate">Calculate</button>
+    </form>
+  `,
+  styleUrls: ['calculator.component.css']
+})
+export class CalculatorComponent implements OnInit {
+  @Input() isMaximized = false;
+
+  calculatorForm: FormGroup;
+  public interestArray: string[] = ['Interest']
+  public exoAmount: number = 0;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.calculatorForm = this.fb.group({
+      exoDate: '',
+      exoStake: null,
+      stakingDays: null,
+      interest: 'Interest'
+    });
+  }
+
+  onSubmit(): void {
+    const exoDate = (new Date(this.calculatorForm.get('exoDate').value)).toISOString();
+    const stakeDays = this.calculatorForm.get('stakingDays').value;
+    const exoStake = this.calculatorForm.get('exoStake').value;
+    const stakeDate = moment(exoDate);
+    const stakeEndDate = moment(exoDate).add(stakeDays, 'days');
+    let totalInterest = 0;
+
+    // stake end date is before the staking date
+    if (stakeEndDate.isBefore(calculatorHelper.STAKING_STARTDATE)) {
+      this.exoAmount = 0;
+      return;
+    }
+
+    // stake date is before staking start but stake end date is after staking start
+    if (stakeDate.isBefore(calculatorHelper.STAKING_STARTDATE) && stakeEndDate.isAfter(calculatorHelper.STAKING_STARTDATE)) {
+      const diff = stakeEndDate.diff(calculatorHelper.STAKING_STARTDATE, 'days') + 1;
+      const eligibleStakeDays = Math.floor(diff / 7) * 7;
+      this.exoAmount = Math.floor(exoStake * (0.1 / 365) * eligibleStakeDays);
+      return;
+    }
+
+    // less than 3 years after ICO
+    if (stakeEndDate.isBefore(calculatorHelper.FIRST_INTEREST_PERIOD_END_DATE)) {
+      const eligibleStakeDays = Math.floor(stakeDays / 7) * 7;
+      // Ex: interest = 50 EXO * (10%/365 days) * 28 days
+      totalInterest = Math.floor(exoStake * (0.1 / 365) * eligibleStakeDays);
+    }
+
+    // 5% for the rest of the years
+    if (stakeEndDate.isAfter(calculatorHelper.FIRST_INTEREST_PERIOD_END_DATE)) {
+      // adds one to include the start date
+      const diff = calculatorHelper.FIRST_INTEREST_PERIOD_END_DATE.diff(stakeDate, 'days') + 1;
+
+      if (diff > 0) {
+        const interestTenpercent = Math.floor(exoStake * (0.1 / 365) * diff);
+        const leftOverStakeDays = Math.floor(stakeDays / 7) * 7 - diff;
+        const interestLeftOver = Math.floor(exoStake * (0.05 / 365) * leftOverStakeDays);
+        totalInterest = interestTenpercent + interestLeftOver;
+      } else {
+        const eligibleStakeDays = Math.floor(stakeDays / 7) * 7;
+        totalInterest =  Math.floor(exoStake * (0.05 / 365) * eligibleStakeDays);
+      }
+    }
+
+    this.exoAmount = totalInterest;
+  }
+}
