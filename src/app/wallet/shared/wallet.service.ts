@@ -4,6 +4,7 @@ import { Web3Service } from '../../services/web3.service';
 import { OutcomeService } from '../../services/outcome.service';
 import { TransactionService } from '../../services/transaction.service';
 import { Outcome } from '../../models/outcome.model';
+import { apis } from '../../constants/api.constant';
 
 const exoTokenContract = require('../../contracts/EXOToken.json');
 const exoTokenABI = exoTokenContract.abi;
@@ -86,10 +87,10 @@ export class WalletService {
   getUsdBalance(address): Promise<Outcome> {
     return new Promise((resolve, reject) => {
       if (address) {
-        this.httpClient.get('https://api.coinmarketcap.com/v1/ticker/ethereum/').
+        this.httpClient.get(apis.EtherPrice).
           subscribe(response => {
             this.getEtherBalance(address).then(res => {
-              const value = response[0]['price_usd'] * res.getData();
+              const value = response['data']['quotes']['USD']['price'] * res.getData();
               resolve(this.outcomeService.succeed('GetUSDBalanceSucceeded', value));
             });
           });
@@ -131,7 +132,7 @@ export class WalletService {
       this.exoToken.transfer(
         to,
         valueInWei,
-        {from: this.web3Service.getDefaultAccount()},
+        { from: this.web3Service.getDefaultAccount() },
         this.transactionService.checkStatus(resolve, reject, txTitle,
           'TransferSucceeded', 'TransferFailed')
       );
@@ -151,7 +152,7 @@ export class WalletService {
 
       this.exoToken.depositStake(
         valueInWei,
-        {from: this.web3Service.getDefaultAccount()},
+        { from: this.web3Service.getDefaultAccount() },
         this.transactionService.checkStatus(resolve, reject, txTitle,
           'DepositStakeSucceeded', 'DepositStakeFailed')
       );
@@ -171,7 +172,7 @@ export class WalletService {
 
       this.exoToken.withdrawStake(
         valueInWei,
-        {from: this.web3Service.getDefaultAccount()},
+        { from: this.web3Service.getDefaultAccount() },
         this.transactionService.checkStatus(resolve, reject, txTitle,
           'WithdrawStakeSucceeded', 'WithdrawStakeFailed')
       );
@@ -186,7 +187,7 @@ export class WalletService {
       const txTitle = 'Update stake balance';
 
       this.exoToken.updateStakeBalance(
-        {from: this.web3Service.getDefaultAccount()},
+        { from: this.web3Service.getDefaultAccount() },
         this.transactionService.checkStatus(resolve, reject, txTitle,
           'UpdateStakeBalanceSucceeded', 'UpdateStakeBalanceFailed')
       );
