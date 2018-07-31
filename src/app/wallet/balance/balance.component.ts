@@ -21,7 +21,16 @@ import { CommunicatorComponent } from '../../components/communicator.component';
         </div>
         <div class="balance__unit">EXO</div>
       </div>
+      <div class="usd_balance__value">
+        <strong>{{usdBalance == 0 ? 0 : usdBalance | number }}</strong>
+        <span> USD</span>
+      </div>
+      <div class="ether_balance__value">
+        <strong>{{etherBalance == 0 ? 0 : etherBalance | number}}</strong>
+        <span> ETH</span>
+      </div>
     </div>
+
     <form *ngIf="isMaximized" class="send-tokens-form" [formGroup]="form">
       <span class="send-tokens-form__field">
         <mat-form-field appearance="standard">
@@ -51,6 +60,9 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
   @Output() refreshOutcome = new EventEmitter<Outcome>();
 
   balance = new BigNumber(0);
+  etherBalance = new BigNumber(0);
+  usdBalance = new BigNumber(0);
+
   form: FormGroup;
 
   constructor(
@@ -73,13 +85,13 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
     this.form = this.formBuilder.group({
       destAddress: new FormControl('', [
         Validators.required,
-        (control: AbstractControl): {[key: string]: any} | null => {
+        (control: AbstractControl): { [key: string]: any } | null => {
           // Only accept valid and non-zero addresses.
           if (this.web3Service.isAddress(control.value) &&
             control.value.slice(-40) !== "0000000000000000000000000000000000000000") {
             return null;
           } else {
-            return {value: control.value};
+            return { value: control.value };
           }
         }
       ]),
@@ -92,6 +104,8 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
    */
   refreshAll(isInterval: boolean) {
     this.updateOfDefaultAccount('getBalance', 'balance', isInterval);
+    this.updateOfDefaultAccount('getEtherBalance', 'etherBalance', isInterval);
+    this.updateOfDefaultAccount('getUsdBalance', 'usdBalance', isInterval);
   }
 
   /**
@@ -111,7 +125,7 @@ export class BalanceComponent extends CommunicatorComponent implements OnInit {
         this[storageName] = success.getData();
       })
       .catch(failure => {
-        if (! isInterval) {
+        if (!isInterval) {
           this.refreshOutcome.emit(failure);
         }
       });

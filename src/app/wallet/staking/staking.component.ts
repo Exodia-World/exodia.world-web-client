@@ -36,18 +36,6 @@ import { CommunicatorComponent } from '../../components/communicator.component';
           {{stakeBalance.plus(stakeInterest).toNumber() | longNumber:'1.0-6'}} EXO
         </strong>
       </p>
-      <p class="staking-info-item" *ngIf="!isMaximized">
-        <label>USD</label>
-        <strong class="staking-info-item__value">
-          {{usdBalance == 0 ? 0 : usdBalance | number }} USD
-        </strong>
-      </p>
-      <p class="staking-info-item" *ngIf="!isMaximized">
-        <label>Ethereum</label>
-        <strong class="staking-info-item__value">
-          {{etherBalance == 0 ? 0 : etherBalance | number}} ETH
-        </strong>
-      </p>
       <exo-message name="restake" position="right">
         <button *ngIf="isMaximized" mat-raised-button color="primary"
           class="h-margin-1" (click)="restake()">Restake</button>
@@ -85,8 +73,6 @@ export class StakingComponent extends CommunicatorComponent implements OnInit {
 
   stakeBalance = new BigNumber(0);
   stakeInterest = new BigNumber(0);
-  etherBalance = new BigNumber(0);
-  usdBalance = new BigNumber(0);
   stakeDuration = 0;
   form: FormGroup;
 
@@ -111,8 +97,6 @@ export class StakingComponent extends CommunicatorComponent implements OnInit {
   refreshAll(isInterval: boolean) {
     this.updateOfDefaultAccount('getStakeBalance', 'stakeBalance', isInterval);
     this.updateOfDefaultAccount('getStakeDuration', 'stakeDuration', isInterval);
-    this.updateOfDefaultAccount('getEtherBalance', 'etherBalance', isInterval);
-    this.updateOfDefaultAccount('getUsdBalance', 'usdBalance', isInterval);
     this.updateStakeInterest(isInterval);
   }
 

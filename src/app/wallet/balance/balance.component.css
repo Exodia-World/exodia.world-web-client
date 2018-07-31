@@ -2,6 +2,7 @@
   display: inline-block;
   padding: 1em;
   width: 220px;
+  border-bottom: 1px solid #e1e1e1;
 }
 .balance--maximized {
   width: 40%;
@@ -47,3 +48,15 @@
 .send-tokens {
   vertical-align: middle;
 }
+
+.ether_balance__value{
+  float: right;
+  margin: 10px 15px 5px 10px;
+  opacity: 0.8;
+}
+.usd_balance__value{
+  margin: 10px 0px 5px 0px;
+  float: left;
+  opacity: 0.8;
+}
+  
