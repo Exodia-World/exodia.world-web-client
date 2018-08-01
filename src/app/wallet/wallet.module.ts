@@ -8,7 +8,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MessageModule } from '../components/message/message.module';
 import { BalanceModule } from './balance/balance.module';
 import { AddressModule } from './address/address.module';
-import { PriceModule } from './price/price.module';
 import { StakingModule } from './staking/staking.module';
 import { CalculatorModule } from './calculator/calculator.module';
 import { RecentTransactionsModule } from './recent-transactions/recent-transactions.module';
@@ -28,7 +27,6 @@ import { WalletComponent } from './wallet.component';
     MessageModule,
     BalanceModule,
     AddressModule,
-    PriceModule,
     StakingModule,
     CalculatorModule,
     RecentTransactionsModule

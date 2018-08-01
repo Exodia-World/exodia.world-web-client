@@ -49,10 +49,6 @@
         (refreshOutcome)="handleRefreshOutcome($event)"></exo-wallet-staking>
     </section>
 
-    <section *ngIf="isMaximized" class="wallet-section--price">
-      <exo-price></exo-price>
-    </section>
-
     <section *ngIf="isMaximized" class="wallet-section wallet-section--address -raised">
       <h2 class="wallet-section__title">Address</h2>
       <exo-wallet-address [isMaximized]="isMaximized"></exo-wallet-address>
