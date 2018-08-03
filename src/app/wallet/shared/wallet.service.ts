@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Web3Service } from '../../services/web3.service';
 import { OutcomeService } from '../../services/outcome.service';
 import { TransactionService } from '../../services/transaction.service';
 import { Outcome } from '../../models/outcome.model';
+import { apis } from '../../constants/api.constant';
 
 const exoTokenContract = require('../../contracts/EXOToken.json');
 const exoTokenABI = exoTokenContract.abi;
@@ -18,7 +20,8 @@ export class WalletService {
   constructor(
     private web3Service: Web3Service,
     private outcomeService: OutcomeService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private httpClient: HttpClient
   ) {
     this.exoToken = this.web3Service.getContract(exoTokenABI, exoTokenAddress);
   }
@@ -55,9 +58,43 @@ export class WalletService {
           reject(this.outcomeService.fail('GetBalanceFailed', err));
         } else {
           resolve(this.outcomeService.succeed('GetBalanceSucceeded',
-            this.web3Service.fromWei(balance,unit)));
+            this.web3Service.fromWei(balance, unit)));
         }
       });
+    });
+  }
+
+  /*
+   * Get the balance of an address in Ether.
+   *
+   * @param {string} address The account address
+   */
+  getEtherBalance(address: string): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      this.getBalance(address, 'ether').then(result => {
+        const etherValue = result.getData();
+        resolve(this.outcomeService.succeed('GetEtherBalanceSucceeded',
+          etherValue.toNumber() / 7300));
+      });
+    });
+  }
+
+  /*
+   * Get the balance of an address in USD.
+   *
+   * @param {string} address The account address
+   */
+  getUsdBalance(address): Promise<Outcome> {
+    return new Promise((resolve, reject) => {
+      if (address) {
+        this.httpClient.get(apis.EtherPrice).
+          subscribe(response => {
+            this.getEtherBalance(address).then(res => {
+              const value = response['data']['quotes']['USD']['price'] * res.getData();
+              resolve(this.outcomeService.succeed('GetUSDBalanceSucceeded', value));
+            });
+          });
+      }
     });
   }
 
@@ -74,7 +111,7 @@ export class WalletService {
           reject(this.outcomeService.fail('GetStakeBalanceFailed', err));
         } else {
           resolve(this.outcomeService.succeed('GetStakeBalanceSucceeded',
-            this.web3Service.fromWei(balance,unit)));
+            this.web3Service.fromWei(balance, unit)));
         }
       });
     });
@@ -95,7 +132,7 @@ export class WalletService {
       this.exoToken.transfer(
         to,
         valueInWei,
-        {from: this.web3Service.getDefaultAccount()},
+        { from: this.web3Service.getDefaultAccount() },
         this.transactionService.checkStatus(resolve, reject, txTitle,
           'TransferSucceeded', 'TransferFailed')
       );
@@ -115,7 +152,7 @@ export class WalletService {
 
       this.exoToken.depositStake(
         valueInWei,
-        {from: this.web3Service.getDefaultAccount()},
+        { from: this.web3Service.getDefaultAccount() },
         this.transactionService.checkStatus(resolve, reject, txTitle,
           'DepositStakeSucceeded', 'DepositStakeFailed')
       );
@@ -135,7 +172,7 @@ export class WalletService {
 
       this.exoToken.withdrawStake(
         valueInWei,
-        {from: this.web3Service.getDefaultAccount()},
+        { from: this.web3Service.getDefaultAccount() },
         this.transactionService.checkStatus(resolve, reject, txTitle,
           'WithdrawStakeSucceeded', 'WithdrawStakeFailed')
       );
@@ -150,7 +187,7 @@ export class WalletService {
       const txTitle = 'Update stake balance';
 
       this.exoToken.updateStakeBalance(
-        {from: this.web3Service.getDefaultAccount()},
+        { from: this.web3Service.getDefaultAccount() },
         this.transactionService.checkStatus(resolve, reject, txTitle,
           'UpdateStakeBalanceSucceeded', 'UpdateStakeBalanceFailed')
       );

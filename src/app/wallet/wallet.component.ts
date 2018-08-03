@@ -48,7 +48,7 @@ export class WalletComponent extends CommunicatorComponent
   }
 
   toggleMaximizeWallet() {
-    this.isMaximized = ! this.isMaximized;
+    this.isMaximized = !this.isMaximized;
   }
 
   /**

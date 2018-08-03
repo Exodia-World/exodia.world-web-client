@@ -12,6 +12,7 @@ describe('WalletService', () => {
   let EXOTokenSpy: any;
   let Web3ServiceSpy: any;
   let OutcomeServiceSpy: any;
+  let httpClient: any;
   let TransactionServiceSpy: any;
   let walletService: WalletService;
 
@@ -19,10 +20,11 @@ describe('WalletService', () => {
     EXOTokenSpy = spyOnEXOToken();
     Web3ServiceSpy = spyOnWeb3Service(EXOTokenSpy);
     OutcomeServiceSpy = spyOnOutcomeService();
+    walletService = new WalletService(Web3ServiceSpy, OutcomeServiceSpy, httpClient);
     TransactionServiceSpy = spyOnTransactionService(Web3ServiceSpy);
     
     walletService = new WalletService(Web3ServiceSpy, OutcomeServiceSpy,
-      TransactionServiceSpy);
+      TransactionServiceSpy, httpClient);
   });
 
   it('should initialize EXO token', () => {
@@ -183,7 +185,7 @@ describe('WalletService', () => {
   it('should return error if calculate interest failed', (done) => {
     EXOTokenSpy.calculateInterest.call.and.callFake(
       (callback: (err, result) => void) => {
-        callback({message: 'ERROR'}, null);
+        callback({ message: 'ERROR' }, null);
       }
     );
     walletService.calculateInterest('ether').catch(outcome => {
@@ -203,7 +205,7 @@ describe('WalletService', () => {
     });
   });
 
-  it ('should return error if get stake time failed', (done) => {
+  it('should return error if get stake time failed', (done) => {
     walletService.getStakeStartTime('0xERROR').catch(outcome => {
       expect(walletService.getToken().stakeStartTimeOf.call).toHaveBeenCalled();
       expect(outcome.getType()).toEqual(OutcomeType.Failure);
@@ -222,7 +224,7 @@ describe('WalletService', () => {
     });
   });
 
-  it ('should return error if get stake duration failed', (done) => {
+  it('should return error if get stake duration failed', (done) => {
     walletService.getStakeDuration('0xERROR').catch(outcome => {
       expect(walletService.getToken().stakeStartTimeOf.call).toHaveBeenCalled();
       expect(Web3ServiceSpy.getBlock).not.toHaveBeenCalled();
